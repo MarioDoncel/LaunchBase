@@ -219,6 +219,65 @@ article p {
    cursor: pointer;
 }
 
+
+/* ========== RECIPE ====== */
+.recipe {
+    margin-top: 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.recipe .image-container{
+    max-width: 940px;
+}
+.recipe .image-container img {
+    width: 100%;
+    border-radius: 15px;
+    object-fit: cover;
+}
+
+.recipe .recipe-name {
+    margin-top: 50px;
+    margin-bottom: 5px;
+}
+
+.recipe .recipe-name h4 {
+    font-size: 36px;
+}
+.recipe .author  p{
+    font-size: 20px;
+    color: #777777;
+}
+
+.recipeInformation {
+    margin-top: 50px;
+    font-size: 18px;
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 50px;
+
+    line-height: 28px;
+}
+
+.recipeInformation h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.recipeInformation ul {
+    padding-left: 20px;
+}
+
+.recipeInformation span {
+    font-size: 12px;
+    color: #999;
+    cursor: pointer;
+}
+
+
+
 /* RESPONSIVE ====================== */
 
 @media (min-width: 750px) {
