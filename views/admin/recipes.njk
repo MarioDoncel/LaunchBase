@@ -1,0 +1,169 @@
+{% extends "layoutAdmin.njk" %}
+
+{% block title %}
+        <title>Gereciar receitas</title>
+        {% endblock title %}
+
+{% block content %}
+    <main>
+        <h2 id="manage-recipes">Gerenciar receitas</h2>
+        <div class="cards admin">
+            {% for recipe in recipes %}
+            
+            <div class="card admin-index">
+                <div class="image-container admin">
+                    <img src="{{recipe.image}}" alt="{{recipe.title}}">
+                </div>
+                <div class="index-details">
+                    <div class="recipe-name">
+                        <h4>{{recipe.title}}</h4>
+                    </div>
+                    <div class="author">
+                        <p>{{recipe.author}}</p>
+                    </div>
+                    <div >
+                        <a class="link-button" href="/admin/show/{{recipe.id}}">Visualizar</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+            {# <div class="card">
+                <div class="image-container">
+                    <img src="./assets/pizza.png" alt="Pizza 4 estações">
+                </div>
+                <div class="recipe-name">
+                    <h4>Pizza 4 estações</h4>
+                </div>
+                <div class="author">
+                    <p>por Fabiana Melo</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image-container">
+                    <img src="./assets/espaguete.png" alt="Espaguete ao alho">
+                </div>
+                <div class="recipe-name">
+                    <h4>Espaguete ao alho</h4>
+                </div>
+                <div class="author">
+                    <p>por Júlia Kinoto</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image-container">
+                    <img src="./assets/lasanha.png" alt="Lasanha mac n'cheese">
+                </div>
+                <div class="recipe-name">
+                    <h4>Lasanha mac n'cheese</h4>
+                </div>
+                <div class="author">
+                    <p>por Juliana Vieira</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image-container">
+                    <img src="./assets/doce.png" alt="Docinhos pão-do-céu">
+                </div>
+                <div class="recipe-name">
+                    <h4>Docinhos pão-do-céu</h4>
+                </div>
+                <div class="author">
+                    <p>por Ricardo Golvea</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image-container">
+                    <img src="./assets/asinhas.png" alt="Asinhas de frango ao barbecue">
+                </div>
+                <div class="recipe-name">
+                    <h4>Asinhas de frango ao barbecue</h4>
+                </div>
+                <div class="author">
+                    <p>por Vania Steroski</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image-container">
+                    <img src="./assets/burger.png" alt="Triplo Burger Bacon">
+                </div>
+                <div class="recipe-name">
+                    <h4>Triplo Burger Bacon</h4>
+                </div>
+                <div class="author">
+                    <p>por Jorge Relato</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image-container">
+                    <img src="./assets/pizza.png" alt="Pizza 4 estações">
+                </div>
+                <div class="recipe-name">
+                    <h4>Pizza 4 estações</h4>
+                </div>
+                <div class="author">
+                    <p>por Fabiana Melo</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image-container">
+                    <img src="./assets/espaguete.png" alt="Espaguete ao alho">
+                </div>
+                <div class="recipe-name">
+                    <h4>Espaguete ao alho</h4>
+                </div>
+                <div class="author">
+                    <p>por Júlia Kinoto</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image-container">
+                    <img src="./assets/lasanha.png" alt="Lasanha mac n'cheese">
+                </div>
+                <div class="recipe-name">
+                    <h4>Lasanha mac n'cheese</h4>
+                </div>
+                <div class="author">
+                    <p>por Juliana Vieira</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image-container">
+                    <img src="./assets/doce.png" alt="Docinhos pão-do-céu">
+                </div>
+                <div class="recipe-name">
+                    <h4>Docinhos pão-do-céu</h4>
+                </div>
+                <div class="author">
+                    <p>por Ricardo Golvea</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="image-container">
+                    <img src="./assets/asinhas.png" alt="Asinhas de frango ao barbecue">
+                </div>
+                <div class="recipe-name">
+                    <h4>Asinhas de frango ao barbecue</h4>
+                </div>
+                <div class="author">
+                    <p>por Vania Steroski</p>
+                </div>
+            </div> #}
+        </div>
+</main>
+{% endblock content %}
+
+{% block modal %}
+<div class="modal-overlay">
+    <div class="modal">
+
+        <div class="modal-content">
+            <!-- <div class="image-container"> <img src="./assets/asinhas.png" alt="asinhas"> </div> <div class="recipe-name"> <h4>Asinhas de frango ao barbecue</h4> </div> <div class="author"> <p>por Vania Steroski</p> </div> -->
+        </div>
+        <div class="close-modal">
+            <p>Fechar modal</p>
+        </div>
+    </div>
+</div>
+{% endblock modal %}
+

@@ -1,0 +1,61 @@
+{% extends "layoutAdmin.njk" %}
+
+{% block content %}
+                <div class="recipe">
+                    <div class="subHeader">
+                        <h3>Criando receita</h3>
+                        
+                        <button type="submit" form="createRecipe">Salvar receita</button>
+                    </div>
+                </div>
+                <form action="/admin/recipes" id="createRecipe" method="post">
+                <div class="recipeFields">
+                    <div class="item">
+                        <h3>Imagem da receita</h3>
+                        <input type="text" name="image" placeholder="https://">
+                    </div>
+                    <div class="item">
+                        <h3>Nome da receita</h3>
+                        <input type="text" name="title" placeholder="Nome ">
+                    </div>
+                    <div class="item">
+                        <h3>Nome do autor</h3>
+                        <input type="text" name="author" placeholder="Nome completo">
+                    </div>
+                    <div class="item">
+                        <h3>Ingredientes</h3>
+                        <div id="ingredients">
+                            <div class="ingredient">
+                                <input type="text" name="ingredients[]" value="" placeholder="Ingrediente" />
+                            </div>
+                        </div>
+                        <div >
+                            <button class="link-button add-ingredient">Adicionar novo ingrediente</button>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <h3>Modo de preparo</h3>
+                        <div id="steps">
+                            <div class="step">
+                                <input type="text" name="preparation[]" value="" placeholder="Passo da preparação" />
+                            </div>
+                        </div>
+                        <div >
+                            <button class="link-button add-step">Adicionar novo passo</button>
+                            
+                        </div>
+                    </div>                                 
+                    <div class="item">
+                        <h3>Informações adicionais</h3>
+                        <textarea name="information" id="" placeholder="Informações relevantes"></textarea>
+                    </div>
+                    </form>
+                </div>
+
+
+
+{% endblock content %}
+
+{% block script %}
+<script src="/createScript.js"></script>
+{% endblock script %}
