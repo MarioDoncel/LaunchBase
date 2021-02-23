@@ -29,7 +29,7 @@
                         <div id="ingredients">
                             {% for ingredient in recipe.ingredients %}
                             <div class="ingredient">
-                                <input type="text" name="ingredients[]" value="{{ingredient}}" /><span>deletar</span>
+                                <input type="text" name="ingredients[]" value="{{ingredient}}" /><span onclick="deleteIngredient(this)">deletar</span>
                             </div>
                             {% endfor %}
                         </div>
@@ -42,7 +42,7 @@
                         <div id="steps">
                             {% for step in recipe.preparation %}
                             <div class="step">
-                                <input type="text" name="preparation[]" value="{{step}}"/><span>deletar</span>
+                                <input type="text" name="preparation[]" value="{{step}}"/><span onclick="deleteStep(this)">deletar</span>
                             </div>
                             {% endfor %}
                         </div>

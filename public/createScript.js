@@ -23,13 +23,13 @@ function addIngredient() {
  // Delete ingredient
 
  function deleteIngredient(event) {
-  const ingredient = event.target
-  ingredient.parentElement.innerHTML = ""
+  const ingredient = event
+  ingredient.parentElement.remove()
 }
-const deleteIngredientButtons = document.querySelectorAll(".ingredient span")
-for (const ingredient of deleteIngredientButtons) {
-  ingredient.addEventListener("click", deleteStep)
-}
+// const deleteIngredientButtons = document.querySelectorAll(".ingredient span")
+// for (const ingredient of deleteIngredientButtons) {
+//   ingredient.addEventListener("click", deleteStep)
+// }
 
 
 // Add step
@@ -58,12 +58,12 @@ function addStep() {
   // Delete step
 
   function deleteStep(event) {
-    const step = event.target
-    step.parentElement.innerHTML = ""
+    const step = event
+    step.parentElement.remove()
   }
-  const deleteStepButtons = document.querySelectorAll(".step span")
-  for (const step of deleteStepButtons) {
-    step.addEventListener("click", deleteStep)
-  }
+  // const deleteStepButtons = document.querySelectorAll(".step span")
+  // for (const step of deleteStepButtons) {
+  //   step.addEventListener("click", deleteStep)
+  // }
 
   
