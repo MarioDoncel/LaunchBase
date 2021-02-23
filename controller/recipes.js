@@ -1,4 +1,3 @@
-const recipes = require("../data")
 const data = require("../data.json")
 const fs = require("fs")
 
@@ -11,14 +10,25 @@ exports.create = function(req, res) {
 }
 
 exports.show = function(req, res) {
-        const recipeIndex = req.params.id;
-        return res.render("admin/show.njk", {recipe : recipes[recipeIndex]})
+    let recipeIndex = req.params.id;
+    const foundRecipe = data.recipes[recipeIndex]
+    if (!foundRecipe) {
+        return res.send("Receita não encontrada!")
+    }
+    return res.render("admin/show.njk", {recipe : foundRecipe})
 }
 
 
 exports.edit = function(req, res) {
-    return res.render("admin/edit.njk")
+    let recipeIndex = req.params.id;
+    const foundRecipe = data.recipes[recipeIndex]
+    if (!foundRecipe) {
+        return res.send("Receita não encontrada!")
+    }
+    return res.render("admin/edit.njk", {recipe : foundRecipe, index : recipeIndex})
 }
+
+
 
 exports.post = function(req, res) {
     const keys = Object.keys(req.body)
@@ -49,12 +59,37 @@ exports.post = function(req, res) {
     })
 }
 
-
-
 exports.put = function(req, res) {
-    return res.render("admin/show.njk")
+    const index = req.body.index
+    let {image,title,author,ingredients , preparation, information} = req.body
+
+    data.recipes[index] = {
+        image,
+        title,
+        author,
+        ingredients ,
+        preparation,
+        information
+    }
+    
+
+    fs.writeFile("data.json", JSON.stringify(data, null, 2), err => {
+        if (err) {
+            return res.send("Write file error!")
+        }
+    return res.redirect('/admin/recipes')
+})
 }
 
 exports.delete = function(req, res) {
-    return res.render("admin/recipes.njk")
+    const index = req.body.index
+    
+    data.recipes.splice(index, 1)
+
+    fs.writeFile("data.json", JSON.stringify(data, null, 2), err => {
+        if (err) {
+            return res.send("Write file error!")
+        }
+    return res.redirect('/admin/recipes')
+})
 }

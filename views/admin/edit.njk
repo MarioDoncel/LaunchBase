@@ -1,39 +1,64 @@
-{% extends "./layoutAdmin.njk" %}
+{% extends "layoutAdmin.njk" %}
 
 {% block content %}
                 <div class="recipe">
-                    <div class="image-container">
-                        <img src="{{recipe.image}}" alt="{{recipe.title}}">
-                    </div>
-                    <div class="recipe-name">
-                        <h4>{{recipe.title}}</h4>
-                    </div>
-                    <div class="author">
-                        <p>{{recipe.author}}</p>
+                    <div class="subHeader">
+                        <h3>Criando receita</h3>
+                        <div class="buttonsEdit">
+                            <button type="submit" form="deleteRecipe">Deletar</button>
+                            <button type="submit" form="editRecipe">Salvar receita</button>
+                        </div>
                     </div>
                 </div>
-                <div class="recipeInformation">
-                    <div class="ingredients">
-                        <h3>Ingredientes <span class="active">esconder</span></h3>
-                        <ul>
+                <form action="/admin/recipes?_method=PUT" id="editRecipe" method="post">
+                <div class="recipeFields">
+                    <div class="item">
+                        <h3>Imagem da receita</h3>
+                        <input type="text" name="image" value="{{recipe.image}}">
+                    </div>
+                    <div class="item">
+                        <h3>Nome da receita</h3>
+                        <input type="text" name="title" value="{{recipe.title}}" ">
+                    </div>
+                    <div class="item">
+                        <h3>Nome do autor</h3>
+                        <input type="text" name="author" value="{{recipe.author}}">
+                    </div>
+                    <div class="item">
+                        <h3>Ingredientes</h3>
+                        <div id="ingredients">
                             {% for ingredient in recipe.ingredients %}
-                            <li>{{ingredient}}</li>
+                            <div class="ingredient">
+                                <input type="text" name="ingredients[]" value="{{ingredient}}" /><span>deletar</span>
+                            </div>
                             {% endfor %}
-                        </ul>
-
+                        </div>
+                        <div >
+                            <button type="button" class="link-button add-ingredient">Adicionar novo ingrediente</button>
+                        </div>
                     </div>
-                    <div class="preparation">
-                        <h3>Modo de preparo <span class="active">esconder</span></h3>
-                        <ul>
+                    <div class="item">
+                        <h3>Modo de preparo</h3>
+                        <div id="steps">
                             {% for step in recipe.preparation %}
-                            <li>{{step}}</li>
+                            <div class="step">
+                                <input type="text" name="preparation[]" value="{{step}}"/><span>deletar</span>
+                            </div>
                             {% endfor %}
-                        </ul>
+                        </div>
+                        <div >
+                            <button type="button" class="link-button add-step">Adicionar novo passo</button>
+                        </div>
+                    </div>                                 
+                    <div class="item">
+                        <h3>Informações adicionais</h3>
+                        <textarea name="information" id="" value="{{recipe.information}}"></textarea>
                     </div>
-                    <div class="information">
-                        <h3>Informações adicionais <span class="active">esconder</span></h3>
-                        <p>{{recipe.information}}</p>
-                    </div>
+                    <input type="hidden" name="index" value="{{index}}">
+                    </form>
+                    <form action="/admin/recipes?_method=DELETE" id="deleteRecipe" method="post">
+                    <input type="hidden" name="index" value="{{index}}">
+                    </form>
                 </div>
 
 
@@ -41,5 +66,14 @@
 {% endblock content %}
 
 {% block script %}
-<script src="/recipeScript.js"></script>
+<script src="/createScript.js"></script>
+<script>
+    const formDelete = document.querySelector("#deleteRecipe")
+            formDelete.addEventListener("submit", event => {
+                const confirmation = confirm("Deseja deletar?")
+                if(!confirmation) {
+                    event.preventDefault()
+                }
+            })
+</script>
 {% endblock script %}
