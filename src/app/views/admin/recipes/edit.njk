@@ -3,7 +3,7 @@
 {% block content %}
                 <div class="recipe">
                     <div class="subHeader">
-                        <h3>Criando receita</h3>
+                        <h3>Editando receita</h3>
                         <div class="buttonsEdit">
                             <button type="submit" form="deleteRecipe">Deletar</button>
                             <button type="submit" form="editRecipe">Salvar receita</button>
@@ -11,64 +11,17 @@
                     </div>
                 </div>
                 <form action="/admin/recipes?_method=PUT" id="editRecipe" method="post">
-                <div class="recipeFields">
-                    <div class="item">
-                        <h3>Imagem da receita</h3>
-                        <input type="text" name="image" value="{{recipe.image}}">
+                    <div class="recipeFields">
+
+                        {% include './partials/fields.njk' %}
+                        
+                        <input type="hidden" name="recipeId" value="{{recipeId}}">
                     </div>
-                    <div class="item">
-                        <h3>Nome da receita</h3>
-                        <input type="text" name="title" value="{{recipe.title}}" ">
-                    </div>
-                    <div class="item">
-                        <h3>Chef</h3>
-                        <div>
-                            <select name="chef_id">
-                                {% for chef in chefs %}
-                                 <option value="{{chef.id}}" 
-                                 {% if {{chef.id}} == {{recipe.chef_id}} %} selected
-                                 {% endif %}>
-                                 {{chef.name}}</option>
-                                {% endfor %}                                                        
-                            </select>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <h3>Ingredientes</h3>
-                        <div id="ingredients">
-                            {% for ingredient in recipe.ingredients %}
-                            <div class="ingredient">
-                                <input type="text" name="ingredients[]" value="{{ingredient}}" /><span onclick="deleteIngredient(this)">deletar</span>
-                            </div>
-                            {% endfor %}
-                        </div>
-                        <div >
-                            <button type="button" class="link-button add-ingredient">Adicionar novo ingrediente</button>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <h3>Modo de preparo</h3>
-                        <div id="steps">
-                            {% for step in recipe.preparation %}
-                            <div class="step">
-                                <input type="text" name="preparation[]" value="{{step}}"/><span onclick="deleteStep(this)">deletar</span>
-                            </div>
-                            {% endfor %}
-                        </div>
-                        <div >
-                            <button type="button" class="link-button add-step">Adicionar novo passo</button>
-                        </div>
-                    </div>                                 
-                    <div class="item">
-                        <h3>Informações adicionais</h3>
-                        <textarea name="information" id="" value="{{recipe.information}}"></textarea>
-                    </div>
+                </form>
+                <form action="/admin/recipes?_method=DELETE" id="deleteRecipe" method="post">
                     <input type="hidden" name="recipeId" value="{{recipeId}}">
-                    </form>
-                    <form action="/admin/recipes?_method=DELETE" id="deleteRecipe" method="post">
-                    <input type="hidden" name="recipeId" value="{{recipeId}}">
-                    </form>
-                </div>
+                </form>
+               
 
 
 

@@ -10,14 +10,9 @@
                 </div>
                 <form action="/admin/chefs" id="createChef" method="post">
                 <div class="chefFields">
-                    <div class="item">
-                        <h3>Nome</h3>
-                        <input type="text" name="name" placeholder="Nome completo">
-                    </div>
-                    <div class="item">
-                        <h3>Avatar</h3>
-                        <input type="text" name="avatar_url" placeholder="http://... ">
-                    </div>
+
+                    {%include './partials/fields.njk'%}
+            
                 </div>
 {% endblock content %}
 

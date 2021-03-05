@@ -1,0 +1,62 @@
+<div class="item">
+                        <h3>Imagem da receita</h3>
+                        <input type="text" name="image" value="{{recipe.image}}" placeholder="https://">
+                    </div>
+                    <div class="item">
+                        <h3>Nome da receita</h3>
+                        <input type="text" name="title" value="{{recipe.title}}" placeholder="Nome">
+                    </div>
+                    <div class="item">
+                        <h3>Chef</h3>
+                        <div>
+                            <select id="chefOptions" name="chef_id" onchange="document.getElementById('chefOptions').style.color = 'black'" style="color: gray;">
+                                <option value="" disabled selected>Selecione um chef...</option>
+                                {% for chef in chefs %}
+                                 <option value="{{chef.id}}" 
+                                 {%if chef.id == recipe.chef_id %} selected
+                                 {%endif%}>
+                                 {{chef.name}}</option>
+                                {% endfor %}                                                        
+                            </select>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <h3>Ingredientes</h3>
+                        <div id="ingredients">
+                            {% if not recipe.ingredients %}
+                            <div class="ingredient">
+                                <input type="text" name="ingredients[]" value="" placeholder="Ingrediente" /><span onclick="deleteIngredient(this)">deletar</span>
+                            </div>
+                            {% endif %}
+                            {% for ingredient in recipe.ingredients %}
+                            <div class="ingredient">
+                                <input type="text" name="ingredients[]" value="{{ingredient}}" placeholder="Ingrediente" /><span onclick="deleteIngredient(this)">deletar</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div >
+                            <button type="button" class="link-button add-ingredient">Adicionar novo ingrediente</button>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <h3>Modo de preparo</h3>
+                        <div id="steps">
+                            {% if not recipe.preparation %}
+                            <div class="step">
+                                <input type="text" name="preparation[]" value="" placeholder="Passo da preparação"/><span onclick="deleteStep(this)">deletar</span>
+                            </div>
+                            {% endif %}
+                            {% for step in recipe.preparation %}
+                            <div class="step">
+                                <input type="text" name="preparation[]" value="{{step}}" placeholder="Passo da preparação"/><span onclick="deleteStep(this)">deletar</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div >
+                            <button type="button" class="link-button add-step">Adicionar novo passo</button>
+                        </div>
+                    </div>                                 
+                    <div class="item">
+                        <h3>Informações adicionais</h3>
+                        <textarea name="information" id="" placeholder="Informações relevantes" value="{{recipe.information}}"></textarea>
+                    </div>

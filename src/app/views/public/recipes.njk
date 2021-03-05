@@ -9,23 +9,8 @@
 
 {% block content %}
     <main>
-        <div class="cards">
-            {% for recipe in recipes %}
-            
-            <div class="card">
-                <div class="image-container">
-                    <img src="{{recipe.image}}" alt="{{recipe.title}}">
-                </div>
-                <div class="recipe-name">
-                    <h4>{{recipe.title}}</h4>
-                </div>
-                <div class="author">
-                    <p>{{recipe.author}}</p>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-</main>
+       {%include './partials/recipeCards.njk'%}
+    </main>
 {% endblock content %}
 
 {% block modal %}

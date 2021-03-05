@@ -12,14 +12,9 @@
     </div>
     <form action="/admin/chefs?_method=PUT" id="editChef" method="post">
         <div class="chefFields">
-            <div class="item">
-                <h3>Nome</h3>
-                <input type="text" name="name" placeholder="Nome completo" value="{{chef.name}}">
-            </div>
-            <div class="item">
-                <h3>Avatar</h3>
-                <input type="text" name="avatar_url" placeholder="http://... " value="{{chef.avatar_url}}">
-            </div>
+
+            {%include './partials/fields.njk'%}
+            
         </div>
         <input type="hidden" name="chefId" value="{{chefId}}">
     </form>

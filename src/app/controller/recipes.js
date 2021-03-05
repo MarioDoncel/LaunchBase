@@ -23,7 +23,6 @@ exports.show = function(req, res) {
         recipe.ingredients = formatList(recipe.ingredients)
         recipe.preparation = formatList(recipe.preparation)
         
-
         return res.render("admin/recipes/show", {recipe})
     }) 
 }
@@ -38,7 +37,11 @@ exports.edit = function(req, res) {
         recipe.ingredients = formatList(recipe.ingredients)
         recipe.preparation = formatList(recipe.preparation)
 
-        return res.render("admin/recipes/edit", {recipe, recipeId})
+        let chefs = []
+        Recipe.chefOptions(function (chefs) {
+            return res.render("admin/recipes/edit", {recipe, recipeId, chefs})
+        })
+       
     }) 
 }
 
