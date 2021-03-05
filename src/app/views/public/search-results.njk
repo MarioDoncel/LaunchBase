@@ -1,0 +1,44 @@
+{% extends 'layout.njk' %}
+{% block searchField %}
+    {%include './partials/search.njk'%}
+{% endblock searchField %}
+
+{% block title %}
+        <title>Receitas</title>
+        {% endblock title %}
+
+{% block content %}
+    <main>
+        <h3>Buscando por "{{filter}}"</h3>
+        <div class="cards">
+            {% for recipe in recipes %}
+            
+            <div class="card">
+                <div class="image-container">
+                    <img src="{{recipe.image}}" alt="{{recipe.title}}">
+                </div>
+                <div class="recipe-name">
+                    <h4>{{recipe.title}}</h4>
+                </div>
+                <div class="author">
+                    <p>{{recipe.author}}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+</main>
+{% endblock content %}
+
+{% block modal %}
+<div class="modal-overlay">
+    <div class="modal">
+
+        <div class="modal-content">
+            <!-- <div class="image-container"> <img src="./assets/asinhas.png" alt="asinhas"> </div> <div class="recipe-name"> <h4>Asinhas de frango ao barbecue</h4> </div> <div class="author"> <p>por Vania Steroski</p> </div> -->
+        </div>
+        <div class="close-modal">
+            <p>Fechar modal</p>
+        </div>
+    </div>
+</div>
+{% endblock modal %}

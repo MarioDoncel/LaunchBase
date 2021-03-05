@@ -1,0 +1,47 @@
+{% extends "layoutAdmin.njk" %}
+
+{% block title %}
+        <title>Gereciar receitas</title>
+        {% endblock title %}
+
+{% block content %}
+    <main>
+        <h2 id="manage-recipes">Gerenciar receitas</h2>
+        <div class="cards admin">
+            {% for recipe in recipes %}
+            
+            <div class="card admin-index">
+                <div class="image-container admin">
+                    <img src="{{recipe.image}}" alt="{{recipe.title}}">
+                </div>
+                <div class="index-details">
+                    <div class="recipe-name">
+                        <h4>{{recipe.title}}</h4>
+                    </div>
+                    <div class="author">
+                        <p>por {{recipe.chef_name}}</p>
+                    </div>
+                    <div >
+                        <a class="link-button" href="/admin/recipes/{{recipe.id}}">Visualizar</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+</main>
+{% endblock content %}
+
+{% block modal %}
+<div class="modal-overlay">
+    <div class="modal">
+
+        <div class="modal-content">
+            <!-- <div class="image-container"> <img src="./assets/asinhas.png" alt="asinhas"> </div> <div class="recipe-name"> <h4>Asinhas de frango ao barbecue</h4> </div> <div class="author"> <p>por Vania Steroski</p> </div> -->
+        </div>
+        <div class="close-modal">
+            <p>Fechar modal</p>
+        </div>
+    </div>
+</div>
+{% endblock modal %}
+

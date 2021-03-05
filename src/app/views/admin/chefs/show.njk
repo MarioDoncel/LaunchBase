@@ -1,0 +1,47 @@
+{% extends "layoutAdmin.njk" %}
+
+{% block content %}
+    <div class="chef">
+        <div class="subHeader">
+            <h3>Chef:
+                {{chef.name}}</h3>
+            <a href="/admin/chefs/:id/edit">
+                <button>Editar chef</button>
+            </a>
+        </div>
+        <div class="image-container">
+            <img src="{{chef.avatar_url}}" alt="{{chef.name}}">
+        </div>
+        <div class="chef-name">
+            <h4>{{chef.name}}</h4>
+        </div>
+        <div class="total_recipes">
+            <p>{{total_recipes}}0 receitas</p>
+        </div>
+    </div>
+    <h2 id="manage-recipes">Receitas</h2>
+        <div class="cards admin">
+            {% for recipe in recipes %}
+            
+            <div class="card admin-index">
+                <div class="image-container admin">
+                    <img src="{{recipe.image}}" alt="{{recipe.title}}">
+                </div>
+                <div class="index-details">
+                    <div class="recipe-name">
+                        <h4>{{recipe.title}}</h4>
+                    </div>
+                    <div class="author">
+                        <p>{{recipe.author}}</p>
+                    </div>
+                    <div >
+                        <a class="link-button" href="/admin/show/{{recipe.id}}">Visualizar</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+{% endblock content %}
+
+{% block script %}{% endblock script %}

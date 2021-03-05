@@ -1,0 +1,32 @@
+{% extends "layoutAdmin.njk" %}
+
+{% block title %}
+        <title>Gereciar chefs</title>
+        {% endblock title %}
+
+{% block content %}
+    <main>
+        <h2 id="manage-chefs">Gerenciar chefs</h2>
+        <div class="cards admin chefs ">
+            {% for chef in chefs %}
+            
+            <div class="card admin-index">
+                <div class="image-container admin chefs">
+                    <img src="{{chef.avatar_url}}" alt="{{chef.name}}">
+                </div>
+                <div class="index-details chefs">
+                    <div class="chef-name">
+                        <h4>{{chef.name}}</h4>
+                    </div>
+                    <div >
+                        <a class="link-button" href="/admin/show/{{chef.id}}">Visualizar</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+</main>
+{% endblock content %}
+
+
+

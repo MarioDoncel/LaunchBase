@@ -1,0 +1,44 @@
+{% extends "layoutAdmin.njk" %}
+
+{% block content %}
+    <div class="recipe">
+        <div class="subHeader">
+            <h3>Editando chef</h3>
+            <div class="buttonsEdit">
+                <button type="submit" form="deleteChef">Deletar</button>
+                <button type="submit" form="editChef">Salvar chef</button>
+            </div>
+        </div>
+    </div>
+    <form action="/admin/chefs?_method=PUT" id="editChef" method="post">
+        <div class="chefFields">
+            <div class="item">
+                <h3>Nome</h3>
+                <input type="text" name="name" placeholder="Nome completo" value="{{chef.name}}">
+            </div>
+            <div class="item">
+                <h3>Avatar</h3>
+                <input type="text" name="avatar_url" placeholder="http://... " value="{{chef.avatar_url}}">
+            </div>
+        </div>
+        <input type="hidden" name="chefId" value="{{chefId}}">
+    </form>
+    <form action="/admin/chefs?_method=DELETE" id="deleteChef" method="post">
+        <input type="hidden" name="chefId" value="{{chefId}}">
+        <input type="hidden" name="total_recipes" value="{{recipe.total_recipes}}">
+    </form>
+</div>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    const formDelete = document.querySelector("#deleteChef")
+    formDelete.addEventListener("submit", event => {
+        const confirmation = confirm("Deseja deletar?")
+        if (!confirmation) {
+            event.preventDefault()
+        }
+    })
+</script>
+{% endblock script %}

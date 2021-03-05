@@ -15,23 +15,24 @@
         {% endblock title %}
         
     </head>
+    
+     <header class="admin-header">
+        <div class="container-header">
+            <a href="/"><img src="/assets/logoWhite.png" alt="Logo Foodfy"></a>
+        <nav>
+            <a href="/admin/recipes">Receitas</a>
+            <a href="/admin/chefs">Chefs</a>
+        </nav>
+        </div>
+        
+    </header>
 
     <body>
         <div class="container">
-            <header>
-                <a href="/"><img src="/assets/logo.png" alt="Logo Foodfy"></a>
-                <nav>
-                    <a href="/about">Sobre</a>
-                    <a href="/recipes">Receitas</a>
-                </nav>
-            </header>
 
             {% block content %}{% endblock content %}
 
         </div>
-        <footer>
-            <p>Todos direitos reservados, receitas Foodfy.</p>
-        </footer>
 
         {% block modal %}{% endblock modal %}
 

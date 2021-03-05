@@ -1,5 +1,5 @@
 
-// Add ingredient
+// ========== Add ingredient =========
 
 function addIngredient() {
     const ingredients = document.querySelector("#ingredients");
@@ -20,21 +20,14 @@ function addIngredient() {
     .querySelector(".add-ingredient")
     .addEventListener("click", addIngredient);
 
- // Delete ingredient
+ // ========= Delete ingredient ===========
 
  function deleteIngredient(event) {
   const ingredient = event
   ingredient.parentElement.remove()
 }
-// const deleteIngredientButtons = document.querySelectorAll(".ingredient span")
-// for (const ingredient of deleteIngredientButtons) {
-//   ingredient.addEventListener("click", deleteStep)
-// }
 
-
-// Add step
-
-
+// ======== Add step ========
 function addStep() {
   const steps = document.querySelector("#steps");
   const fieldContainer = document.querySelectorAll(".step");
@@ -55,15 +48,12 @@ function addStep() {
     .addEventListener("click", addStep);
 
 
-  // Delete step
+  // ========= Delete step =======
 
   function deleteStep(event) {
     const step = event
     step.parentElement.remove()
   }
-  // const deleteStepButtons = document.querySelectorAll(".step span")
-  // for (const step of deleteStepButtons) {
-  //   step.addEventListener("click", deleteStep)
-  // }
+  
 
   

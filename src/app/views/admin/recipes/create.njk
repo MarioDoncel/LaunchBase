@@ -19,8 +19,15 @@
                         <input type="text" name="title" placeholder="Nome ">
                     </div>
                     <div class="item">
-                        <h3>Nome do autor</h3>
-                        <input type="text" name="author" placeholder="Nome completo">
+                        <h3>Chef</h3>
+                        <div>
+                            <select id="chefOptions" name="chef_id" onchange="document.getElementById('chefOptions').style.color = 'black'" style="color: gray;">
+                                <option value="" disabled selected  >Selecione um chef...</option>
+                                {% for chef in chefs %}
+                                 <option value="{{chef.id}}">{{chef.name}}</option>
+                                {% endfor %}                                                        
+                            </select>
+                        </div>
                     </div>
                     <div class="item">
                         <h3>Ingredientes</h3>
@@ -30,7 +37,7 @@
                             </div>
                         </div>
                         <div >
-                            <button class="link-button add-ingredient">Adicionar novo ingrediente</button>
+                            <button type="button" class="link-button add-ingredient">Adicionar novo ingrediente</button>
                         </div>
                     </div>
                     <div class="item">
@@ -41,7 +48,7 @@
                             </div>
                         </div>
                         <div >
-                            <button class="link-button add-step">Adicionar novo passo</button>
+                            <button type="button" class="link-button add-step">Adicionar novo passo</button>
                             
                         </div>
                     </div>                                 

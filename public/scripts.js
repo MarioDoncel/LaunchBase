@@ -1,37 +1,7 @@
 const cards = document.querySelectorAll(".card")
-// const modal = document.querySelector(".modal-overlay")
+const currentPage = window.location.pathname
+const menuLinks = document.querySelectorAll('nav a')
 
-// const modalContent = document.querySelector(".modal-content")
-
-
-
-
-
-// cards.forEach(card => {
-//     let image = card.querySelector(".image-container")
-//     let recipe = card.querySelector(".recipe-name")
-//     let author = card.querySelector(".author")
-
-    // card.addEventListener("click", () => {
-    //     modal.classList.add('active')
-    //     modalContent.innerHTML += `
-    //             <div class="image-container">
-    //                 ${image.innerHTML}
-    //             </div>
-    //             <div class="recipe-name">
-    //                 ${recipe.innerHTML}
-    //             </div>
-    //             <div class="author">
-    //                 ${author.innerHTML}
-    //             </div>   `
-    // })
-          
-
-
-// document.querySelector(".close-modal").addEventListener("click", () => {
-//     modal.classList.remove('active')
-//     modalContent.innerHTML = ""
-// })
 
 for (let index = 0; index < cards.length; index++) {
     cards[index].addEventListener("click", () => {
@@ -40,3 +10,8 @@ for (let index = 0; index < cards.length; index++) {
     
 }
 
+for (const link of menuLinks) {
+    if (currentPage.includes(link.getAttribute('href'))) {
+        link.classList.add('active')
+    }
+}
