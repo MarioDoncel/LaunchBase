@@ -57,7 +57,7 @@ exports.post = function(req, res) {
     });
 
     Recipe.create(req.body, function () {
-        return res.redirect('admin/recipes')
+        return res.redirect('recipes')
     })
 }
 
@@ -65,7 +65,7 @@ exports.put = function(req, res) {
     const recipeId = req.body.recipeId
     
     Recipe.update(recipeId, function () {
-        return res.redirect('admin/recipes/recipes')
+        return res.redirect('recipes')
     })
 }
 
@@ -73,6 +73,6 @@ exports.delete = function(req, res) {
     const recipeId = req.body.recipeId
     
     Recipe.delete(recipeId, function () {
-        return res.redirect('admin/recipes/recipes')
+        return res.redirect('recipes')
     })
 }

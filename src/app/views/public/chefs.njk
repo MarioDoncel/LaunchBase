@@ -1,7 +1,7 @@
-{% extends "layoutAdmin.njk" %}
+{% extends "layout.njk" %}
 
 {% block title %}
-        <title>Gereciar chefs</title>
+        <title>Chefs</title>
         {% endblock title %}
 
 {% block content %}
@@ -19,7 +19,9 @@
                     </div>
                     <div >
                         <div class="total_recipes">
-                        <h4>{{chef.total_recipes}} receitas</h4>
+                        <p>{{chef.total_recipes}} receita{% if chef.total_recipes > 1 %}s
+                        {% endif %} </p>
+                        </div>
                     </div>
                 </div>
             </div>

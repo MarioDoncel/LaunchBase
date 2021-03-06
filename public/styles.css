@@ -26,7 +26,6 @@ html,body {
 }
 
 header {
-    /* display: flex; */
     display: grid;
     grid-template-columns: 30% 1fr;
     align-items: center;
@@ -34,13 +33,15 @@ header {
 }
 
 header nav {
-    /* margin-left: 10rem; */
     display: flex;
 }
 header nav a {
     text-decoration: none;
     color: black;
     padding: 2rem;
+}
+header nav a.active{
+    font-weight: bold;
 }
 
 .description {
@@ -70,9 +71,6 @@ header nav a {
 }
 
 .description img {
-    /* position: absolute;
-    margin-left: 60%;
-    bottom: 0; */
     align-self: flex-end;
 }
 
@@ -108,6 +106,10 @@ header nav a {
 .author  p{
     font-size: 14px;
     color: #777777;
+}
+.total_recipes p{
+    font-size: 14px;
+    color: #666666;
 }
 
 

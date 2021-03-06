@@ -2,32 +2,23 @@ const express = require('express')
 const routes = express.Router()
 const recipes = require("./src/app/controller/recipes")
 const chefs = require("./src/app/controller/chefs")
+const public = require("./src/app/controller/public")
 const recipesData = require("./data.json")
 
 
 
 // ========== Public Area ==========
+routes.get("/", public.index)
 
-routes.get("/", function(req, res) {
-    const recipesFeatured = []
-        for (let index = 0; index < 6; index++) {
-            recipesFeatured.push(recipesData.recipes[index]);
-        }
-    return res.render("public/index.njk", {recipesFeatured : recipesFeatured})
-})
 routes.get("/about", function(req, res) {
     return res.render("public/about.njk")
 })
-routes.get("/recipes", function(req, res) {
-    return res.render("public/recipes.njk", {recipes : recipesData.recipes})
-})
-routes.get("/recipes/:index", function(req, res) {
-    const recipeIndex = req.params.index;
-    return res.render("public/recipeDetails.njk", {recipe : recipesData.recipes[recipeIndex]})
-})
-routes.get("/chefs", function(req, res) {
-    return res.render("public/chefs.njk", {recipes : recipesData.recipes})
-})
+routes.get("/recipes", public.listRecipes)
+
+routes.get("/recipes/:id", public.showRecipe)
+
+routes.get("/chefs", public.listChefs)
+
 routes.get("/search-results", function(req, res) {
     return res.render("public/search-results.njk", {recipes : recipesData.recipes})
 })
