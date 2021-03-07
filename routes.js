@@ -3,7 +3,7 @@ const routes = express.Router()
 const recipes = require("./src/app/controller/recipes")
 const chefs = require("./src/app/controller/chefs")
 const public = require("./src/app/controller/public")
-const recipesData = require("./data.json")
+
 
 
 
@@ -19,9 +19,8 @@ routes.get("/recipes/:id", public.showRecipe)
 
 routes.get("/chefs", public.listChefs)
 
-routes.get("/search-results", function(req, res) {
-    return res.render("public/search-results.njk", {recipes : recipesData.recipes})
-})
+routes.get("/search-results", public.searchResults)
+
 // ========== Admin Area ==========
 
 // RECIPES

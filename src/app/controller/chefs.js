@@ -18,7 +18,9 @@ exports.show = function(req, res) {
     Chef.find(chefId, function (chef) {
         if(!chef) return res.send ('Chef não encontrado!')
 
-        return res.render("admin/chefs/show", {chef})
+        Chef.recipesByChef(chefId, function (recipes) {
+            return res.render("admin/chefs/show", {chef, recipes})
+        })        
     }) 
         
 }

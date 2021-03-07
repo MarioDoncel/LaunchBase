@@ -77,8 +77,18 @@ module.exports = {
 
             callback()
         })
+    },
+    recipesByChef(id, callback){
+        const query=`
+        SELECT recipes.title, recipes.id,recipes.image, 
+        chefs.name AS chef_name 
+        FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
+        WHERE chefs.id = ${id}
+        `
+        db.query(query, function (err, results) {
+            if(err) throw `DATABASE Error!${err}`
+            callback(results.rows)
+        })
     }
-
-
 
 }

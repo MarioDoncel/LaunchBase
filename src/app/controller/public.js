@@ -26,8 +26,17 @@ exports.showRecipe = function(req, res) {
         recipe.preparation = formatList(recipe.preparation)
         
         return res.render("public/recipeDetails", {recipe})
-    }) 
+    })    
 }
+exports.searchResults = function (req,res) {
+    let {filter} = req.query
+    Public.filterRecipes(filter, function (recipes) {
+        if(!recipes) return res.send ('Receita não encontrado!')
+
+        return res.render("public/search-results.njk", {recipes, filter})
+    })
+    
+} 
 
 // ====== Chefs =========
 

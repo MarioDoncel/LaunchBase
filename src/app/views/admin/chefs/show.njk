@@ -16,7 +16,7 @@
             <h4>{{chef.name}}</h4>
         </div>
         <div class="total_recipes">
-            <p>{{chef.total_recipes}} receitas</p>
+            <p>{{chef.total_recipes}} receita{% if chef.total_recipes > 1 %}s{%endif%}</p>
         </div>
     </div>
     <h2 id="manage-recipes">Receitas</h2>

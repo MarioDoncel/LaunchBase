@@ -41,6 +41,18 @@ module.exports = {
             callback(results.rows[0])
         })
     },
+    filterRecipes(filter, callback){
+        const query=`
+        SELECT recipes.title, recipes.id,recipes.image, 
+        chefs.name AS chef_name 
+        FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
+        WHERE recipes.title ILIKE '%${filter}%' or chefs.name ILIKE '%${filter}%'
+        `
+        db.query(query, function (err, results) {
+            if(err) throw `DATABASE Error!${err}`
+            callback(results.rows)
+        })
+    }
     // findChef(id, callback){
     //     const query = `
     //     SELECT recipes.*, 
