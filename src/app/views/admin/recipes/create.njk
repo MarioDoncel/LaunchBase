@@ -1,22 +1,17 @@
 {% extends "layoutAdmin.njk" %}
 
 {% block content %}
-                <div class="recipe">
-                    <div class="subHeader">
-                        <h3>Criando receita</h3>
-                        
-                        <button type="submit" form="createRecipe">Salvar receita</button>
-                    </div>
-                </div>
-                <form action="/admin/recipes" id="createRecipe" method="post">
-                    <div class="recipeFields">
-                        {% include './partials/fields.njk' %}
-                    </div>
-                </form>
-                
-
-
-
+    <div class="recipe">
+        <div class="subHeader">
+            <h3>Criando receita</h3>
+            <button type="submit" form="createRecipe">Salvar receita</button>
+        </div>
+    </div>
+    <form action="/admin/recipes" id="createRecipe" method="post">
+        <div class="recipeFields">
+            {% include './partials/fields.njk' %}
+        </div>
+    </form>
 {% endblock content %}
 
 {% block script %}

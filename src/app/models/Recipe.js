@@ -28,7 +28,6 @@ module.exports = {
         ) VALUES ($1,$2,$3,$4,$5,$6,$7)
         RETURNING id
         `
-
         const values = [
             data.chef_id,
             data.image,
@@ -51,9 +50,9 @@ module.exports = {
             chef_id=($1),
             image=($2),
             title=($3),
-            ingredients[]=($4),
-            preparation[]=($5),
-            information=($6),
+            ingredients=($4),
+            preparation=($5),
+            information=($6)
         WHERE id=($7)
         `
         const values = [
@@ -63,7 +62,7 @@ module.exports = {
             data.ingredients,
             data.preparation,
             data.information,
-            data.id
+            data.recipeId
         ]
 
         db.query(query, values,  function(err) {

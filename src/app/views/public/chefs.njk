@@ -6,25 +6,24 @@
 
 {% block content %}
     <main>
-        <div class="cards admin chefs ">
+        <div class="cardsChefs">
             {% for chef in chefs %}
-            
-            <div class="card admin-index">
-                <div class="image-container admin chefs">
-                    <img src="{{chef.avatar_url}}" alt="{{chef.name}}">
-                </div>
-                <div class="index-details chefs">
-                    <div class="chef-name">
-                        <h4>{{chef.name}}</h4>
+                <div class="card admin-index">
+                    <div class="image-container admin chefs">
+                        <img src="{{chef.avatar_url}}" alt="{{chef.name}}">
                     </div>
-                    <div >
-                        <div class="total_recipes">
-                        <p>{{chef.total_recipes}} receita{% if chef.total_recipes > 1 %}s
-                        {% endif %} </p>
+                    <div class="index-details chefs">
+                        <div class="chef-name">
+                            <h4>{{chef.name}}</h4>
+                        </div>
+                        <div >
+                            <div class="total_recipes">
+                            <p>{{chef.total_recipes}} receita{% if chef.total_recipes > 1 %}s
+                            {% endif %} </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             {% endfor %}
         </div>
 </main>

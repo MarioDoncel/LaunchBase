@@ -22,6 +22,7 @@ exports.show = function(req, res) {
 
         recipe.ingredients = formatList(recipe.ingredients)
         recipe.preparation = formatList(recipe.preparation)
+        recipe.image = recipe.image.replace("https://", "")
         
         return res.render("admin/recipes/show", {recipe})
     }) 
@@ -37,15 +38,12 @@ exports.edit = function(req, res) {
         recipe.ingredients = formatList(recipe.ingredients)
         recipe.preparation = formatList(recipe.preparation)
 
-        let chefs = []
         Recipe.chefOptions(function (chefs) {
             return res.render("admin/recipes/edit", {recipe, recipeId, chefs})
         })
        
     }) 
 }
-
-
 
 exports.post = function(req, res) {
     const keys = Object.keys(req.body)
@@ -62,9 +60,7 @@ exports.post = function(req, res) {
 }
 
 exports.put = function(req, res) {
-    const recipeId = req.body.recipeId
-    
-    Recipe.update(recipeId, function () {
+    Recipe.update(req.body, function () {
         return res.redirect('recipes')
     })
 }

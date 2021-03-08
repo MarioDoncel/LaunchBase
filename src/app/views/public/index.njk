@@ -16,21 +16,18 @@
         <section class="favorites">
             <h3>Mais acessadas</h3>
             <div class="cards">
-
-            {% for recipe in recipesFeatured %}
-            
-            
-                <div class="card" onclick= "window.location.href = '/recipes/{{recipe.id}}'">
-                    <div class="image-container">
-                        <img src="{{recipe.image}}" alt="{{recipe.title}}">
+                {% for recipe in recipesFeatured %}
+                    <div class="card" onclick= "window.location.href = '/recipes/{{recipe.id}}'">
+                        <div class="image-container">
+                            <img src="{{recipe.image}}" alt="{{recipe.title}}">
+                        </div>
+                        <div class="recipe-name">
+                            <h4>{{recipe.title}}</h4>
+                        </div>
+                        <div class="author">
+                            <p>{{recipe.author}}</p>
+                        </div>
                     </div>
-                    <div class="recipe-name">
-                        <h4>{{recipe.title}}</h4>
-                    </div>
-                    <div class="author">
-                        <p>{{recipe.author}}</p>
-                    </div>
-                </div>
                 {% endfor %}
             </div>
         </section>

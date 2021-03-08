@@ -17,26 +17,26 @@ exports.show = function(req, res) {
 
     Chef.find(chefId, function (chef) {
         if(!chef) return res.send ('Chef não encontrado!')
+        chef.avatar_url = chef.avatar_url.replace("https://", "")
 
         Chef.recipesByChef(chefId, function (recipes) {
+            recipes.forEach(recipe => {
+                recipe.image = recipe.image.replace("https://","")
+            });
             return res.render("admin/chefs/show", {chef, recipes})
         })        
     }) 
         
 }
 
-
 exports.edit = function(req, res) {
     let chefId = req.params.id
-
     Chef.find(chefId, function (chef) {
         if(!chef) return res.send ('Chef não encontrado!')
 
         return res.render("admin/chefs/edit", {chef, chefId})
     }) 
 }
-
-
 
 exports.post = function(req, res) {
     const keys = Object.keys(req.body)
@@ -53,9 +53,7 @@ exports.post = function(req, res) {
 }
 
 exports.put = function(req, res) {
-    const chefId = req.body.chefId
-    
-    Chef.update(chefId, function () {
+    Chef.update(req.body, function () {
         return res.redirect('/admin/chefs')
     })
 }
@@ -64,7 +62,7 @@ exports.delete = function(req, res) {
     const chefId = req.body.chefId
     const total_recipes = req.body.total_recipes
 
-    if (total_recipes) return res.send("Erro! Chefs que possuem receitas cadastradas não podem ser excluidos!")
+    if (total_recipes>0) return res.send("Erro! Chefs que possuem receitas cadastradas não podem ser excluidos!")
     
     Chef.delete(chefId, function () {
         return res.redirect('/admin/chefs')

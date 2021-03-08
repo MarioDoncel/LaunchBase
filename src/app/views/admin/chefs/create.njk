@@ -1,18 +1,18 @@
 {% extends "layoutAdmin.njk" %}
 
 {% block content %}
-                <div class="recipe">
-                    <div class="subHeader">
-                        <h3>Cadastrando chef</h3>
-                        
-                        <button type="submit" form="createChef">Salvar chef</button>
-                    </div>
-                </div>
-                <form action="/admin/chefs" id="createChef" method="post">
-                <div class="chefFields">
+    <div class="recipe">
+        <div class="subHeader">
+            <h3>Cadastrando chef</h3>
+            <button type="submit" form="createChef">Salvar chef</button>
+        </div>
+    </div>
+    <form action="/admin/chefs" id="createChef" method="post">
+        <div class="chefFields">
 
-                    {%include './partials/fields.njk'%}
-            
-                </div>
+            {%include './partials/fields.njk'%}
+
+        </div>
+    </form>
 {% endblock content %}
 

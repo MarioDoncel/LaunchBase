@@ -1,41 +1,37 @@
 {% extends "layoutAdmin.njk" %}
 
 {% block content %}
-                <div class="recipe">
-                    <div class="subHeader">
-                        <h3>Editando receita</h3>
-                        <div class="buttonsEdit">
-                            <button type="submit" form="deleteRecipe">Deletar</button>
-                            <button type="submit" form="editRecipe">Salvar receita</button>
-                        </div>
-                    </div>
-                </div>
-                <form action="/admin/recipes?_method=PUT" id="editRecipe" method="post">
-                    <div class="recipeFields">
+    <div class="recipe">
+        <div class="subHeader">
+            <h3>Editando receita</h3>
+            <div class="buttonsEdit">
+                <button type="submit" form="deleteRecipe">Deletar</button>
+                <button type="submit" form="editRecipe">Salvar receita</button>
+            </div>
+        </div>
+    </div>
+    <form action="/admin/recipes?_method=PUT" id="editRecipe" method="post">
+        <div class="recipeFields">
 
-                        {% include './partials/fields.njk' %}
-                        
-                        <input type="hidden" name="recipeId" value="{{recipeId}}">
-                    </div>
-                </form>
-                <form action="/admin/recipes?_method=DELETE" id="deleteRecipe" method="post">
-                    <input type="hidden" name="recipeId" value="{{recipeId}}">
-                </form>
-               
-
-
-
+            {% include './partials/fields.njk' %}
+            
+            <input type="hidden" name="recipeId" value="{{recipeId}}">
+        </div>
+    </form>
+    <form action="/admin/recipes?_method=DELETE" id="deleteRecipe" method="post">
+        <input type="hidden" name="recipeId" value="{{recipeId}}">
+    </form>
 {% endblock content %}
 
 {% block script %}
 <script src="/createScript.js"></script>
 <script>
     const formDelete = document.querySelector("#deleteRecipe")
-            formDelete.addEventListener("submit", event => {
-                const confirmation = confirm("Deseja deletar?")
-                if(!confirmation) {
-                    event.preventDefault()
-                }
-            })
+    formDelete.addEventListener("submit", event => {
+        const confirmation = confirm("Deseja deletar?")
+        if(!confirmation) {
+            event.preventDefault()
+        }
+    })
 </script>
 {% endblock script %}
