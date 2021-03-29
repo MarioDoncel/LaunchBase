@@ -22,7 +22,7 @@ exports.show = function(req, res) {
 
         recipe.ingredients = formatList(recipe.ingredients)
         recipe.preparation = formatList(recipe.preparation)
-        recipe.image = recipe.image.replace("https://", "")
+        
         
         return res.render("admin/recipes/show", {recipe})
     }) 
