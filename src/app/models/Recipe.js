@@ -15,22 +15,20 @@ module.exports = {
         })
 
     },
-    create(data, callback){
+    create(data){
         const query=`
         INSERT INTO recipes (
             chef_id,
-            image,
             title,
             ingredients,
             preparation,
             information,
             created_at
-        ) VALUES ($1,$2,$3,$4,$5,$6,$7)
+        ) VALUES ($1,$2,$3,$4,$5,$6)
         RETURNING id
         `
         const values = [
             data.chef_id,
-            data.image,
             data.title,
             data.ingredients,
             data.preparation,
@@ -38,11 +36,7 @@ module.exports = {
             date(Date.now()).iso
         ]
 
-        db.query(query, values,  function(err) {
-            if(err) throw `DATABASE Error!${err}`
-
-            callback()
-        })
+        return db.query(query, values)
     },
     update(data, callback){
         const query = `
@@ -71,18 +65,14 @@ module.exports = {
             callback()
         })
     },
-    find(id, callback){
+    find(id){
         const query = `
         SELECT recipes.*, 
         chefs.name AS chef_name 
         FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
         WHERE recipes.id = $1
         `
-        db.query(query,[id],  function(err, results) {
-            if(err) throw `DATABASE Error!${err}`
-
-            callback(results.rows[0])
-        })
+        return db.query(query,[id])
     },
     delete(id, callback){
         const query = `
@@ -94,14 +84,18 @@ module.exports = {
             callback()
         })
     },
-    chefOptions(callback){
-        db.query(`
-        SELECT name, id FROM chefs
-        `, function(err, results) {
-            if(err) throw `DATABASE Error!${err}`
-
-            callback(results.rows)
-        })
+    chefOptions(){
+        return db.query(`SELECT name, id FROM chefs`)
+    },
+    recipeFiles(id){
+        return db.query(`
+        SELECT * FROM recipe_files WHERE recipe_id = $1
+        `, [id])
+    },
+    files(id){
+        return db.query(`
+        SELECT * FROM files WHERE id = $1
+        `, [id])
     }
 
 }

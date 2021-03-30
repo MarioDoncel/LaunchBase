@@ -7,7 +7,7 @@
             <button type="submit" form="createRecipe">Salvar receita</button>
         </div>
     </div>
-    <form action="/admin/recipes" id="createRecipe" method="post">
+    <form action="/admin/recipes" id="createRecipe" method="post" enctype='multipart/form-data'>
         <div class="recipeFields">
             {% include './partials/fields.njk' %}
         </div>

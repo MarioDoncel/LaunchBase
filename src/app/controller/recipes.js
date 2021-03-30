@@ -1,74 +1,95 @@
 const Recipe = require('../models/Recipe')
+const File = require('../models/File')
 const {date, formatList} = require('../../lib/utils')
 
-exports.index = function(req, res) {
-    Recipe.all(function (recipes) {
-        return res.render("admin/recipes/recipes", {recipes})
-    })
-}
 
-exports.create = function(req, res) {
-    Recipe.chefOptions(function (chefs) {
-        return res.render("admin/recipes/create", {chefs})
-    })
-    
-}
-
-exports.show = function(req, res) {
-    let recipeId = req.params.id
-
-    Recipe.find(recipeId, function (recipe) {
-        if(!recipe) return res.send ('Recipe não encontrado!')
-
-        recipe.ingredients = formatList(recipe.ingredients)
-        recipe.preparation = formatList(recipe.preparation)
-        
-        
-        return res.render("admin/recipes/show", {recipe})
-    }) 
-}
-
-
-exports.edit = function(req, res) {
-    let recipeId = req.params.id
-
-    Recipe.find(recipeId, function (recipe) {
-        if(!recipe) return res.send ('Recipe não encontrado!')
-        
-        recipe.ingredients = formatList(recipe.ingredients)
-        recipe.preparation = formatList(recipe.preparation)
-
-        Recipe.chefOptions(function (chefs) {
-            return res.render("admin/recipes/edit", {recipe, recipeId, chefs})
+module.exports = {
+    index(req, res) {
+        Recipe.all(function (recipes) {
+            return res.render("admin/recipes/recipes", {recipes})
         })
-       
-    }) 
-}
-
-exports.post = function(req, res) {
-    const keys = Object.keys(req.body)
-    //validação de todos os campos preenchidos
-    keys.forEach(key => {
-        if(req.body[key]==""){
-            return res.send("Todos os campos são obrigatorios")
-        }
-    });
-
-    Recipe.create(req.body, function () {
-        return res.redirect('recipes')
-    })
-}
-
-exports.put = function(req, res) {
-    Recipe.update(req.body, function () {
-        return res.redirect('recipes')
-    })
-}
-
-exports.delete = function(req, res) {
-    const recipeId = req.body.recipeId
+    },
+    create(req, res) {
+        Recipe.chefOptions(function (chefs) {
+            return res.render("admin/recipes/create", {chefs})
+        })
+        
+    },
+    show(req, res) {
+        let recipeId = req.params.id
     
-    Recipe.delete(recipeId, function () {
+        Recipe.find(recipeId, function (recipe) {
+            if(!recipe) return res.send ('Recipe não encontrado!')
+    
+            recipe.ingredients = formatList(recipe.ingredients)
+            recipe.preparation = formatList(recipe.preparation)
+            
+            
+            return res.render("admin/recipes/show", {recipe})
+        }) 
+    },
+    async edit(req, res) {
+        let recipeId = req.params.id
+
+    
+        let results = await Recipe.find(recipeId)
+        const recipe = results.rows[0]
+
+        if(!recipe) return res.send ('Recipe não encontrado!')
+            
+        recipe.ingredients = formatList(recipe.ingredients)
+        recipe.preparation = formatList(recipe.preparation)
+    
+        results = await Recipe.chefOptions()
+        const chefs = results.rows
+
+        results = await Recipe.recipeFiles(recipeId)
+        const recipeFiles = results.rows //{ id: 1, recipe_id: 12, file_id: 2 } { id: 2, recipe_id: 12, file_id: 3 }
+        
+        const filesPromise = recipeFiles.map( recipeFile => Recipe.files(recipeFile.file_id)) 
+        results = await Promise.all(filesPromise) // resulta em um array de results que para colher resultado usar map ou forEach
+        // results.forEach(results => console.log(results.rows[0]))
+        let files = results.map(results=>results.rows[0])
+        files = files.map(file => ({
+            ...file,
+            src:`${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
+        }))
+        
+
+        return res.render("admin/recipes/edit", {recipe, recipeId, chefs, files})
+           
+        
+    },
+    async post(req, res) {
+        const keys = Object.keys(req.body)
+        //validação de todos os campos preenchidos
+        keys.forEach(key => {
+            if(req.body[key]==""){
+                return res.send("Todos os campos são obrigatorios")
+            }
+        });
+        // Validação de imagens enviadas
+        if(req.files.length == 0) return res.send('Por favor envie pelo menos uma imagem.')
+
+        let results = await Recipe.create(req.body)
+        const recipeId = results.rows[0].id
+
+        const filesPromise = req.files.map(file =>  File.create({...file}, recipeId)) // criando um array de promises
+        await Promise.all(filesPromise) //executa cada promisse em sequencia
+        
         return res.redirect('recipes')
-    })
+        
+    },
+    put(req, res) {
+        Recipe.update(req.body, function () {
+            return res.redirect('recipes')
+        })
+    },
+    delete(req, res) {
+        const recipeId = req.body.recipeId
+        
+        Recipe.delete(recipeId, function () {
+            return res.redirect('recipes')
+        })
+    }
 }

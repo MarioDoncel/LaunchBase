@@ -13,14 +13,18 @@
                         <i class="material-icons">add </i>
                 </div>
                 <div class="photos-preview">
+                {% if files %}
                     {% for image in files %}
                         <div class="photo" id="{{image.id}}">
                             <img src="{{image.src}}" alt="{{image.name}}">
                             <i class="material-icons" onclick="PhotosUpload.removeOldPhoto(event)">close </i>
                         </div>
                     {% endfor %}
+                    <input type="hidden" name="removed_files">
+                {% endif %}
+                    
                 </div>
-                <input type="hidden" name="removed_files">
+                
             </div>
         </div>
         
@@ -83,5 +87,5 @@
     </div>                                 
     <div class="item">
         <h3>Informações adicionais</h3>
-        <textarea name="information" id="" placeholder="Informações relevantes" value="{{recipe.information}}"></textarea>
+        <textarea name="information" id="" placeholder="Informações relevantes">{{recipe.information}}</textarea>
     </div>
