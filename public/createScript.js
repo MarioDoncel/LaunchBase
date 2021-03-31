@@ -142,6 +142,12 @@ function addStep() {
       PhotosUpload.files.splice(index,1)
       PhotosUpload.input.files = PhotosUpload.getAllFiles()
       photodiv.remove()
+    },
+    removeOldPhoto(event) {
+      const photoDiv = event.target.parentNode
+      const removedFiles = document.querySelector('input[name="removed_files"]')
+      removedFiles.value += `${photoDiv.id},`
+      photoDiv.remove()
     }
   }
   
