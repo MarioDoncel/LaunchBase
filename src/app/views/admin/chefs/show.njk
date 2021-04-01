@@ -25,7 +25,11 @@
             
             <div class="card admin-index">
                 <div class="image-container admin">
-                    <img src="https://{{recipe.image}}" alt="{{recipe.title}}">
+                    {% if not recipe.src %}
+                        <img src="http://placehold.it/500x500?text=PRODUTO SEM FOTO" alt="Receita sem foto">
+                    {% else %}
+                        <img src="{{recipe.src}}" alt="{{recipe.title}}" onclick="Lightbox.open(event)">
+                    {% endif %}
                 </div>
                 <div class="index-details">
                     <div class="recipe-name">
@@ -35,7 +39,7 @@
                         <p>{{recipe.author}}</p>
                     </div>
                     <div >
-                        <a class="link-button" href="/admin/show/{{recipe.id}}">Visualizar</a>
+                        <a class="link-button" href="/admin/recipes/{{recipe.id}}">Visualizar</a>
                     </div>
                 </div>
             </div>

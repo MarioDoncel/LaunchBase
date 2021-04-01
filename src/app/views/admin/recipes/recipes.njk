@@ -12,7 +12,12 @@
             
             <div class="card admin-index">
                 <div class="image-container admin">
-                    <img src="{{recipe.image}}" alt="{{recipe.title}}">
+                    {% if not recipe.src %}
+                        <img src="http://placehold.it/500x500?text=PRODUTO SEM FOTO" alt="Receita sem foto">
+                    {% else  %}
+                        <img src="{{recipe.src}}" alt="{{recipe.title}}">
+                    {% endif %}
+                    
                 </div>
                 <div class="index-details">
                     <div class="recipe-name">

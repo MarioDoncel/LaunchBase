@@ -2,17 +2,13 @@ const db = require('../../config/db')
 const {date, formatList} = require('../../lib/utils')
 
 module.exports = {
-    all(callback){
+    all(){
         const query = `
         SELECT recipes.*, chefs.name AS chef_name
-        FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
+        FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id) 
         ORDER BY created_at DESC
         `
-        db.query(query,  function(err, results) {
-            if(err) throw `DATABASE Error!${err}`
-
-            callback(results.rows)
-        })
+        return db.query(query)
 
     },
     create(data){
@@ -68,15 +64,11 @@ module.exports = {
         `
         return db.query(query,[id])
     },
-    delete(id, callback){
+    delete(id){
         const query = `
         DELETE FROM recipes WHERE id = $1
         `
-        db.query(query,[id],  function(err) {
-            if(err) throw `DATABASE Error!${err}`
-
-            callback()
-        })
+        return db.query(query,[id])
     },
     chefOptions(){
         return db.query(`SELECT name, id FROM chefs`)

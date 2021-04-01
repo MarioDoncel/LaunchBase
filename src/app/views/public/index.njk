@@ -19,13 +19,17 @@
                 {% for recipe in recipesFeatured %}
                     <div class="card" onclick= "window.location.href = '/recipes/{{recipe.id}}'">
                         <div class="image-container">
-                            <img src="{{recipe.image}}" alt="{{recipe.title}}">
+                            {% if not recipe.src %}
+                                <img src="http://placehold.it/500x500?text=PRODUTO SEM FOTO" alt="Receita sem foto">
+                            {% else  %}
+                                <img src="{{recipe.src}}" alt="{{recipe.title}}">
+                            {% endif %}
                         </div>
                         <div class="recipe-name">
                             <h4>{{recipe.title}}</h4>
                         </div>
                         <div class="author">
-                            <p>{{recipe.author}}</p>
+                            <p>{{recipe.chef_name}}</p>
                         </div>
                     </div>
                 {% endfor %}

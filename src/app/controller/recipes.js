@@ -1,13 +1,28 @@
 const Recipe = require('../models/Recipe')
 const File = require('../models/File')
-const {date, formatList} = require('../../lib/utils')
+const {date, formatList, addSRC} = require('../../lib/utils')
 
 
 module.exports = {
-    index(req, res) {
-        Recipe.all(function (recipes) {
-            return res.render("admin/recipes/recipes", {recipes})
-        })
+    async index(req, res) {
+        let results = await Recipe.all()
+        const recipes = results.rows
+        
+        for (let index = 0; index < recipes.length; index++) { // inserindo src nas recipes para exibição
+            const recipe = recipes[index];
+            results = await Recipe.recipeFiles(recipe.id)
+            const recipeFiles = results.rows //{ id: 1, recipe_id: 12, file_id: 2 } { id: 2, recipe_id: 12, file_id: 3 }
+            const filesPromise = recipeFiles.map( recipeFile => Recipe.files(recipeFile.file_id)) 
+            results = await Promise.all(filesPromise) // resulta em um array de results que para colher resultado usar map ou forEach
+            // results.forEach(results => console.log(results.rows[0]))
+            let files = results.map(results=>results.rows[0])
+            if(files[0]) {
+                let randomIndex = parseInt(Math.random() * files.length) 
+                recipe.src = `${req.protocol}://${req.headers.host}${files[randomIndex].path.replace('public','')}`
+            }            
+        }
+        
+        return res.render("admin/recipes/recipes", {recipes})
     },
     async create(req, res) {
         let results =await Recipe.chefOptions()
@@ -25,8 +40,20 @@ module.exports = {
 
         recipe.ingredients = formatList(recipe.ingredients)
         recipe.preparation = formatList(recipe.preparation)
+
+        results = await Recipe.recipeFiles(recipeId)
+        const recipeFiles = results.rows //{ id: 1, recipe_id: 12, file_id: 2 } { id: 2, recipe_id: 12, file_id: 3 }
         
-        return res.render("admin/recipes/show", {recipe})
+        const filesPromise = recipeFiles.map( recipeFile => Recipe.files(recipeFile.file_id)) 
+        results = await Promise.all(filesPromise) // resulta em um array de results que para colher resultado usar map ou forEach
+        // results.forEach(results => console.log(results.rows[0]))
+        let files = results.map(results=>results.rows[0])
+        files = files.map(file => ({
+            ...file,
+            src:`${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
+        }))
+        
+        return res.render("admin/recipes/show", {recipe, files})
     },
     async edit(req, res) {
         let recipeId = req.params.id
@@ -102,11 +129,11 @@ module.exports = {
 
         return res.redirect('recipes')
     },
-    delete(req, res) {
+    async delete(req, res) {
         const recipeId = req.body.recipeId
         
-        Recipe.delete(recipeId, function () {
-            return res.redirect('recipes')
-        })
+        await Recipe.delete(recipeId)
+        
+        return res.redirect('recipes')  
     }
 }

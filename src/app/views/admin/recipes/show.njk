@@ -6,8 +6,30 @@
             <h3>Receita: {{recipe.title}}</h3>
             <a href="/admin/recipes/{{recipe.id}}/edit"><button>Editar receita</button></a>
         </div>
-        <div class="image-container">
-            <img src="https://{{recipe.image}}" alt="{{recipe.title}}">
+
+        <div class="gallery">
+            <div class="highlight image-container">
+                {% if not files[0] %}
+                    <img src="http://placehold.it/500x500?text=PRODUTO SEM FOTO" alt="Receita sem foto">
+                {% else %}
+                    <img src="{{files[0].src}}" alt="{{files[0].name}}" onclick="Lightbox.open(event)">
+                {% endif %}
+                <div class="lightbox-target">
+                    <img src="{{files[0].src}}" alt="{{files[o].name}}">
+                    <a href="#" class="lightbox-close" onclick="Lightbox.close()">
+                        <i class="material-icons">close</i>
+                    </a>
+                </div>
+            </div>
+            <div class="gallery-preview">
+                {% for file in files %}
+                    <img 
+                        src="{{file.src}}" 
+                        alt="{{file.name}}" 
+                        {%if loop.index0 == 0%} class="active" {%endif%} 
+                        onclick="ImageGallery.setImage(event)">
+                {% endfor %}
+            </div>
         </div>
         <div class="recipe-name">
             <h4>{{recipe.title}}</h4>
@@ -41,4 +63,6 @@
     </div>
 {% endblock content %}
 
-{% block script %}{% endblock script %}
+{% block script %}
+    <script src="/galleryScript.js"></script>
+{% endblock script %}

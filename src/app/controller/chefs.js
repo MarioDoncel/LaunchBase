@@ -1,41 +1,54 @@
 const data = require("../../../data.json")
-
+const Recipe = require('../models/Recipe')
 const Chef = require("../models/Chef")
 
 module.exports = {
-    index(req, res) {
-        Chef.all(function (chefs) {
-            return res.render("admin/chefs/chefs.njk", {chefs})
-        })
+    async index(req, res) {
+        let results = await Chef.all()
+        const chefs = results.rows
+        return res.render("admin/chefs/chefs.njk", {chefs})
+        
     },
-    show(req, res) {
+    async show(req, res) {
         let chefId = req.params.id
     
-        Chef.find(chefId, function (chef) {
-            if(!chef) return res.send ('Chef não encontrado!')
-            chef.avatar_url = chef.avatar_url.replace("https://", "")
-    
-            Chef.recipesByChef(chefId, function (recipes) {
-                recipes.forEach(recipe => {
-                    recipe.image = recipe.image.replace("https://","")
-                });
-                return res.render("admin/chefs/show", {chef, recipes})
-            })        
-        }) 
-            
+        let results = await Chef.find(chefId)
+        const chef = results.rows[0]
+        if(!chef) return res.send ('Chef não encontrado!')
+        chef.avatar_url = chef.avatar_url.replace("https://", "")
+
+        results = await Chef.recipesByChef(chefId)
+        const recipes = results.rows
+
+        for (let index = 0; index < recipes.length; index++) { // inserindo src nas recipes para exibição
+            const recipe = recipes[index];
+            results = await Recipe.recipeFiles(recipe.id)
+            const recipeFiles = results.rows //{ id: 1, recipe_id: 12, file_id: 2 } { id: 2, recipe_id: 12, file_id: 3 }
+            const filesPromise = recipeFiles.map( recipeFile => Recipe.files(recipeFile.file_id)) 
+            results = await Promise.all(filesPromise) // resulta em um array de results que para colher resultado usar map ou forEach
+            // results.forEach(results => console.log(results.rows[0]))
+            let files = results.map(results=>results.rows[0])
+            if(files[0]) {
+                let randomIndex = parseInt(Math.random() * files.length) 
+                recipe.src = `${req.protocol}://${req.headers.host}${files[randomIndex].path.replace('public','')}`
+            }            
+        }
+        console.log(recipes)        
+        
+        return res.render("admin/chefs/show", {chef, recipes})  
     },
-    create(req, res) {
+    async create(req, res) {
         return res.render("admin/chefs/create.njk")
     },
-    edit(req, res) {
+    async edit(req, res) {
         let chefId = req.params.id
-        Chef.find(chefId, function (chef) {
-            if(!chef) return res.send ('Chef não encontrado!')
+        let results = await Chef.find(chefId)
+        const chef = results.rows[0]
+        if(!chef) return res.send ('Chef não encontrado!')
     
-            return res.render("admin/chefs/edit", {chef, chefId})
-        }) 
+        return res.render("admin/chefs/edit", {chef, chefId})
     },
-    post(req, res) {
+    async post(req, res) {
         const keys = Object.keys(req.body)
         //validação de todos os campos preenchidos
         keys.forEach(key => {
@@ -44,23 +57,26 @@ module.exports = {
             }
         });
     
-        Chef.create(req.body, function () {
-            return res.redirect('/admin/chefs')
-        })
+        await Chef.create(req.body)
+        
+        return res.redirect('/admin/chefs')
+        
     },
-    put(req, res) {
-        Chef.update(req.body, function () {
-            return res.redirect('/admin/chefs')
-        })
+    async put(req, res) {
+        await Chef.update(req.body)
+
+        return res.redirect('/admin/chefs')
+        
     },
-    delete(req, res) {
+    async delete(req, res) {
         const chefId = req.body.chefId
         const total_recipes = req.body.total_recipes
     
         if (total_recipes>0) return res.send("Erro! Chefs que possuem receitas cadastradas não podem ser excluidos!")
         
-        Chef.delete(chefId, function () {
-            return res.redirect('/admin/chefs')
-        })
+        await Chef.delete(chefId)
+
+        return res.redirect('/admin/chefs')
+        
     }
 }
