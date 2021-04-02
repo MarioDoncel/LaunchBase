@@ -452,6 +452,8 @@ cursor: pointer;
 
 /* PHOTOS UPLOAD */
 
+/* == RECIPES UPLOAD == */
+
 .photos-upload {
     position: relative;
     display: flex;
@@ -521,6 +523,25 @@ cursor: pointer;
 .photos-preview .photo i:hover {
     opacity: 1;
 } 
+/*  CHEFS UPLOAD */
+#uploadPhotoChef {
+    width: 140px;
+    height: 40px;
+}
+
+#uploadPhotoChef button{
+    width: 140px;
+    height: 40px;
+    padding: 8px 20px;
+    background-color: #6558c3;
+    color: white;
+    font-size: 16px;
+    border-radius: 4px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
 
 /* CHEFS ========= */
 

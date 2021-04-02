@@ -1,6 +1,7 @@
 const db = require('../../config/db')
 const {date}= require('../../lib/utils')
 
+
 module.exports = {
     all(){
             const query = `
@@ -15,14 +16,12 @@ module.exports = {
         const query=`
         INSERT INTO chefs (
             name,
-            avatar_url,
             created_at
-        ) VALUES ($1,$2,$3)
+        ) VALUES ($1,$2)
         RETURNING id
         `
         const values = [
             data.name,
-            data.avatar_url,
             date(Date.now()).iso
         ]
 
@@ -41,12 +40,10 @@ module.exports = {
         const query = `
         UPDATE chefs SET 
             name=($1),
-            avatar_url=($2)
-        WHERE id=($3)
+        WHERE id=($2)
         `
         const values = [
             data.name,
-            data.avatar_url,
             data.chefId
         ]
 

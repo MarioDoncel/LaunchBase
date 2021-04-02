@@ -7,7 +7,7 @@
             <button type="submit" form="createChef">Salvar chef</button>
         </div>
     </div>
-    <form action="/admin/chefs" id="createChef" method="post">
+    <form action="/admin/chefs" id="createChef" method="post" enctype='multipart/form-data'>
         <div class="chefFields">
 
             {%include './partials/fields.njk'%}

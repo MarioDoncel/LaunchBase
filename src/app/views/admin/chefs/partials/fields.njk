@@ -4,5 +4,16 @@
 </div>
 <div class="item">
     <h3>Avatar</h3>
-    <input type="text" name="avatar_url" placeholder="http://... " value="{{chef.avatar_url}}">
+    {# <input type="text" name="avatar_url" placeholder="http://... " value="{{chef.avatar_url}}"> #}
+    
+    <div class="photos-upload">
+        <div class="photo" id="uploadPhotoChef">
+            <input type="file" 
+                name="avatar" 
+                id="avatar"
+                accept="image/"
+                onchange="PhotosUpload.handleFileInput(event)">
+            <button type="button">Enviar Avatar</button>
+        </div>
+    </div>
 </div>

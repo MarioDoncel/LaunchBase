@@ -1,6 +1,7 @@
 const data = require("../../../data.json")
 const Recipe = require('../models/Recipe')
 const Chef = require("../models/Chef")
+const File = require('../models/File')
 
 module.exports = {
     async index(req, res) {
@@ -33,8 +34,6 @@ module.exports = {
                 recipe.src = `${req.protocol}://${req.headers.host}${files[randomIndex].path.replace('public','')}`
             }            
         }
-        console.log(recipes)        
-        
         return res.render("admin/chefs/show", {chef, recipes})  
     },
     async create(req, res) {
@@ -56,17 +55,20 @@ module.exports = {
                 return res.send("Todos os campos são obrigatorios")
             }
         });
+        if(!req.file) return res.send('Por favor envie uma imagem de avatar.')
     
-        await Chef.create(req.body)
+        let results = await Chef.create(req.body)
+        const chefId = results.rows[0].id
+
+        const file = req.file
+        await File.avatarFileCreate({...file}, chefId)
         
         return res.redirect('/admin/chefs')
-        
     },
     async put(req, res) {
         await Chef.update(req.body)
 
         return res.redirect('/admin/chefs')
-        
     },
     async delete(req, res) {
         const chefId = req.body.chefId

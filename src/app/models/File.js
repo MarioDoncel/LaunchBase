@@ -32,6 +32,33 @@ module.exports = {
         ]
         return db.query(queryRecipeFiles, valuesRecipeFiles)
     },
+    async avatarFileCreate({filename, path}, chefId){
+        const query=`
+        INSERT INTO files (
+            name,
+            path
+        ) VALUES ($1,$2)
+        RETURNING id
+        `
+        const values = [
+            filename,
+            path
+        ]
+
+       let results = await db.query(query, values)
+       const fileId = results.rows[0].id
+
+        const fileQuery=`
+            UPDATE chefs SET 
+            file_id=($1)
+            WHERE id=($2)
+        `
+        const valueFile = [
+            fileId,
+            chefId
+        ]
+        return db.query(fileQuery, valueFile)
+    },
     async delete(id) {
         try {
             const result = await db.query(`SELECT * FROM files WHERE id = $1`, [id])
