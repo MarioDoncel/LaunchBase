@@ -7,16 +7,27 @@ module.exports = {
     async index(req, res) {
         let results = await Chef.all()
         const chefs = results.rows
+
+        for (let index = 0; index < chefs.length; index++) { // inserindo src para exibição
+            const chef = chefs[index];
+            results = await Chef.file(chef.file_id)
+            const file = results.rows[0] 
+            if (file) {
+                chef.src = `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
+            } else {
+                chef.src = 'http://placehold.it/500x500?text=CHEF SEM FOTO'
+            }
+        }            
+
         return res.render("admin/chefs/chefs.njk", {chefs})
         
     },
     async show(req, res) {
-        let chefId = req.params.id
+        const chefId = req.params.id
     
         let results = await Chef.find(chefId)
         const chef = results.rows[0]
         if(!chef) return res.send ('Chef não encontrado!')
-        chef.avatar_url = chef.avatar_url.replace("https://", "")
 
         results = await Chef.recipesByChef(chefId)
         const recipes = results.rows
@@ -34,7 +45,12 @@ module.exports = {
                 recipe.src = `${req.protocol}://${req.headers.host}${files[randomIndex].path.replace('public','')}`
             }            
         }
-        return res.render("admin/chefs/show", {chef, recipes})  
+
+        results = await Chef.file(chef.file_id)
+        const file = results.rows[0]
+        file.src = `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
+
+        return res.render("admin/chefs/show", {chef, recipes, file})  
     },
     async create(req, res) {
         return res.render("admin/chefs/create.njk")
@@ -75,6 +91,11 @@ module.exports = {
         const total_recipes = req.body.total_recipes
     
         if (total_recipes>0) return res.send("Erro! Chefs que possuem receitas cadastradas não podem ser excluidos!")
+
+        let results = await Chef.find(chefId)
+        const fileId = results.rows[0].file_id
+
+        await File.avatarFileDelete(fileId)
         
         await Chef.delete(chefId)
 

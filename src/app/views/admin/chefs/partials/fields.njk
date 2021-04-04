@@ -6,7 +6,7 @@
     <h3>Avatar</h3>
     {# <input type="text" name="avatar_url" placeholder="http://... " value="{{chef.avatar_url}}"> #}
     
-    <div class="photos-upload">
+    <div class="photos-upload chefUpload">
         <div class="photo" id="uploadPhotoChef">
             <input type="file" 
                 name="avatar" 
@@ -15,5 +15,18 @@
                 onchange="PhotosUpload.handleFileInput(event)">
             <button type="button">Enviar Avatar</button>
         </div>
+        <div class="photos-preview">
+            {% if file %}
+                <script src="./"></script>
+                    <div class="photo" id="{{file.id}}">
+                        <img src="{{file.src}}" alt="{{image.name}}julia">
+                        <i class="material-icons" onclick="PhotosUpload.removeOldPhoto(event)">close </i>
+                    </div>
+                {% endfor %}
+                <input type="hidden" name="removed_files">
+            {% endif %}
+        </div>
     </div>
 </div>
+
+{# https://images.unsplash.com/photo-1610540871860-2f2ecf619696?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTR8fGNoZWYlMjBmb29kfGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60 #}

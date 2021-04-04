@@ -75,5 +75,18 @@ module.exports = {
         return db.query(`
         DELETE FROM files where id = $1
         `, [id])
-    }
+    },
+    async avatarFileDelete(id) {
+        try {
+            const result = await db.query(`SELECT * FROM files WHERE id = $1`, [id])
+            const file = result.rows[0]
+            fs.unlinkSync(file.path)
+        } catch (err) {
+            console.error(err)
+        }  
+
+        return db.query(`
+        DELETE FROM files where id = $1
+        `, [id])
+    },
 }

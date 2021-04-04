@@ -63,5 +63,10 @@ module.exports = {
         WHERE chefs.id = ${id}
         `
         return db.query(query)
+    },
+    file(id){
+        return db.query(`
+        SELECT * FROM files WHERE id = $1
+        `, [id])
     }
 }
