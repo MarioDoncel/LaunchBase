@@ -105,8 +105,10 @@ module.exports = {
     async put(req, res) {
         const recipeId = req.body.recipeId
         const keys = Object.keys(req.body)
+        
         for (key of keys) {
-            if (key == "" && key != "removed_files") {
+            console.log(req.body[key])
+            if (req.body[key] == "" && key != "removed_files" ) {
                 return res.send("Por favor preencha todos os campos")
             }
         }

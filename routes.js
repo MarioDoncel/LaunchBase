@@ -9,17 +9,14 @@ const multer = require('./src/app/middleware/multer')
 
 
 // ========== Public Area ==========
-routes.get("/", public.index)
 
+routes.get("/", public.index)
 routes.get("/about", function(req, res) {
     return res.render("public/about.njk")
 })
 routes.get("/recipes", public.listRecipes)
-
 routes.get("/recipes/:id", public.showRecipe)
-
 routes.get("/chefs", public.listChefs)
-
 routes.get("/search-results", public.searchResults)
 
 // ========== Admin Area ==========

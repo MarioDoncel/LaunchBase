@@ -12,11 +12,7 @@ module.exports = {
             const chef = chefs[index];
             results = await Chef.file(chef.file_id)
             const file = results.rows[0] 
-            if (file) {
-                chef.src = `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
-            } else {
-                chef.src = 'http://placehold.it/500x500?text=CHEF SEM FOTO'
-            }
+            file ? chef.src = `${req.protocol}://${req.headers.host}${file.path.replace('public','')}` : chef.src = 'http://placehold.it/500x500?text=CHEF SEM FOTO'
         }            
 
         return res.render("admin/chefs/chefs.njk", {chefs})
@@ -48,9 +44,9 @@ module.exports = {
 
         results = await Chef.file(chef.file_id)
         const file = results.rows[0]
-        file.src = `${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
-
-        return res.render("admin/chefs/show", {chef, recipes, file})  
+        file ? chef.src = `${req.protocol}://${req.headers.host}${file.path.replace('public','')}` : chef.src = 'http://placehold.it/500x500?text=CHEF SEM FOTO'
+            
+        return res.render("admin/chefs/show", {chef, recipes})  
     },
     async create(req, res) {
         return res.render("admin/chefs/create.njk")
@@ -60,8 +56,13 @@ module.exports = {
         let results = await Chef.find(chefId)
         const chef = results.rows[0]
         if(!chef) return res.send ('Chef não encontrado!')
+
+        results = await Chef.file(chef.file_id)
+        const file = results.rows[0]
+
+        if (file) file.src = `${req.protocol}://${req.headers.host}${file.path.replace('public','')}` 
     
-        return res.render("admin/chefs/edit", {chef, chefId})
+        return res.render("admin/chefs/edit", {chef, chefId, file})
     },
     async post(req, res) {
         const keys = Object.keys(req.body)
@@ -82,6 +83,26 @@ module.exports = {
         return res.redirect('/admin/chefs')
     },
     async put(req, res) {
+        const chefId = req.body.chefId
+        const keys = Object.keys(req.body)
+        for (key of keys) {
+            if (req.body[key] == "" && key != "removed_files" ) {
+                return res.send("Por favor preencha todos os campos")
+            }
+        }
+
+        if(req.body.removed_files){
+            const removedFiles = req.body.removed_files.split(",")
+            removedFiles.pop()
+            const fileId = removedFiles[0]
+            await File.avatarFileDelete(fileId)
+        }
+
+        if (req.file) {
+            const file = req.file
+            await File.avatarFileCreate({...file}, chefId)
+        }
+        
         await Chef.update(req.body)
 
         return res.redirect('/admin/chefs')

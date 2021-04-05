@@ -39,7 +39,7 @@ module.exports = {
     update(data){
         const query = `
         UPDATE chefs SET 
-            name=($1),
+            name=($1)
         WHERE id=($2)
         `
         const values = [

@@ -1,5 +1,6 @@
 const Public = require('../models/Public')
 const Recipe = require('../models/Recipe')
+const Chef = require("../models/Chef")
 const {date, formatList} = require('../../lib/utils')
 
 module.exports = {
@@ -78,18 +79,16 @@ module.exports = {
     async listChefs(req, res) {
         let results = await Public.allChefs()
         const chefs = results.rows
+
+        for (let index = 0; index < chefs.length; index++) { // inserindo src para exibição
+            const chef = chefs[index];
+            results = await Chef.file(chef.file_id)
+            const file = results.rows[0] 
+            file ? chef.src = `${req.protocol}://${req.headers.host}${file.path.replace('public','')}` : chef.src = 'http://placehold.it/500x500?text=CHEF SEM FOTO'
+        }
+
         return res.render("public/chefs.njk", {chefs})
     }
-
-// exports.showChef = function(req, res) {
-//     let chefId = req.params.id
-
-//     Recipe.find(chefId, function (chef) {
-//         if(!chef) return res.send ('Chef não encontrado!')
-        
-//         return res.render("admin/chefs/show", {chef})
-//     }) 
-// } 
 
 }
 

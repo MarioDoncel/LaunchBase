@@ -17,14 +17,13 @@
         </div>
         <div class="photos-preview">
             {% if file %}
-                <script src="./"></script>
-                    <div class="photo" id="{{file.id}}">
-                        <img src="{{file.src}}" alt="{{image.name}}julia">
-                        <i class="material-icons" onclick="PhotosUpload.removeOldPhoto(event)">close </i>
-                    </div>
-                {% endfor %}
-                <input type="hidden" name="removed_files">
+                <div class="photo" id="{{file.id}}">
+                    <img src="{{file.src}}" alt="{{chef.name}}">
+                    <i class="material-icons" onclick="PhotosUpload.removeOldPhoto(event)">close </i>
+                </div>
             {% endif %}
+            <input type="hidden" name="removed_files">
+            
         </div>
     </div>
 </div>
