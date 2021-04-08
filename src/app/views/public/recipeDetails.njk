@@ -41,18 +41,20 @@
                 <li>{{ingredient}}</li>
                 {% endfor %}
             </ul>
-    </div>
-    <div class="preparation">
-        <h3>Modo de preparo <span class="active">esconder</span></h3>
-        <ul>
-            {% for step in recipe.preparation %}
-            <li>{{step}}</li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="information">
-        <h3>Informações adicionais <span class="active">esconder</span></h3>
-        <p>{{recipe.information}}</p>
+        </div>
+    
+        <div class="preparation">
+            <h3>Modo de preparo <span class="active">esconder</span></h3>
+            <ul>
+                {% for step in recipe.preparation %}
+                <li>{{step}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="information">
+            <h3>Informações adicionais <span class="active">esconder</span></h3>
+            <p>{{recipe.information}}</p>
+        </div>
     </div>
 {% endblock content %}
 

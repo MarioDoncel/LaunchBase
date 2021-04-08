@@ -10,6 +10,7 @@
         <div class="cards admin">
             {% for recipe in recipes %}
             
+            
             <div class="card admin-index">
                 <div class="image-container admin">
                     {% if not recipe.src %}
@@ -28,9 +29,12 @@
                     </div>
                     <div >
                         <a class="link-button" href="/admin/recipes/{{recipe.id}}">Visualizar</a>
+                        
                     </div>
-                </div>
+                </div> 
+                <input type="hidden" id="recipeId" name="recipeId" value="{{recipe.id}}">
             </div>
+            
             {% endfor %}
         </div>
     </main>

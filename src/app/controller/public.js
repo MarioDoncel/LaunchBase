@@ -72,7 +72,20 @@ module.exports = {
         let results = await Public.filterRecipes(filter)
         const recipes = results.rows
         if(!recipes) return res.send ('Receita não encontrado!')
-    
+        
+        for (let index = 0; index < recipes.length; index++) { // inserindo src nas recipes para exibição
+            const recipe = recipes[index];
+            results = await Recipe.recipeFiles(recipe.id)
+            const recipeFiles = results.rows //{ id: 1, recipe_id: 12, file_id: 2 } { id: 2, recipe_id: 12, file_id: 3 }
+            const filesPromise = recipeFiles.map( recipeFile => Recipe.files(recipeFile.file_id)) 
+            results = await Promise.all(filesPromise) // resulta em um array de results que para colher resultado usar map ou forEach
+            // results.forEach(results => console.log(results.rows[0]))
+            let files = results.map(results=>results.rows[0])
+            if(files[0]) {
+                let randomIndex = parseInt(Math.random() * files.length) 
+                recipe.src = `${req.protocol}://${req.headers.host}${files[randomIndex].path.replace('public','')}`
+            }            
+        }
         return res.render("public/search-results.njk", {recipes, filter})
     },
     // ====== Chefs =========

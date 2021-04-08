@@ -9,3 +9,10 @@ for (const link of menuLinks) {
         link.classList.add('active')
     }
 }
+
+
+const recipesAdmin = document.querySelectorAll('.card.admin-index')
+recipesAdmin.forEach(card => {
+    const id = card.lastChild.previousElementSibling.value
+    card.addEventListener('click', () => location.href=`/admin/recipes/${id}` )
+});

@@ -30,10 +30,11 @@ module.exports = {
     },
     filterRecipes(filter){
         const query=`
-        SELECT recipes.title, recipes.id, 
+        SELECT recipes.title, recipes.id, recipes.updated_at, 
         chefs.name AS chef_name 
         FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
         WHERE recipes.title ILIKE '%${filter}%' or chefs.name ILIKE '%${filter}%'
+        ORDER BY updated_at DESC
         `
         return db.query(query)
     }
