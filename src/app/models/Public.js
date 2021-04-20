@@ -1,42 +1,62 @@
 const db = require('../../config/db')
 
 module.exports = {
-    allRecipes(){
-        const query = `
+    allRecipes() {
+        try {
+            const query = `
         SELECT recipes.*, chefs.name AS chef_name
         FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
         ORDER BY created_at DESC
         `
-        return db.query(query)
+            return db.query(query)
+        } catch (error) {
+            console.log(error)
+        }
+
     },
-    allChefs(){
-        const query = `
+    allChefs() {
+        try {
+            const query = `
         SELECT chefs.*, count(recipes) AS total_recipes
         FROM chefs LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
         GROUP BY chefs.id
         ORDER BY created_at DESC
         `
-        
-        return db.query(query)
+
+            return db.query(query)
+        } catch (error) {
+            console.log(error)
+        }
+
     },
-    findRecipe(id){
-        const query = `
+    findRecipe(id) {
+        try {
+            const query = `
         SELECT recipes.*, 
         chefs.name AS chef_name 
         FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
         WHERE recipes.id = $1
         `
-        return db.query(query,[id])
+            return db.query(query, [id])
+        } catch (error) {
+            console.log(error)
+        }
+
     },
-    filterRecipes(filter){
-        const query=`
+    filterRecipes(filter) {
+        try {
+            const query = `
         SELECT recipes.title, recipes.id, recipes.updated_at, 
         chefs.name AS chef_name 
         FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
         WHERE recipes.title ILIKE '%${filter}%' or chefs.name ILIKE '%${filter}%'
         ORDER BY updated_at DESC
         `
-        return db.query(query)
+            return db.query(query)
+        } catch (error) {
+            console.log(error)
+        }
+
     }
     // findChef(id, callback){
     //     const query = `
@@ -51,4 +71,4 @@ module.exports = {
     //         callback(results.rows[0])
     //     })
     // }
-    }
+}

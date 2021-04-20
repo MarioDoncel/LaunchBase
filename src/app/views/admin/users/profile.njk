@@ -1,0 +1,26 @@
+{% extends "layoutAdmin.njk" %}
+
+{% block content %}
+    <div class="profile">
+        <div class="subHeader">
+            <h3>Bem vindo Diego{{user.name}}</h3>
+            <div class="buttonsEdit">
+                <button type="submit" form="editProfile">Salvar</button>
+            </div>
+        </div>
+    </div>
+    <form action="/admin/profile?_method=PUT" id="editProfile" method="post">
+        <div class="profileFields">
+
+            {%include './partials/fields.njk'%}
+            
+        </div>
+        <input type="hidden" name="profileId" value="{{profileId}}">
+    </form>
+
+</div>
+
+{% endblock content %}
+
+{% block script %}
+{% endblock script %}
