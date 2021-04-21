@@ -1,5 +1,9 @@
 {% extends "layout.njk" %}
 
+{% block styles %}
+    <link rel="stylesheet" href="/styles/pages/public/chefs.css">
+{% endblock styles %}
+
 {% block title %}
         <title>Chefs</title>
         {% endblock title %}
@@ -8,8 +12,8 @@
     <main>
         <div class="cardsChefs">
             {% for chef in chefs %}
-                <div class="card admin-index">
-                    <div class="image-container admin chefs">
+                <div class="card">
+                    <div class="image-container">
                         <img src="{{chef.src}}" alt="{{chef.name}}">
                     </div>
                     <div class="index-details chefs">

@@ -1,0 +1,16 @@
+header {
+    display: grid;
+    grid-template-columns: 30% 1fr;
+    align-items: center;
+}
+header nav {
+    display: flex;
+}
+header nav a {
+    text-decoration: none;
+    color: black;
+    padding: 2rem;
+}
+header nav a.active{
+    font-weight: bold;
+}

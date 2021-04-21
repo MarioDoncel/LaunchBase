@@ -1,5 +1,10 @@
 {% extends 'layout.njk' %}
 
+{% block styles %}
+    <link rel="stylesheet" href="/styles/pages/public/index.css">
+    <link rel="stylesheet" href="/styles/partials/publicCards.css">
+{% endblock styles %}
+
 {% block searchField %}
     {%include './partials/search.njk'%}
 {% endblock searchField %}

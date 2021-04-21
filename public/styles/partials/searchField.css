@@ -1,0 +1,35 @@
+/* SEARCH BUTTON */
+/* nav {
+    flex: 1;    
+} */
+
+#searchField {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 37px;
+    align-self: center;
+    margin-left: auto;
+}
+#searchField input {
+    width: 246px;
+    height: 47px;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 14px;
+    box-sizing: border-box;
+    height: 100%;
+    margin-right: 8px;
+    outline: none;
+}
+#searchField button {
+    padding: 9px 20px;
+    background-color: #6558c3;
+    color: white;
+    font-size: 16px;
+    border-radius: 4px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}

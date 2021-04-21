@@ -24,12 +24,12 @@ html,body {
    
     
 }
+/* HEADER */
 
-header {
+/* header {
     display: grid;
     grid-template-columns: 30% 1fr;
     align-items: center;
-
 }
 
 header nav {
@@ -42,9 +42,11 @@ header nav a {
 }
 header nav a.active{
     font-weight: bold;
-}
+} */
 
-.description {
+
+/* INDEX PUBLIC */
+/* .description {
     background-color: var(--pink);
     border-radius: 30px;
     width: 100%;
@@ -74,9 +76,11 @@ header nav a.active{
 
 .favorites h3{
     margin-top: 50px;
-}
+} */
 
-.cards {
+/* CARDS */
+
+/* .cards {
     margin-top: 20px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -110,33 +114,11 @@ header nav a.active{
 .author  p{
     font-size: 14px;
     color: #777777;
-}
-.total_recipes p{
-    font-size: 14px;
-    color: #666666;
-}
+} */
 
-
-/* FOOTER **=================*/
-
-footer {
-    height: 62px;
-    margin-top: 50px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background-color:#EEEEEE;
-}
-
-footer p{
-    font-size: 14px;
-    color: #999999;;
-}
 
 /* =======ABOUT =====================*/
-article {
+/* article {
     margin-bottom: 30px;
 }
 
@@ -154,10 +136,10 @@ article p {
     color: #444444;
     margin-top: 20px;
     line-height: 28px;
-}
+} */
 
 /* ======== RECIPE ====== */
-.recipe {
+/* .recipe {
     margin-top: 56px;
     display: flex;
     flex-direction: column;
@@ -236,9 +218,9 @@ article p {
     font-size: 12px;
     color: #999;
     cursor: pointer;
-}
+} */
 /* LIGHTBOX PRODUCT GALLERY */
-.recipe .highlight .lightbox-target {
+/* .recipe .highlight .lightbox-target {
     position: fixed;
     width: 100%;
     height:100%;
@@ -276,15 +258,20 @@ article p {
     justify-content: center;
     transition: 400ms;
 
-}
+} */
 
 /* ======== CHEFS ====== */
-.cardsChefs {
+/* .cardsChefs {
     margin-top: 20px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 30px;
 }
+.total_recipes p{
+    font-size: 14px;
+    color: #666666;
+} */
+
 
 /* ============= ADMIN =========== */
 
@@ -589,7 +576,7 @@ cursor: pointer;
     height: 64px;
 }
 .image-container.admin.chefs img {
-    width: 100%;
+    width: 64px;
     height: 100%;
     border-radius: 50%;
     object-fit: cover
@@ -687,7 +674,7 @@ cursor: pointer;
 }
 
 /* SEARCH BUTTON */
-nav {
+/* nav {
     flex: 1;    
 }
 
@@ -719,7 +706,7 @@ nav {
     border: none;
     font-weight: bold;
     cursor: pointer;
-}
+} */
 
 /* ====== PROFILE ======== */
 .profile .subHeader {
@@ -782,7 +769,6 @@ nav {
     }
     
     header nav {
-        margin-left: 8rem;
         display: flex;
     }
     

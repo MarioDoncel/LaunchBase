@@ -1,0 +1,36 @@
+.cardsChefs {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 30px;
+}
+.cardsChefs .card {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+}
+.cardsChefs .image-container {
+    width: 64px;
+    height: 64px;
+}
+.cardsChefs .image-container img {
+    width: 64px;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.card .index-details.chefs {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    justify-content: center;
+    height: 100%;
+}
+.cardsChefs .index-details .chef-name {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+.cardsChefs .total_recipes p{
+    font-size: 14px;
+    color: #666666;
+}

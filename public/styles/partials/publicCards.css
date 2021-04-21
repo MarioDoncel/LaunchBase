@@ -1,0 +1,36 @@
+.cards {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    cursor: pointer;
+}
+
+.image-container{
+    max-width: 300px;
+}
+
+.image-container img {
+    width: 100%;
+    border-radius: 15px;
+    object-fit: cover;
+}
+.card .image-container {
+    height: 140px;
+}
+.card .image-container img {
+    height: 100%;
+}
+
+.recipe-name {
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+.recipe-name h4 {
+    font-size: 18px;
+}
+.author  p{
+    font-size: 14px;
+    color: #777777;
+}
