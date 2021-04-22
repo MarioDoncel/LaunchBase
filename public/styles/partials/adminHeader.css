@@ -1,0 +1,27 @@
+header.admin-header {
+    width: 100%;
+    background: #111111;
+    height: 5rem;
+}
+header.admin-header .container-header {
+    top: 1.5rem;
+    width: 75%;
+    margin: 0 auto;
+    min-height: 100%;
+    max-width: 940px;
+    display: flex;
+    align-items: center;
+}
+header.admin-header .container-header nav {
+    margin-left: 50px;
+}
+header.admin-header .container-header nav a {
+    text-decoration: none;
+    margin-left: 50px;
+    color: #999999;
+    padding: 0 15px 0 0;
+}
+header.admin-header .container-header nav a.active{
+    color: #ffffff;
+    font-weight: bold;
+}

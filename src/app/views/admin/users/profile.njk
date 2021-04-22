@@ -1,16 +1,18 @@
 {% extends "layoutAdmin.njk" %}
 
+{% block styles %}
+    <link rel="stylesheet" href="/styles/pages/admin/users/profile.css">
+{% endblock styles %}
+
 {% block content %}
     <div class="profile">
         <div class="subHeader">
             <h3>Bem vindo Diego{{user.name}}</h3>
-            <div class="buttonsEdit">
-                <button type="submit" form="editProfile">Salvar</button>
-            </div>
+            <button type="submit" form="editProfile">Salvar</button>
         </div>
     </div>
     <form action="/admin/profile?_method=PUT" id="editProfile" method="post">
-        <div class="profileFields">
+        <div class="fields profile">
 
             {%include './partials/fields.njk'%}
             

@@ -1,0 +1,186 @@
+
+.fields {
+    margin-top: 10px;
+    font-size: 18px;
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 30px;
+
+    line-height: 28px;
+}
+.fields.profile {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 40px;
+}
+.link-button {
+    text-decoration: none;
+    color: #6558c3;
+    font-size: 14px;
+    font-weight: bold;
+    outline: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.fields h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    line-height: 19px;
+}
+
+.fields ul {
+    padding-left: 20px;
+}
+.fields input, .fields textarea, .fields select {
+    width: 100%;
+    height: 49px;
+    border: 1px solid #dddddd;
+    outline: none;
+    padding: 0px 60px 0 10px;
+    border-radius: 4px;
+}
+.fields select option:first-child{
+    color: #777777;
+    font-size: 16px;
+}
+.fields textarea {
+    height: 257px;
+}
+
+/* EDIT */
+
+.step, .ingredient{
+    position: relative;
+}
+.step span, .ingredient span {
+position: absolute;
+right: 4px;
+top: 10px;
+font-size: 12px;
+padding: 2px 5px;
+background-color: #dc4747;
+font-weight: bold;
+color: white;
+border-radius: 4px;
+border: none;
+cursor: pointer;
+}
+
+/* PHOTOS UPLOAD */
+
+/* == RECIPES UPLOAD == */
+
+.photos-upload {
+    position: relative;
+    display: flex;
+}
+.photos-upload .photo {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+}
+.photos-upload #photosAdd {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    margin-right: 10px;
+}
+.photos-upload  input{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    overflow: hidden;
+    cursor: pointer;
+}
+.photos-upload #photosAdd i{
+    font-size: 28px;
+    color: #777;
+}
+.photos-preview {
+    height:150px;
+    width: 150px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+.photos-preview .photo img {
+    height: 100%;
+    width: 100%;
+    border-radius: 4px;
+    object-fit: cover;
+}
+.photos-preview .photo img:hover {
+    opacity: 0.15;
+}
+.photos-preview .photo i {
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    color: #f00;
+    font-size: 28px;
+    background-color: rgba(221, 221, 221, 0.7);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: 300ms ease-in-out;
+}
+.photos-preview .photo i:hover {
+    opacity: 1;
+} 
+
+
+/*  CHEFS UPLOAD */
+#uploadPhotoChef {
+    width: 140px;
+    height: 40px;
+}
+
+#uploadPhotoChef button {
+    width: 140px;
+    height: 40px;
+    padding: 8px 20px;
+    background-color: #6558c3;
+    color: white;
+    font-size: 16px;
+    border-radius: 4px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+.photos-upload.chefUpload {
+    align-items: center;
+}
+.photos-upload.chefUpload .photo {
+    border-radius: 100%;
+}
+.chefUpload .photos-preview {
+    display: flex;
+    margin-left: 20px;
+    border-radius: 100%;
+}
+.chefUpload .photos-preview .photo img {
+    height: 100%;
+    width: 100%;
+    border-radius: 100%;
+    object-fit: cover;
+}
+.chefUpload .photos-preview .photo img:hover {
+    opacity: 0.15;
+}
+.chefUpload .photos-preview .photo i {
+    border-radius: 100%;
+}

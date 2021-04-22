@@ -1,0 +1,38 @@
+#manage-chefs {
+    margin-top: 3rem;
+    font-size: 1,5rem;
+    margin-bottom: 30px;
+}
+.cards.admin.chefs {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 30px;
+    cursor: pointer;
+}
+.card.admin-index{
+    display: flex;
+}
+
+.image-container.admin.chefs{
+    width: 64px;
+    height: 64px;
+}
+.image-container.admin.chefs img {
+    width: 64px;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover
+}
+.card.admin-index .index-details.chefs {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    justify-content: center;
+    height: 100%;
+    
+}
+.index-details .chef-name {
+    margin-top: 0;
+    margin-bottom: 10px;
+}

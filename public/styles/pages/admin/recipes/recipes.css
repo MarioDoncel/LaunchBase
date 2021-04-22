@@ -1,0 +1,53 @@
+#manage-recipes {
+    margin-top: 3rem;
+    font-size: 1,5rem;
+}
+.cards.admin {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    cursor: pointer;
+}
+.card.admin-index {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+}
+
+.image-container.admin{
+    max-width: 172px;
+    height: 80px;
+    border-radius: 8.75px;
+}
+.image-container.admin img {
+    width: 100%;
+    height: 80px;
+    border-radius: 8.75px;
+    object-fit:cover
+}
+.card.admin-index .index-details {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    justify-content: flex-start;
+    height: 100%;
+    
+}
+.index-details .recipe-name {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+.index-details .author  p{
+    margin-bottom: 10px;
+}
+.link-button {
+    text-decoration: none;
+    color: #6558c3;
+    font-size: 14px;
+    font-weight: bold;
+    outline: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+}

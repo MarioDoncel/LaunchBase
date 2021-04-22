@@ -1,0 +1,23 @@
+.subHeader {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 1.5rem;
+    font-size: 24px;
+}
+
+.subHeader button{
+    padding: 8px 20px;
+    background-color: #6558c3;
+    color: white;
+    font-size: 16px;
+    border-radius: 4px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+.buttonsEdit button:first-child {
+    background-color: #dc4747;
+}
+
+
