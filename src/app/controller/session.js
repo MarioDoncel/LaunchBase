@@ -8,7 +8,7 @@ const crypto = require('crypto') // modulo de criação de token no NODE
 
 module.exports = {
     loginForm(req, res){
-        return res.render('session/login')
+        return res.render('admin/session/login')
     },
     login(req,res){
         // verify user
@@ -23,7 +23,7 @@ module.exports = {
         return res.redirect('/')
     },
     forgotForm(req, res){
-        return res.render('session/forgot-password')
+        return res.render('admin/session/forgot-password')
     },
     async forgot(req,res){
         const user = req.user // vem do validator
@@ -64,7 +64,7 @@ module.exports = {
        
     },
     resetForm(req, res){
-        return res.render('session/password-reset', {token: req.query.token})
+        return res.render('admin/session/password-reset', {token: req.query.token})
     },
     async reset(req,res){
         const {password, token} = req.body

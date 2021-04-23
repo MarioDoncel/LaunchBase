@@ -1,15 +1,23 @@
 const express = require('express')
 const routes = express.Router()
-const users = require('../../app/controller/users')
+const profile = require('../../app/controller/profile')
+const session = require('../../app/controller/session')
+const {isLogged, onlyUsers} = require('../../app/middleware/session')
 
+// Rotas de perfil de um usuário logado
+routes.get('/', profile.index) // Mostrar o formulário com dados do usuário logado
+routes.put('/', profile.put)// Editar o usuário logado
 
-// Rotas que o administrador irá acessar para gerenciar usuários
-routes.get('/', users.list) // Mostrar a lista de usuários cadastrados
-routes.get('/create', users.create) // Mostrar o formulário de criação de um usuário
-routes.get('/:id/edit', users.edit) // Mostrar o formulário de edição de um usuário
+// login/logout
+routes.get('/login',/*isLogged,*/ session.loginForm)
+// routes.post('/login', SessionValidator.login, session.login)
+// routes.post('/logout', session.logout)
 
-routes.post('/', users.post) // Cadastrar um usuário
-routes.put('/:id', users.put) // Editar um usuário
-routes.delete('/:id', users.delete) // Deletar um usuário
+// // resetpassword /forgot
+routes.get('/forgot-password', session.forgotForm)
+routes.get('/password-reset', session.resetForm)
+// routes.post('/forgot-password', SessionValidator.forgot, session.forgot)
+// routes.post('/password-reset', SessionValidator.reset, session.reset)
+
 
 module.exports = routes

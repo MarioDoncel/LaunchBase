@@ -10,7 +10,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
         <link rel="stylesheet" href="/styles/main.css">
-        <link rel="stylesheet" href="/styles/partials/adminHeader.css">
+        <link rel="stylesheet" href="/styles/partials/header.css">
         <link rel="stylesheet" href="/styles/partials/subHeaderAdmin.css">
         <link rel="stylesheet" href="/styles/partials/adminFields.css">
         {% block styles %}
@@ -23,26 +23,18 @@
         
     </head>
     <body>
-        <header class="admin-header">
-            <div class="container-header">
+        <header class="session-header">
+            <div class="container">
                 <a href="/">
-                    <img src="/assets/logoWhite.png" alt="Logo Foodfy">
+                    <img src="/assets/logo.png" alt="Logo Foodfy">
                 </a>
-                <nav>
-                    <a href="/admin/recipes">Receitas</a>
-                    <a href="/admin/chefs">Chefs</a>
-                    <a href="/admin/users">Usuários</a>
-                </nav>
-                <form action="/admin/users/logout" id="logout" method="post">
-                    <button type="submit" form="logout">SAIR</button>
-                </form>
             </div>
         </header>
 
+    
         <div class="container">
             {% block content %}{% endblock content %}
         </div>
-        
         <script src="/scripts.js"></script>
         {% block script %}{% endblock script %}
     </body>

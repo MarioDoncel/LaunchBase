@@ -1,0 +1,39 @@
+{% extends "layoutSession.njk" %}
+
+{% block styles %}
+    <link rel="stylesheet" href="/styles/pages/admin/session/session.css">
+{% endblock styles %}
+
+{% block content %}
+    <div class="session">
+        <div class="subHeader">
+            <h3>Iniciar Sessão</h3>
+        </div>
+    </div>
+    <form action="/admin/users/login" id="loginSession" method="post">
+        <div class="fields">
+
+            <div class="item">
+                <h3>Email</h3>
+                <input type="text" name="email" placeholder="email@email.com" value="{{user.email}}">
+            </div>
+            <div class="item">
+                <h3>Senha</h3>
+                <input class="error" type="text" name="password" placeholder="Digite a senha">
+            </div>
+
+        </div>
+
+        <div class="login">
+            <p>Perdeu a senha?</p>
+            <button type="submit" form="loginSession">Acessar</button>
+        </div>
+        
+    </form>
+
+</div>
+
+{% endblock content %}
+
+{% block script %}
+{% endblock script %}

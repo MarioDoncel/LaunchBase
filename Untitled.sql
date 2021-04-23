@@ -32,14 +32,14 @@ EXECUTE PROCEDURE trigger_set_timestamp();
 
 -- USERS
 CREATE TABLE "users" (
-  "id" SERIAL PRIMARY KEY
-  "name" TEXT NOT NULL
-  "email" TEXT UNIQUE NOT NULL
-  "password" TEXT NOT NULL
-  "reset_token" TEXT
-  "reset_token_expires" TEXT
-  "is_admin" BOOLEAN DEFAULT false
-  "created_at" TIMESTAMP DEFAULT(now())
+  "id" SERIAL PRIMARY KEY,
+  "name" TEXT NOT NULL,
+  "email" TEXT UNIQUE NOT NULL,
+  "password" TEXT NOT NULL,
+  "reset_token" TEXT,
+  "reset_token_expires" TEXT,
+  "is_admin" BOOLEAN DEFAULT false,
+  "created_at" TIMESTAMP DEFAULT(now()),
   "updated_at" TIMESTAMP DEFAULT(now())
 );
 

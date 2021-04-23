@@ -17,11 +17,26 @@ header.admin-header .container-header nav {
 }
 header.admin-header .container-header nav a {
     text-decoration: none;
-    margin-left: 50px;
+    margin-left: 30px;
     color: #999999;
     padding: 0 15px 0 0;
 }
 header.admin-header .container-header nav a.active{
+    color: #ffffff;
+    font-weight: bold;
+}
+form#logout {
+    position: absolute;
+    right: 10%;
+}
+form#logout button {
+    border: none;
+    background: none;
+    color: #999999;
+    font-weight: bold;
+    cursor: pointer;
+}
+form#logout button:hover {
     color: #ffffff;
     font-weight: bold;
 }
