@@ -1,0 +1,62 @@
+.profile .subHeader {
+    margin-top: 3rem;
+}
+
+.buttons button, .buttonsEdit button{
+    width: 140px;
+    margin-right: 16px;
+}
+.buttons button+button{
+    background-color: #8a8a8a;
+}
+.fields input[type="checkbox"]{
+    width: initial;
+    height: initial;
+    margin-right: 8px;
+}
+
+/* LIST USERS */
+
+#manage-users {
+    margin-top: 3rem;
+    margin-bottom: 30px
+}
+.cards.admin {
+    margin-top: 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 52px;
+    cursor: pointer;
+}
+.card.admin-index .index-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    
+}
+.index-details .user-name {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+.index-details .email  p{
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+.link-button {
+    text-decoration: none;
+    color: #6558c3;
+    font-size: 14px;
+    font-weight: bold;
+    outline: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+    margin-right: 16px;
+}
+.links a:nth-child(2){
+    color: #f55a5a;
+}

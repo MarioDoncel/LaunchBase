@@ -7,8 +7,11 @@
 {% block content %}
     <div class="profile">
         <div class="subHeader">
-            <h3>Bem vindo Diego{{user.name}}</h3>
-            <button type="submit" form="editProfile">Salvar</button>
+            <h3>Criar Usuário</h3>
+            <div class="buttonsEdit">
+                <button type="submit" form="deleteChef">Deletar</button>
+                <button type="submit" form="editChef">Salvar chef</button>
+            </div>     
         </div>
     </div>
     <form action="/admin/profile?_method=PUT" id="editProfile" method="post">
@@ -23,8 +26,8 @@
                 <input type="text" name="email" placeholder="email@email.com" value="{{user.email}}">
             </div>
             <div class="item">
-                <h3>Senha</h3>
-                <input type="text" name="password" placeholder="Digite a senha">
+                <input type="checkbox" value="isAdmin" name="isAdmin" checked>
+                <label for="isAdmin">Administrador</label>
             </div>
             
         </div>

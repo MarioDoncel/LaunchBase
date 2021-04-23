@@ -3,7 +3,7 @@
 module.exports = {
     async list(req, res) {
         
-        return res.render("/")
+        return res.render("admin/users/users")
         
     },
     async post(req, res) {
@@ -13,7 +13,7 @@ module.exports = {
     },
     async create(req, res) {
         
-        return res.render("/")
+        return res.render("admin/users/create")
         
     },
     async put(req, res) {
@@ -23,7 +23,7 @@ module.exports = {
     },
     async edit(req, res) {
         
-        return res.render("/")
+        return res.render("admin/users/edit")
         
     },
     async delete(req, res) {

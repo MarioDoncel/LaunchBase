@@ -1,0 +1,58 @@
+{% extends "layoutAdmin.njk" %}
+
+{% block styles %}
+    <link rel="stylesheet" href="/styles/pages/admin/users/users.css">
+{% endblock styles %}
+
+{% block content %}
+    <div class="profile">
+        <div class="subHeader">
+            <h3>Atualizar Usuário</h3>
+            <div class="buttonsEdit">
+                <button type="submit" form="deleteUser">Deletar</button>
+                <button type="submit" form="editUser">Salvar</button>
+            </div>
+        </div>
+    </div>
+    <form action="/admin/profile?_method=PUT" id="editUser" method="post">
+        <div class="fields profile">
+
+            <div class="item">
+                <h3>Nome</h3>
+                <input type="text" name="name" placeholder="Nome completo" value="{{user.name}}">
+            </div>
+            <div class="item">
+                <h3>Email</h3>
+                <input type="text" name="email" placeholder="email@email.com" value="{{user.email}}">
+            </div>
+            <div class="item">
+                <input type="checkbox" value="isAdmin" name="isAdmin" 
+                {% if user.isAdmin %}
+                    checked
+                {% endif %}  
+                disabled>
+                <label for="isAdmin">Administrador</label>
+            </div>
+            
+        </div>
+        <input type="hidden" name="profileId" value="{{profileId}}">
+    </form>
+
+    <form action="/admin/userAdmin/{{user.id}}?_method=DELETE" id="deleteUser" method="post">
+    </form>
+
+</div>
+
+{% endblock content %}
+
+{% block script %}
+<script>
+    const formDelete = document.querySelector("#deleteUser")
+        formDelete.addEventListener("submit", event => {
+            const confirmation = confirm("Tem certeza que deseja deletar o usuário? ( Todas suas receitas serão apagadas! )")
+            if (!confirmation) {
+                event.preventDefault()
+            }
+        })
+</script>
+{% endblock script %}

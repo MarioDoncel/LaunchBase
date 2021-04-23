@@ -9,6 +9,7 @@
     line-height: 28px;
 }
 .fields.profile {
+    margin-top: 4rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 40px;
