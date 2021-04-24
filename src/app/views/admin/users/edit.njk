@@ -23,7 +23,12 @@
             </div>
             <div class="item">
                 <h3>Email</h3>
-                <input type="text" name="email" placeholder="email@email.com" value="{{user.email}}">
+                <input type="text" 
+                name="email"
+                placeholder="email@email.com" 
+                value="{{user.email}}"
+                onblur="Validate.apply(this, 'isEmail')"
+                onfocus="Validate.clearError(this)">
             </div>
             <div class="item">
                 <input type="checkbox" value="isAdmin" name="isAdmin" 
@@ -46,6 +51,7 @@
 {% endblock content %}
 
 {% block script %}
+<script src="/validateFields.js"></script>
 <script>
     const formDelete = document.querySelector("#deleteUser")
         formDelete.addEventListener("submit", event => {

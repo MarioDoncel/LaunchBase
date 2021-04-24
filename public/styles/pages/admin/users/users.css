@@ -14,6 +14,30 @@
     height: initial;
     margin-right: 8px;
 }
+.fields .item{
+    position: relative;
+}
+
+@keyframes dropError {
+    from    {
+        top: 40px;
+    }
+    to {
+        top:78px;
+    }
+}
+.item .error{
+    position: absolute;
+    width: 100%; 
+    background-color: #f55a5a;
+    font-size: 12px;
+    text-align: center;
+    padding: 1px;
+    border-radius: 4px;
+    color: white;
+    margin-top: 2px;
+    animation: dropError 600ms ease-out ;
+}
 
 /* LIST USERS */
 
