@@ -8,13 +8,13 @@
     <div class="profile">
         <div class="subHeader">
             <h3>Criar Usuário</h3>
-            <div class="buttonsEdit">
-                <button type="submit" form="deleteChef">Deletar</button>
-                <button type="submit" form="editChef">Salvar chef</button>
+            <div class="buttons">
+                <button type="submit" form="createUser">Salvar</button>
+                <a href="/admin/users"><button type="button">Cancelar</button></a>
             </div>     
         </div>
     </div>
-    <form action="/admin/profile?_method=PUT" id="editProfile" method="post">
+    <form action="/admin/userAdmin" id="createUser" method="post">
         <div class="fields profile">
 
             <div class="item">
@@ -31,7 +31,7 @@
                 onfocus="Validate.clearError(this)">
             </div>
             <div class="item">
-                <input type="checkbox" value="isAdmin" name="isAdmin" checked>
+                <input type="checkbox" value="isAdmin" name="isAdmin">
                 <label for="isAdmin">Administrador</label>
             </div>
             

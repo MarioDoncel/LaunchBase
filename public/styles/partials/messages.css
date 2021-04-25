@@ -1,0 +1,39 @@
+@keyframes popMessage {
+    0%{
+        top:-50px;
+        opacity: 1;
+    }
+    25% {
+        top: 15px;
+        opacity: 1;
+        
+    }
+    75%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+.message {
+    position: absolute;
+    top: 15px;
+    right: 14px;
+    width: 344px;
+    height: 135px;
+    animation: popMessage 4000ms ease-out forwards;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.message span{
+    color: white;
+}
+.message.error{
+    background-color: #DC4747;
+}
+.message.success{
+    background-color: #01B12A;
+}

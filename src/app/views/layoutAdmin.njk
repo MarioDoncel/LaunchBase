@@ -11,6 +11,7 @@
 
         <link rel="stylesheet" href="/styles/main.css">
         <link rel="stylesheet" href="/styles/partials/adminHeader.css">
+        <link rel="stylesheet" href="/styles/partials/messages.css">
         <link rel="stylesheet" href="/styles/partials/subHeaderAdmin.css">
         <link rel="stylesheet" href="/styles/partials/adminFields.css">
         {% block styles %}
@@ -23,6 +24,7 @@
         
     </head>
     <body>
+        
         <header class="admin-header">
             <div class="container-header">
                 <a href="/">
@@ -42,6 +44,8 @@
         <div class="container">
             {% block content %}{% endblock content %}
         </div>
+        
+        {% include "./partials/messages.njk" %}
         
         <script src="/scripts.js"></script>
         {% block script %}{% endblock script %}

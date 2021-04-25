@@ -1,9 +1,11 @@
-
+const User = require('../models/User')
 
 module.exports = {
     async list(req, res) {
-        
-        return res.render("admin/users/users")
+        const results = await User.all()
+        const users = results.rows
+
+        return res.render("admin/users/users",{users})
         
     },
     async post(req, res) {

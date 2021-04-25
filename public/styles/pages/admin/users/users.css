@@ -6,7 +6,7 @@
     width: 140px;
     margin-right: 16px;
 }
-.buttons button+button{
+.buttons a button{
     background-color: #8a8a8a;
 }
 .fields input[type="checkbox"]{
