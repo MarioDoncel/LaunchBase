@@ -16,19 +16,40 @@ module.exports = {
     },
     create(data){
         try {
-            const query=`
-            INSERT INTO chefs (
-                name,
-                created_at
-            ) VALUES ($1,$2)
-            RETURNING id
-            `
-            const values = [
-                data.name,
-                date(Date.now()).iso
-            ]
-
-            return db.query(query, values)
+            return db.query(`
+                INSERT INTO users(
+                    name,
+                    email,
+                    password,
+                    is_Admin
+                ) VALUES (
+                    '${data.name}', 
+                    '${data.email}', 
+                    '${data.password}', 
+                    '${data.is_Admin}')
+                RETURNING id
+                `)
+        } catch (error) {
+            console.log(error)
+        }
+        
+    },
+    findOne(filters){
+        try {
+            let query = `SELECT * FROM users`
+            //Query Dinamica
+            Object.keys(filters).map(key => {
+                // where || or
+                query = `${query}
+                ${key}
+                `
+    
+                Object.keys(filters[key]).map(field => {
+                    // email || cpf_cnpj
+                    query = `${query} ${field} = '${filters[key][field]}'`
+                })
+            })
+            return db.query(query)
         } catch (error) {
             console.log(error)
         }

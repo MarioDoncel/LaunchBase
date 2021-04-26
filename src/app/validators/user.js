@@ -1,5 +1,5 @@
 const User = require('../models/User')
-const {compare} = require('bcryptjs')
+// const {compare} = require('bcryptjs')
 
 function checkAllFields(body) {
     const keys = Object.keys(body)
@@ -7,7 +7,7 @@ function checkAllFields(body) {
         if (body[key] == "") {
             return {
                 user:body,
-                error: 'Por favor preencha todos os campos'
+                error: 'Por favor preencha todos os campos!'
             }
         }
     }
@@ -19,7 +19,7 @@ async function show(req, res, next){
     })
     const user = results.rows[0]
     if(!user) return res.render('user/register', {
-        error:"Usuário não encontrado"
+        error:"Usuário não encontrado!"
     })
     req.user = user
 
@@ -29,26 +29,18 @@ async function post(req, res, next) {
     //check if has all fields
     const fillAllFields = checkAllFields(req.body)
     if(fillAllFields){
-        return res.render('user/register', fillAllFields)
+        return res.render('admin/users/create', fillAllFields)
     }
     //check if user exists [email, cpf_cnpj]
-    let { email, cpf_cnpj } = req.body
-    cpf_cnpj = cpf_cnpj.replace(/\D/g, "")
+    let { email } = req.body
     const results = await User.findOne({
-        where: { email },
-        or: { cpf_cnpj }
+        where: { email }
     })
     const user = results.rows[0]
 
-    if (user) return res.render('user/register', {
-        user:req.body,
-        error: 'Usuário já cadastrado'
-    })
-    //check if password matchs
-    const { password, passwordRepeat } = req.body
-    if (password != passwordRepeat) return res.render('user/register', {
-        user:req.body,
-        error: 'Senha não confirmada corretamente'
+    if (user) return res.render('admin/users/create', {
+        error: 'Usuário já cadastrado!',
+        user:req.body
     })
 
     next()

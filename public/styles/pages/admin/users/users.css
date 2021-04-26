@@ -41,9 +41,9 @@
 
 /* LIST USERS */
 
-#manage-users {
+.list .subHeader{
     margin-top: 3rem;
-    margin-bottom: 30px
+    margin-bottom: 72px;
 }
 .cards.admin {
     margin-top: 4rem;
