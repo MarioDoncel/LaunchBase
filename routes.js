@@ -5,7 +5,7 @@ const publicRoutes = require('./src/routes/public')
 const adminRecipesRoutes = require('./src/routes/admin/recipes')
 const adminChefsRoutes = require('./src/routes/admin/chefs')
 const userAdminRoutes = require('./src/routes/admin/userAdmin')
-const adminUsersRoutes = require('./src/routes/admin/users')
+const userRoutes = require('./src/routes/admin/user')
 
 // ========== Public Area ==========
 routes.use('/', publicRoutes)
@@ -19,7 +19,7 @@ routes.use('/admin/recipes', adminRecipesRoutes)
 routes.use('/admin/chefs', adminChefsRoutes)
 
 // USERS
-routes.use('/admin/users', adminUsersRoutes)
+routes.use('/admin/user', userRoutes)
 
 // USER ADMIN
 routes.use('/admin/userAdmin', userAdminRoutes)

@@ -7,11 +7,11 @@
 {% block content %}
     <div class="profile">
         <div class="subHeader">
-            <h3>Bem vindo Diego{{user.name}}</h3>
+            <h3>Bem vindo {{user.name}}</h3>
             <button type="submit" form="editProfile">Salvar</button>
         </div>
     </div>
-    <form action="/admin/profile?_method=PUT" id="editProfile" method="post">
+    <form action="/admin/user?_method=PUT" id="editProfile" method="post">
         <div class="fields profile">
 
             <div class="item">
@@ -33,7 +33,7 @@
             </div>
             
         </div>
-        <input type="hidden" name="profileId" value="{{profileId}}">
+        <input type="hidden" name="id" value="{{user.id}}">
     </form>
 
 </div>

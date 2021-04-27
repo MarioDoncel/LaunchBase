@@ -14,7 +14,7 @@
             </div>
         </div>
     </div>
-    <form action="/admin/profile?_method=PUT" id="editUser" method="post">
+    <form action="/admin/userAdmin/{{user.id}}?_method=PUT" id="editUser" method="post">
         <div class="fields profile">
 
             <div class="item">
@@ -31,16 +31,15 @@
                 onfocus="Validate.clearError(this)">
             </div>
             <div class="item">
-                <input type="checkbox" value="isAdmin" name="isAdmin" 
-                {% if user.isAdmin %}
+                <input type="checkbox" value="is_admin" name="is_admin" 
+                {% if user.is_admin %}
                     checked
-                {% endif %}  
-                disabled>
-                <label for="isAdmin">Administrador</label>
+                {% endif %}  >
+                <label for="is_admin">Administrador</label>
             </div>
             
         </div>
-        <input type="hidden" name="profileId" value="{{profileId}}">
+        <input type="hidden" name="userId" value="{{user.id}}">
     </form>
 
     <form action="/admin/userAdmin/{{user.id}}?_method=DELETE" id="deleteUser" method="post">
