@@ -1,21 +1,19 @@
 const crypto = require('crypto') // modulo de criação de token no NODE
-// const mailer = require('../../lib/mailer')
-// const {hash} = require('bcryptjs')
+const mailer = require('../../lib/mailer')
+const {hash} = require('bcryptjs')
 
-// const Product = require('../models/Product')
-// const User = require('../models/User')
-// const File = require('../models/File')
+
+const User = require('../models/User')
+
 
 module.exports = {
     loginForm(req, res){
         return res.render('admin/session/login')
     },
     login(req,res){
-        // verify user
-        //verify password
         //Initialize req.session
         req.session.userId = req.user.id
-        return res.redirect('/users')
+        return res.redirect('admin/user')
     },
     logout(req, res){
         req.session.destroy()
@@ -67,7 +65,7 @@ module.exports = {
         return res.render('admin/session/password-reset', {token: req.query.token})
     },
     async reset(req,res){
-        const {password, token} = req.body
+        const {password} = req.body
         const user = req.user
         try {
             
@@ -80,13 +78,13 @@ module.exports = {
                 reset_token_expires:""
             })
             // Avisa o usúario que ele tem uma nova senha
-            return res.render("session/login", {
+            return res.render("admin/session/login", {
                 user,
                 success: "Senha atualizada! Faça o seu login."
             })
         } catch (error) {
             console.error(error)
-            return res.render("session/password-reset", {
+            return res.render("admin/session/password-reset", {
                 user: req.body,
                 token,
                 error: "Ocorreu um erro, tente novamente."

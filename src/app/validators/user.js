@@ -42,7 +42,7 @@ async function update(req, res, next) {
         const user = results.rows[0]
 
         //check if password matches
-        //const passed = await compare(password, user.password) // função do bcryptjs
+        // const passed = await compare(password, user.password) // função do bcryptjs
         const passed = password == user.password
         if(!passed) return res.render('admin/users/profile', {
             user:req.body,

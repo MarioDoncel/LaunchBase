@@ -8,14 +8,14 @@ async function login(req, res, next){
     })
     const user = results.rows[0]
 
-    if(!user) return res.render('session/login', {
+    if(!user) return res.render('admin/session/login', {
         user:req.body,
         error:"Usuário não encontrado"
     })
 
     const passed = await compare(password, user.password) // função do bcryptjs
 
-    if(!passed) return res.render('session/login', {
+    if(!passed) return res.render('admin/session/login', {
         user: req.body,
         error: 'Senha incorreta'
     })
@@ -41,7 +41,7 @@ async function forgot(req, res, next) {
     }    
 }
 async function reset(req, res, next) {
-    const {email} = req.body
+    const {email, password, passwordRepeat, token} = req.body
     const results = await User.findOne({
         where: {email}
     })
@@ -53,7 +53,6 @@ async function reset(req, res, next) {
         error:"Usuário não encontrado."
     })
     //check if password matchs
-    const { password, passwordRepeat,token } = req.body
     if (password != passwordRepeat) return res.render('session/password-reset', {
         user:req.body,
         token,
@@ -63,7 +62,7 @@ async function reset(req, res, next) {
     if(token != user.reset_token) return res.render('session/password-reset', {
         user:req.body,
         token,
-        error: 'Token inválido!Solicite uma nova recuperação de senha.'
+        error: 'Token inválido! Solicite uma nova recuperação de senha.'
     })
     // Verificar token expire
     let now = new Date()

@@ -12,7 +12,10 @@ module.exports = {
     },
     async put(req, res) {
         const user = req.body 
-        await User.profileUpdate(user)
+        await User.update(user.id, {
+            name: user.name,
+            email: user.email
+        })
         return res.render("admin/users/profile.njk",{
             user,
             success: 'Cadastro atualizado com sucesso!'

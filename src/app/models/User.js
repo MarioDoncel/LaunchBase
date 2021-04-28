@@ -21,12 +21,12 @@ module.exports = {
                     name,
                     email,
                     password,
-                    is_Admin
+                    is_admin
                 ) VALUES (
                     '${data.name}', 
                     '${data.email}', 
                     '${data.password}', 
-                    '${data.is_Admin}')
+                    '${data.is_admin}')
                 RETURNING id
                 `)
         } catch (error) {
@@ -56,43 +56,25 @@ module.exports = {
         }
         
     },
-    update(data){
+    async update(id, fields){
         try {
-            const query = `
-            UPDATE users SET 
-                name=($1),
-                email=($2),
-                is_admin=($3)
-            WHERE id=($4)
-            `
-            const values = [
-                data.name,
-                data.email,
-                data.is_admin,
-                data.userId
-            ]
+            let query = `UPDATE users SET`
+            Object.keys(fields).map((key, index, array)=> {
+                if((index+1) < array.length) {
+                    query = `${query}
+                    ${key} = '${fields[key]}',
+                    `
+                } else {
+                    //last iteration ... no comma
+                    query = `${query}
+                    ${key} = '${fields[key]}'
+                    WHERE id = ${id}
+                    `
+                }
+            })
+            await db.query(query)
+            return
 
-            return db.query(query, values)
-        } catch (error) {
-            console.log(error)
-        }
-        
-    },
-    profileUpdate(data){
-        try {
-            const query = `
-            UPDATE users SET 
-                name=($1),
-                email=($2)
-            WHERE id=($3)
-            `
-            const values = [
-                data.name,
-                data.email,
-                data.id
-            ]
-
-            return db.query(query, values)
         } catch (error) {
             console.log(error)
         }
