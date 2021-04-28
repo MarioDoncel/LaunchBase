@@ -30,6 +30,8 @@
 }
 .message span{
     color: white;
+    padding: 1rem;
+    text-align: center;
 }
 .message.error{
     background-color: #DC4747;

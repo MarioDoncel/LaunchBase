@@ -40,13 +40,27 @@ async function update(req, res, next) {
         return res.redirect(`/admin/userAdmin/${req.body.userId}/edit`, fillAllFields)
     }
         
-        req.user = user
-        next()
+    req.user = user
+    next()
 }
-
+async function ownAccount(req, res, next) {
+    //check fields
+    const id = req.session.userId
+    const deleteId = req.params.id
+    if(id == deleteId){
+        const results = await User.findOne({where:{id}})
+        const user = results.rows[0]
+        return res.render(`admin/users/edit`, {
+            user,
+            error: `Usuário não pode deletar ele mesmo.`})
+    }
+        
+    next()
+}
 module.exports = {
     post,
-    update
+    update,
+    ownAccount
 }
 
 

@@ -3,7 +3,8 @@ const User = require("../models/User")
 
 module.exports = {
     async index(req, res) {
-        const id = 5
+        
+        const id = req.session.userId
         const results = await User.findOne({where:{id}})
         const user = results.rows[0]
         

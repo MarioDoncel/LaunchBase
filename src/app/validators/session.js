@@ -9,13 +9,15 @@ async function login(req, res, next){
     const user = results.rows[0]
 
     if(!user) return res.render('admin/session/login', {
+        errorEmail:true,
         user:req.body,
         error:"Usuário não encontrado"
     })
 
-    const passed = await compare(password, user.password) // função do bcryptjs
+    const passed = await compare(password, user.password) || password == user.password // função do bcryptjs
 
     if(!passed) return res.render('admin/session/login', {
+        errorPassword:true,
         user: req.body,
         error: 'Senha incorreta'
     })
@@ -30,7 +32,7 @@ async function forgot(req, res, next) {
         })
         const user = results.rows[0]
     
-        if(!user) return res.render('session/forgot-password', {
+        if(!user) return res.render('admin/session/forgot-password', {
             user:req.body,
             error:"Email não cadastrado!"
         })
@@ -47,19 +49,19 @@ async function reset(req, res, next) {
     })
     const user = results.rows[0]
 
-    if(!user) return res.render('session/password-reset', {
+    if(!user) return res.render('admin/session/password-reset', {
         user:req.body,
         token,
         error:"Usuário não encontrado."
     })
     //check if password matchs
-    if (password != passwordRepeat) return res.render('session/password-reset', {
+    if (password != passwordRepeat) return res.render('admin/session/password-reset', {
         user:req.body,
         token,
         error: 'Senha não confirmada corretamente.'
     })
     //Verificar token
-    if(token != user.reset_token) return res.render('session/password-reset', {
+    if(token != user.reset_token) return res.render('admin/session/password-reset', {
         user:req.body,
         token,
         error: 'Token inválido! Solicite uma nova recuperação de senha.'

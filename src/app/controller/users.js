@@ -2,6 +2,7 @@ const db = require('../../config/db')
 const User = require('../models/User')
 const mailer = require('../../lib/mailer')
 const crypto = require('crypto')
+const { hash } = require('bcryptjs')
 
 
 module.exports = {
@@ -15,7 +16,8 @@ module.exports = {
     async post(req, res) {
         const newUser = req.body
         newUser.is_admin ? newUser.is_admin = true : newUser.is_admin = false
-        newUser.password = "123456" // Password padrão na criação de usário pelo ADMIN
+        const password = crypto.randomBytes(4).toString('hex')// Password aleatório na criação de usário pelo ADMIN
+        newUser.password = await hash(password,8)  
         
         let results = await User.create(newUser)
         
@@ -37,13 +39,20 @@ module.exports = {
         // enviar email com link para usuario definir (token)
         await mailer.sendMail({
             to:user.email,
-            from: 'no-reply@launchstore.com.br',
+            from: 'no-reply@foodfy.com.br',
             subject: 'Recuperação de senha',
             html: `<h2>Você foi cadastrado como usuario do FOODFY</h2>
             <p>Por favor acesse o link abaixo para definir sua senha de acesso.</p>
             <p>
                 <a href="http://localhost:3000/admin/user/password-reset?token=${token}" target="_blank">
                     DEFINIR SENHA
+                </a>
+            </p>
+            <p>Ou realize o login com a senha automática abaixo.</p>
+            <p>
+                SENHA : ${password} <br>
+                <a href="http://localhost:3000/admin/user/login" target="_blank">
+                    REALIZAR LOGIN
                 </a>
             </p>
             `
@@ -81,6 +90,6 @@ module.exports = {
     async delete(req, res) {
         const id = req.params.id 
         await User.delete(id)
-        return res.redirect("/admin/userAdmin", {success: 'Exclusão realizada com sucesso!'})
+        return res.redirect("/admin/userAdmin")
     },
 }

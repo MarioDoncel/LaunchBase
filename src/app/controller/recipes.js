@@ -84,6 +84,7 @@ module.exports = {
         return res.render("admin/recipes/edit", {recipe, recipeId, chefs, files})
     },
     async post(req, res) {
+        const userId = req.session.userId
         const keys = Object.keys(req.body)
         //validação de todos os campos preenchidos
         keys.forEach(key => {
@@ -94,7 +95,7 @@ module.exports = {
         // Validação de imagens enviadas
         if(req.files.length == 0) return res.send('Por favor envie pelo menos uma imagem.')
 
-        let results = await Recipe.create(req.body)
+        let results = await Recipe.create(req.body, userId)
         const recipeId = results.rows[0].id
 
         const filesPromise = req.files.map(file =>  File.create({...file}, recipeId)) // criando um array de promises

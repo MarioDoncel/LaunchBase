@@ -15,20 +15,30 @@
 
             <div class="item">
                 <h3>Email</h3>
-                <input type="text" 
+                <input 
+                {% if errorEmail %}
+                    class="error"
+                {% endif %}  
+                type="text" 
                 name="email" 
                 placeholder="Digite seu email" 
-                value="{{user.email}}">
+                value="{{user.email}}"
+                onfocus="this.classList.remove('error')">
             </div>
             <div class="item">
                 <h3>Senha</h3>
-                <input class="error" type="text" name="password" placeholder="Digite a senha">
+                <input 
+                {% if errorPassword %}
+                    class="error"
+                {% endif %}  
+                type="password" name="password" placeholder="Digite a senha" 
+                onfocus="this.classList.remove('error')">
             </div>
 
         </div>
 
         <div class="login">
-            <p>Perdeu a senha?</p>
+            <p onclick="window.location.href ='/admin/user/forgot-password'">Esqueceu a senha?</p>
             <button type="submit" form="loginSession">Acessar</button>
         </div>
         

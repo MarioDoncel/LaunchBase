@@ -14,7 +14,7 @@ module.exports = {
             console.log(error)
         }
     },
-    create(data) {
+    create(data, userId) {
         try {
             const query = `
         INSERT INTO recipes (
@@ -24,8 +24,9 @@ module.exports = {
             preparation,
             information,
             created_at,
-            updated_at
-        ) VALUES ($1,$2,$3,$4,$5,$6,$7)
+            updated_at,
+            user_id
+        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
         RETURNING id
         `
             const values = [
@@ -35,7 +36,8 @@ module.exports = {
                 data.preparation,
                 data.information,
                 date(Date.now()).iso,
-                date(Date.now()).iso
+                date(Date.now()).iso,
+                userId
             ]
 
             return db.query(query, values)

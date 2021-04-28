@@ -13,12 +13,12 @@ module.exports = {
     login(req,res){
         //Initialize req.session
         req.session.userId = req.user.id
-        return res.redirect('admin/user')
+        return res.redirect('/admin/user')
     },
     logout(req, res){
         req.session.destroy()
 
-        return res.redirect('/')
+        return res.redirect('/admin/user/login')
     },
     forgotForm(req, res){
         return res.render('admin/session/forgot-password')
@@ -39,20 +39,20 @@ module.exports = {
             // enviar email com link de recuperação de senha (token)
             await mailer.sendMail({
                 to:user.email,
-                from: 'no-reply@launchstore.com.br',
+                from: 'no-reply@foodfy.com.br',
                 subject: 'Recuperação de senha',
                 html: `<h2>Perdeu a senha?</h2>
                 <p>Não se preocupe, clique no link abaixo para recuperar sua senha</p>
                 <p>
-                    <a href="http://localhost:3000/users/password-reset?token=${token}" target="_blank">
+                    <a href="http://localhost:3000/admin/user/password-reset?token=${token}" target="_blank">
                         RECUPERAR SENHA
                     </a>
                 </p>
                 `
             })
             //avisar o usuario que enviamos o email
-            return res.render("session/forgot-password", {
-                success: "Email enviado, verifique sua caixa de entrada para resetar sua senha"
+            return res.render("admin/session/forgot-password", {
+                success: "Email enviado, verifique sua caixa de entrada para resetar sua senha."
             })
         } catch (error) {
             return res.render("session/forgot-password", {
