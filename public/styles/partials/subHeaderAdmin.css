@@ -1,3 +1,8 @@
+.list .subHeader {
+    margin-top: 3rem;
+    margin-bottom: 72px;
+}
+
 .subHeader {
     display: flex;
     justify-content: space-between;

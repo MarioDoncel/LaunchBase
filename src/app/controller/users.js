@@ -9,8 +9,13 @@ module.exports = {
     async list(req, res) {
         const results = await User.all()
         const users = results.rows
-
-        return res.render("admin/users/users",{users})
+        
+        return res.render("admin/users/users",{
+            users,
+            message:{
+                error: req.flash('error'),
+                success: req.flash('success')
+        }})
         
     },
     async post(req, res) {
@@ -57,18 +62,17 @@ module.exports = {
             </p>
             `
         })
-
-        results = await User.all()
-        const users = results.rows
-
-        return res.render("admin/users/users", {
-            users,
-            success: 'Usuário cadastrado com sucesso!'
-        })
+        req.flash('success', 'Usuário criado com sucesso.')
+        return res.redirect("/admin/userAdmin")
         
     },
     async create(req, res) {
-        return res.render("admin/users/create")
+        return res.render("admin/users/create",{
+            user:req.flash('user')[0],
+            message:{
+                error: req.flash('error'),
+                success: req.flash('success')
+        }})
     },
     async put(req, res) {
         const user = req.body
@@ -78,18 +82,25 @@ module.exports = {
             email: user.email,
             is_admin: user.is_admin
         })
-        return res.redirect("/admin/userAdmin",{success: 'Cadastro atualizado com sucesso!'})
+        req.flash('success', 'Usuário atualizado com sucesso.')
+        return res.redirect("/admin/userAdmin")
         
     },
     async edit(req, res) {
         const id = req.params.id
         const results = await User.findOne({where:{id}})
         const user = results.rows[0]
-        return res.render("admin/users/edit", {user})
+        return res.render("admin/users/edit", {
+            user,
+            message:{
+                error: req.flash('error'),
+                success: req.flash('success')
+        }})
     },
     async delete(req, res) {
         const id = req.params.id 
         await User.delete(id)
+        req.flash('success', 'Usuário excluído com sucesso.')
         return res.redirect("/admin/userAdmin")
     },
 }

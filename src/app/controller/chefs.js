@@ -15,7 +15,12 @@ module.exports = {
             file ? chef.src = `${req.protocol}://${req.headers.host}${file.path.replace('public','')}` : chef.src = 'http://placehold.it/500x500?text=CHEF SEM FOTO'
         }            
 
-        return res.render("admin/chefs/chefs.njk", {chefs})
+        return res.render("admin/chefs/chefs.njk", {
+            chefs, 
+            message:{
+                error: req.flash('error'),
+                success: req.flash('success')
+        }})
         
     },
     async show(req, res) {
@@ -23,7 +28,10 @@ module.exports = {
     
         let results = await Chef.find(chefId)
         const chef = results.rows[0]
-        if(!chef) return res.send ('Chef não encontrado!')
+        if(!chef) {
+            req.flash('error', 'Chef não encontrado.')
+            return res.redirect ('/admin/chefs')
+        }
 
         results = await Chef.recipesByChef(chefId)
         const recipes = results.rows
@@ -46,40 +54,67 @@ module.exports = {
         const file = results.rows[0]
         file ? chef.src = `${req.protocol}://${req.headers.host}${file.path.replace('public','')}` : chef.src = 'http://placehold.it/500x500?text=CHEF SEM FOTO'
             
-        return res.render("admin/chefs/show", {chef, recipes})  
+        return res.render("admin/chefs/show", {
+            chef,
+            recipes,
+            message:{
+                error: req.flash('error'),
+                success: req.flash('success')
+        }})  
     },
     async create(req, res) {
-        return res.render("admin/chefs/create.njk")
+        return res.render("admin/chefs/create.njk", {
+            chef: req.flash('chef')[0],
+            message:{
+                error: req.flash('error'),
+                success: req.flash('success')
+        }})
     },
     async edit(req, res) {
         let chefId = req.params.id
         let results = await Chef.find(chefId)
         const chef = results.rows[0]
-        if(!chef) return res.send ('Chef não encontrado!')
+        if(!chef) {
+            req.flash('error', 'Chef não encontrado.')
+            return res.redirect ('/admin/chefs')
+        }
 
         results = await Chef.file(chef.file_id)
         const file = results.rows[0]
 
         if (file) file.src = `${req.protocol}://${req.headers.host}${file.path.replace('public','')}` 
     
-        return res.render("admin/chefs/edit", {chef, chefId, file})
+        return res.render("admin/chefs/edit", {
+            chef, 
+            chefId, 
+            file, 
+            message:{
+                error: req.flash('error'),
+                success: req.flash('success')
+        }})
     },
     async post(req, res) {
         const keys = Object.keys(req.body)
         //validação de todos os campos preenchidos
         keys.forEach(key => {
             if(req.body[key]==""){
-                return res.send("Todos os campos são obrigatorios")
+                req.flash('error', 'Todos os campos são obrigatorios!')
+                return res.redirect('/admin/chefs/create')
             }
         });
-        if(!req.file) return res.send('Por favor envie uma imagem de avatar.')
+        if(!req.file) {
+            req.flash('error', 'Por favor envie uma imagem de avatar.')
+            req.flash('chef', req.body)
+            return res.redirect('/admin/chefs/create')
+        }
     
         let results = await Chef.create(req.body)
         const chefId = results.rows[0].id
 
         const file = req.file
         await File.avatarFileCreate({...file}, chefId)
-        
+
+        req.flash('success', 'Chef cadastrado com sucesso!')
         return res.redirect('/admin/chefs')
     },
     async put(req, res) {
@@ -87,7 +122,8 @@ module.exports = {
         const keys = Object.keys(req.body)
         for (key of keys) {
             if (req.body[key] == "" && key != "removed_files" ) {
-                return res.send("Por favor preencha todos os campos")
+                req.flash('error', 'Por favor preencha todos os campos!')
+                return res.redirect(`admin/chefs/${chefId}/edit`)
             }
         }
 
@@ -105,21 +141,26 @@ module.exports = {
         
         await Chef.update(req.body)
 
+        req.flash('success', 'Chef atualizado com sucesso!')
         return res.redirect('/admin/chefs')
     },
     async delete(req, res) {
         const chefId = req.body.chefId
         const total_recipes = req.body.total_recipes
     
-        if (total_recipes>0) return res.send("Erro! Chefs que possuem receitas cadastradas não podem ser excluidos!")
+        if (total_recipes>0) {
+            req.flash('error', 'Chefs que possuem receitas cadastradas não podem ser excluidos!')
+            return res.redirect(`admin/chefs/${chefId}/edit`)        
+        }
 
         let results = await Chef.find(chefId)
         const fileId = results.rows[0].file_id
 
-        await File.avatarFileDelete(fileId)
-        
         await Chef.delete(chefId)
+        
+        await File.avatarFileDelete(fileId)
 
+        req.flash('success', 'Chef deletado com sucesso!')
         return res.redirect('/admin/chefs')
         
     }

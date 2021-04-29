@@ -10,8 +10,13 @@
 {% endblock title %}
 
 {% block content %}
-    <main>
-        <h2 id="manage-recipes">Gerenciar receitas</h2>
+    <main class="list">
+        <div class="subHeader">
+            <h2 id="manage-recipes">Gerenciar receitas</h2>
+            <div class="buttons">
+                    <button type="button" onclick="location.href='/admin/recipes/create'">Novo</button>
+            </div>     
+        </div>
         <div class="cards admin">
             {% for recipe in recipes %}
             

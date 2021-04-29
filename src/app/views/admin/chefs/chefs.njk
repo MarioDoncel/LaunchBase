@@ -10,8 +10,13 @@
         {% endblock title %}
 
 {% block content %}
-    <main>
-        <h2 id="manage-chefs">Gerenciar chefs</h2>
+    <main class="list">
+        <div class="subHeader">
+            <h2 id="manage-chefs">Gerenciar chefs</h2>
+            <div class="buttons">
+                    <button type="button" onclick="location.href='/admin/chefs/create'">Novo</button>
+            </div>     
+        </div>
         <div class="cards admin chefs ">
             {% for chef in chefs %}
                 <div class="card admin-index">

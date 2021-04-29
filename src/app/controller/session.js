@@ -8,20 +8,32 @@ const User = require('../models/User')
 
 module.exports = {
     loginForm(req, res){
-        return res.render('admin/session/login')
+        return res.render('admin/session/login',{
+            user: req.flash('user')[0],
+            errorPassword: req.flash('errorPassword')[0],
+            errorEmail: req.flash('errorEmail')[0],
+            message:{
+                error: req.flash('error'),
+                success: req.flash('success')
+        }})
     },
     login(req,res){
         //Initialize req.session
         req.session.userId = req.user.id
+        req.flash('success', "Login efetuado.")
         return res.redirect('/admin/user')
     },
     logout(req, res){
         req.session.destroy()
-
-        return res.redirect('/admin/user/login')
+        return res.redirect('/')
     },
     forgotForm(req, res){
-        return res.render('admin/session/forgot-password')
+        return res.render('admin/session/forgot-password',{
+            user: req.flash('user')[0],
+            message:{
+                error: req.flash('error'),
+                success: req.flash('success')
+        }})
     },
     async forgot(req,res){
         const user = req.user // vem do validator
@@ -51,24 +63,28 @@ module.exports = {
                 `
             })
             //avisar o usuario que enviamos o email
-            return res.render("admin/session/forgot-password", {
-                success: "Email enviado, verifique sua caixa de entrada para resetar sua senha."
-            })
+            req.flash('success', "Email enviado, verifique sua caixa de entrada para resetar sua senha.")
+            return res.redirect("/admin/user/login")
+
         } catch (error) {
-            return res.render("session/forgot-password", {
-                error: "Ocorreu um erro, tente novamente."
-            })
+
+            req.flash('error', "Ocorreu um erro, tente novamente.")
+            return res.redirect("/admin/user/forgot-password")
         }
        
     },
     resetForm(req, res){
-        return res.render('admin/session/password-reset', {token: req.query.token})
+        return res.render('admin/session/password-reset', {
+            token: req.query.token,
+            message:{
+                error: req.flash('error'),
+                success: req.flash('success')
+        }})
     },
     async reset(req,res){
         const {password} = req.body
         const user = req.user
         try {
-            
             // Cria um novo hash de senha
             const passwordHash = await hash(password, 8)
             // Atualiza o usuário
@@ -78,17 +94,12 @@ module.exports = {
                 reset_token_expires:""
             })
             // Avisa o usúario que ele tem uma nova senha
-            return res.render("admin/session/login", {
-                user,
-                success: "Senha atualizada! Faça o seu login."
-            })
+            req.flash('success', "Senha atualizada! Faça o seu login.")
+            return res.redirect("/admin/user/login")
         } catch (error) {
             console.error(error)
-            return res.render("admin/session/password-reset", {
-                user: req.body,
-                token,
-                error: "Ocorreu um erro, tente novamente."
-            })
+            req.flash('error', "Ocorreu um erro, tente novamente.")
+            return res.redirect(`/admin/user/password-reset?token=${req.query.token}`)
         }
         
     }

@@ -1,10 +1,12 @@
-{% if error %}
-    <div class="message error">
-        <span>{{error}}</span>
-    </div>
-{% endif %}
-{% if success %}
-    <div class="message success">
-        <span>{{success}}</span>
-    </div>
+{% if message %}
+    {% if message.error.length > 0 %}
+        <div class="message error">
+            <span>{{message.error}}</span>
+        </div>
+    {% endif %}
+    {% if message.success.length > 0 %}
+        <div class="message success">
+            <span>{{message.success}}</span>
+        </div>
+    {% endif %}
 {% endif %}

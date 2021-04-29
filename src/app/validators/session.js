@@ -8,19 +8,22 @@ async function login(req, res, next){
     })
     const user = results.rows[0]
 
-    if(!user) return res.render('admin/session/login', {
-        errorEmail:true,
-        user:req.body,
-        error:"Usuário não encontrado"
-    })
+    if(!user){
+        req.flash('error', "Usuário não encontrado")
+        req.flash('user', req.body)
+        req.flash('errorEmail', true)
+        return res.redirect('/admin/user/login')
+    }
 
-    const passed = await compare(password, user.password) || password == user.password // função do bcryptjs
+    const passed = await compare(password, user.password) || password == user.password 
 
-    if(!passed) return res.render('admin/session/login', {
-        errorPassword:true,
-        user: req.body,
-        error: 'Senha incorreta'
-    })
+    if(!passed) {
+        req.flash('error', "Senha incorreta.")
+        req.flash('user', req.body)
+        req.flash('errorPassword', true)
+        return res.redirect('/admin/user/login')
+    }
+
     req.user = user
     next()
 }
@@ -32,10 +35,11 @@ async function forgot(req, res, next) {
         })
         const user = results.rows[0]
     
-        if(!user) return res.render('admin/session/forgot-password', {
-            user:req.body,
-            error:"Email não cadastrado!"
-        })
+        if(!user) {
+            req.flash('error', "Email não cadastrado!")
+            req.flash('user', req.body)
+            return res.redirect('/admin/user/forgot-password')
+        }
         req.user = user
         next()
     } catch (error) {
@@ -49,32 +53,33 @@ async function reset(req, res, next) {
     })
     const user = results.rows[0]
 
-    if(!user) return res.render('admin/session/password-reset', {
-        user:req.body,
-        token,
-        error:"Usuário não encontrado."
-    })
+    if(!user) {
+        req.flash('error', "Email não cadastrado!")
+        req.flash('user', req.body)
+        return res.redirect(`/admin/user/password-reset?token=${token}`)   
+    }
     //check if password matchs
-    if (password != passwordRepeat) return res.render('admin/session/password-reset', {
-        user:req.body,
-        token,
-        error: 'Senha não confirmada corretamente.'
-    })
+    if (password != passwordRepeat) {
+        req.flash('error', "Senha não confirmada corretamente.")
+        req.flash('user', req.body)
+        return res.redirect(`/admin/user/password-reset?token=${token}`)   
+    }
+    
     //Verificar token
-    if(token != user.reset_token) return res.render('admin/session/password-reset', {
-        user:req.body,
-        token,
-        error: 'Token inválido! Solicite uma nova recuperação de senha.'
-    })
+    if(token != user.reset_token) {
+        req.flash('error', "Token inválido! Solicite uma nova recuperação de senha.")
+        return res.redirect(`/admin/user/forgot-password`)   
+    }
+
     // Verificar token expire
     let now = new Date()
     now = now.setHours(now.getHours())
 
-    if (now > user.reset_token_expires) return res.render('session/password-reset', {
-        user:req.body,
-        token,
-        error: 'Token expirado!Solicite uma nova recuperação de senha.'
-    })
+    if (now > user.reset_token_expires) {
+        req.flash('error', "Token expirado!Solicite uma nova recuperação de senha.")
+        return res.redirect(`/admin/user/forgot-password`)   
+    }
+    
     req.user = user
     next()
 }

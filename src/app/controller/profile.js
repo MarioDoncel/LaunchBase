@@ -8,7 +8,12 @@ module.exports = {
         const results = await User.findOne({where:{id}})
         const user = results.rows[0]
         
-        return res.render("admin/users/profile.njk", {user})
+        return res.render("admin/users/profile.njk", {
+            user,
+            message:{
+                error: req.flash('error'),
+                success: req.flash('success')
+        }})
         
     },
     async put(req, res) {
@@ -17,10 +22,8 @@ module.exports = {
             name: user.name,
             email: user.email
         })
-        return res.render("admin/users/profile.njk",{
-            user,
-            success: 'Cadastro atualizado com sucesso!'
-        })
-        
+
+        req.flash('success', "Cadastro atualizado com sucesso!")
+        return res.redirect("admin/user")
     },
 }

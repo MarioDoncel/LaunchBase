@@ -22,12 +22,23 @@ module.exports = {
             }            
         }
         
-        return res.render("admin/recipes/recipes", {recipes})
+        return res.render("admin/recipes/recipes", {
+            recipes, 
+            message:{
+                error: req.flash('error'),
+                success: req.flash('success')
+        }})
     },
     async create(req, res) {
         let results =await Recipe.chefOptions()
         const chefs = results.rows
-        return res.render("admin/recipes/create", {chefs})
+        return res.render("admin/recipes/create", {
+            chefs,
+            recipe:req.flash('recipe')[0],
+            message:{
+                error: req.flash('error'),
+                success: req.flash('success')
+            }})
         
     },
     async show(req, res) {
@@ -36,7 +47,10 @@ module.exports = {
         let results = await Recipe.find(recipeId)
         const recipe = results.rows[0]
         
-        if(!recipe) return res.send ('Recipe não encontrado!')
+        if(!recipe) {
+            req.flash('error', 'Receita não encontrada.')
+            return res.redirect ('/admin/recipes')
+        }
 
         recipe.ingredients = formatList(recipe.ingredients)
         recipe.preparation = formatList(recipe.preparation)
@@ -53,7 +67,13 @@ module.exports = {
             src:`${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
         }))
         
-        return res.render("admin/recipes/show", {recipe, files})
+        return res.render("admin/recipes/show", {
+            recipe, 
+            files,
+            message:{
+                error: req.flash('error'),
+                success: req.flash('success')
+            }})
     },
     async edit(req, res) {
         let recipeId = req.params.id
@@ -61,7 +81,10 @@ module.exports = {
         let results = await Recipe.find(recipeId)
         const recipe = results.rows[0]
 
-        if(!recipe) return res.send ('Recipe não encontrado!')
+        if(!recipe) {
+            req.flash('error', 'Receita não encontrada.')
+            return res.redirect ('/admin/recipes')
+        }
             
         recipe.ingredients = formatList(recipe.ingredients)
         recipe.preparation = formatList(recipe.preparation)
@@ -81,7 +104,15 @@ module.exports = {
             src:`${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
         }))
         
-        return res.render("admin/recipes/edit", {recipe, recipeId, chefs, files})
+        return res.render("admin/recipes/edit", {
+            recipe,
+            recipeId, 
+            chefs, 
+            files,
+            message:{
+                error: req.flash('error'),
+                success: req.flash('success')
+            }})
     },
     async post(req, res) {
         const userId = req.session.userId
@@ -89,11 +120,17 @@ module.exports = {
         //validação de todos os campos preenchidos
         keys.forEach(key => {
             if(req.body[key]==""){
-                return res.send("Todos os campos são obrigatorios")
+                req.flash('error', 'Todos os campos são obrigatorios!')
+                req.flash('recipe', req.body)
+                return res.redirect('/admin/recipes/create')
             }
         });
         // Validação de imagens enviadas
-        if(req.files.length == 0) return res.send('Por favor envie pelo menos uma imagem.')
+        if(req.files.length == 0) {
+            req.flash('error', 'Por favor envie uma imagem de avatar.')
+            req.flash('recipe', req.body)
+            return res.redirect('/admin/recipes/create')
+        }
 
         let results = await Recipe.create(req.body, userId)
         const recipeId = results.rows[0].id
@@ -101,7 +138,8 @@ module.exports = {
         const filesPromise = req.files.map(file =>  File.create({...file}, recipeId)) // criando um array de promises
         await Promise.all(filesPromise) //executa cada promisse em sequencia
         
-        return res.redirect('recipes')
+        req.flash('success', 'Receita criada com sucesso.')
+        return res.redirect('/admin/recipes')
     },
     async put(req, res) {
         const recipeId = req.body.recipeId
@@ -109,7 +147,8 @@ module.exports = {
         
         for (key of keys) {
             if (req.body[key] == "" && key != "removed_files" ) {
-                return res.send("Por favor preencha todos os campos")
+                req.flash('error', 'Por favor preencha todos os campos.')
+                return res.redirect(`/admin/recipes/${recipeId}/edit`)
             }
         }
         
@@ -129,7 +168,8 @@ module.exports = {
 
         await Recipe.update(req.body)
 
-        return res.redirect('recipes')
+        req.flash('success', 'Receita atualizada com sucesso.')
+        return res.redirect(`admin/recipes/${recipeId}`)
     },
     async delete(req, res) {
         const recipeId = req.body.recipeId
@@ -142,6 +182,7 @@ module.exports = {
         
         await Recipe.delete(recipeId)
         
+        req.flash('success', 'Receita excluída com sucesso.')
         return res.redirect('recipes')  
     }
 }
