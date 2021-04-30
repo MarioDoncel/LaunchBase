@@ -5,31 +5,18 @@ const { date, formatList } = require('../../lib/utils')
 module.exports = {
     async create({ filename, path }, recipeId) {
         try {
-            const query = `
-            INSERT INTO files (
-                name,
-                path
-            ) VALUES ($1,$2)
-            RETURNING id
-            `
-            const values = [
-                filename,
-                path
-            ]
-
-            let results = await db.query(query, values)
-            const fileId = results.rows[0].id
-
             const queryRecipeFiles = `
             INSERT INTO recipe_files (
                 recipe_id,
-                file_id
-            ) VALUES ($1,$2)
+                name,
+                path
+            ) VALUES ($1,$2,$3)
             RETURNING id
             `
             const valuesRecipeFiles = [
                 recipeId,
-                fileId
+                filename,
+                path
             ]
             return db.query(queryRecipeFiles, valuesRecipeFiles)
         } catch (error) {
@@ -39,30 +26,21 @@ module.exports = {
     async avatarFileCreate({ filename, path }, chefId) {
         try {
             const query = `
-            INSERT INTO files (
+            INSERT INTO chef_files (
                 name,
-                path
-            ) VALUES ($1,$2)
+                path, 
+                chef_id
+            ) VALUES ($1,$2,$3)
             RETURNING id
             `
             const values = [
                 filename,
-                path
-            ]
-
-            let results = await db.query(query, values)
-            const fileId = results.rows[0].id
-
-            const fileQuery = `
-                UPDATE chefs SET 
-                file_id=($1)
-                WHERE id=($2)
-            `
-            const valueFile = [
-                fileId,
+                path,
                 chefId
             ]
-            return db.query(fileQuery, valueFile)
+
+            return db.query(query, values)
+            
         } catch (error) {
             console.log(error)
         }
@@ -70,7 +48,7 @@ module.exports = {
     },
     async delete(id) {
         try {
-            const result = await db.query(`SELECT * FROM files WHERE id = $1`, [id])
+            const result = await db.query(`SELECT * FROM recipe_files WHERE id = $1`, [id])
             const file = result.rows[0]
             fs.unlinkSync(file.path)
         } catch (err) {
@@ -78,12 +56,9 @@ module.exports = {
         }
         try {
             await db.query(`
-            DELETE FROM recipe_files where file_id = $1
+            DELETE FROM recipe_files where id = $1
             `, [id])
 
-            return db.query(`
-            DELETE FROM files where id = $1
-            `, [id])
         } catch (error) {
             console.log(error)
         }
@@ -91,7 +66,7 @@ module.exports = {
     },
     async avatarFileDelete(id) {
         try {
-            const result = await db.query(`SELECT * FROM files WHERE id = $1`, [id])
+            const result = await db.query(`SELECT * FROM chef_files WHERE id = $1`, [id])
             const file = result.rows[0]
             fs.unlinkSync(file.path)
         } catch (err) {
@@ -99,7 +74,7 @@ module.exports = {
         }
         try {
             return db.query(`
-            DELETE FROM files where id = $1
+            DELETE FROM chef_files where id = $1
             `, [id])
         } catch (error) {
             console.log(error)

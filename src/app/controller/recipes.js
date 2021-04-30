@@ -11,11 +11,14 @@ module.exports = {
         for (let index = 0; index < recipes.length; index++) { // inserindo src nas recipes para exibição
             const recipe = recipes[index];
             results = await Recipe.recipeFiles(recipe.id)
+
             const recipeFiles = results.rows //{ id: 1, recipe_id: 12, file_id: 2 } { id: 2, recipe_id: 12, file_id: 3 }
-            const filesPromise = recipeFiles.map( recipeFile => Recipe.files(recipeFile.file_id)) 
-            results = await Promise.all(filesPromise) // resulta em um array de results que para colher resultado usar map ou forEach
-            // results.forEach(results => console.log(results.rows[0]))
-            let files = results.map(results=>results.rows[0])
+            const filesPromise = recipeFiles.map( recipeFile => ({
+                ...recipeFile,
+                src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`
+            }))  
+            let files = await Promise.all(filesPromise) 
+            
             if(files[0]) {
                 let randomIndex = parseInt(Math.random() * files.length) 
                 recipe.src = `${req.protocol}://${req.headers.host}${files[randomIndex].path.replace('public','')}`
@@ -56,17 +59,14 @@ module.exports = {
         recipe.preparation = formatList(recipe.preparation)
 
         results = await Recipe.recipeFiles(recipeId)
-        const recipeFiles = results.rows //{ id: 1, recipe_id: 12, file_id: 2 } { id: 2, recipe_id: 12, file_id: 3 }
+        const recipeFiles = results.rows 
         
-        const filesPromise = recipeFiles.map( recipeFile => Recipe.files(recipeFile.file_id)) 
-        results = await Promise.all(filesPromise) // resulta em um array de results que para colher resultado usar map ou forEach
-        // results.forEach(results => console.log(results.rows[0]))
-        let files = results.map(results=>results.rows[0])
-        files = files.map(file => ({
-            ...file,
-            src:`${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
-        }))
-        
+        const filesPromise = recipeFiles.map( recipeFile => ({
+            ...recipeFile,
+            src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`
+        })) 
+        let files = await Promise.all(filesPromise) 
+               
         return res.render("admin/recipes/show", {
             recipe, 
             files,
@@ -95,14 +95,13 @@ module.exports = {
         results = await Recipe.recipeFiles(recipeId)
         const recipeFiles = results.rows //{ id: 1, recipe_id: 12, file_id: 2 } { id: 2, recipe_id: 12, file_id: 3 }
         
-        const filesPromise = recipeFiles.map( recipeFile => Recipe.files(recipeFile.file_id)) 
-        results = await Promise.all(filesPromise) // resulta em um array de results que para colher resultado usar map ou forEach
-        // results.forEach(results => console.log(results.rows[0]))
-        let files = results.map(results=>results.rows[0])
-        files = files.map(file => ({
-            ...file,
-            src:`${req.protocol}://${req.headers.host}${file.path.replace('public','')}`
-        }))
+        const filesPromise = recipeFiles.map( recipeFile => ({
+            ...recipeFile,
+            src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`
+        })) 
+        
+        let files = await Promise.all(filesPromise) 
+        
         
         return res.render("admin/recipes/edit", {
             recipe,

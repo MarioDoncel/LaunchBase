@@ -10,7 +10,7 @@ module.exports = {
 
         for (let index = 0; index < chefs.length; index++) { // inserindo src para exibição
             const chef = chefs[index];
-            results = await Chef.file(chef.file_id)
+            results = await Chef.file(chef.id)
             const file = results.rows[0] 
             file ? chef.src = `${req.protocol}://${req.headers.host}${file.path.replace('public','')}` : chef.src = 'http://placehold.it/500x500?text=CHEF SEM FOTO'
         }            
@@ -40,17 +40,19 @@ module.exports = {
             const recipe = recipes[index];
             results = await Recipe.recipeFiles(recipe.id)
             const recipeFiles = results.rows //{ id: 1, recipe_id: 12, file_id: 2 } { id: 2, recipe_id: 12, file_id: 3 }
-            const filesPromise = recipeFiles.map( recipeFile => Recipe.files(recipeFile.file_id)) 
-            results = await Promise.all(filesPromise) // resulta em um array de results que para colher resultado usar map ou forEach
+            const filesPromise = recipeFiles.map( recipeFile => ({
+                ...recipeFile,
+                src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`
+            })) 
+            let files = await Promise.all(filesPromise) // resulta em um array de results que para colher resultado usar map ou forEach
             // results.forEach(results => console.log(results.rows[0]))
-            let files = results.map(results=>results.rows[0])
             if(files[0]) {
                 let randomIndex = parseInt(Math.random() * files.length) 
                 recipe.src = `${req.protocol}://${req.headers.host}${files[randomIndex].path.replace('public','')}`
             }            
         }
 
-        results = await Chef.file(chef.file_id)
+        results = await Chef.file(chefId)
         const file = results.rows[0]
         file ? chef.src = `${req.protocol}://${req.headers.host}${file.path.replace('public','')}` : chef.src = 'http://placehold.it/500x500?text=CHEF SEM FOTO'
             
@@ -79,7 +81,7 @@ module.exports = {
             return res.redirect ('/admin/chefs')
         }
 
-        results = await Chef.file(chef.file_id)
+        results = await Chef.file(chef.id)
         const file = results.rows[0]
 
         if (file) file.src = `${req.protocol}://${req.headers.host}${file.path.replace('public','')}` 

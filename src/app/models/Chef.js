@@ -97,7 +97,7 @@ module.exports = {
     file(id){
         try {
             return db.query(`
-            SELECT * FROM files WHERE id = $1
+            SELECT * FROM chef_files WHERE chef_id = $1
             `, [id])
         } catch (error) {
             console.log(error)

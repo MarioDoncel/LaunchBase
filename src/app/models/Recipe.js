@@ -112,7 +112,7 @@ module.exports = {
     files(id) {
         try {
             return db.query(`
-        SELECT * FROM files WHERE id = $1
+        SELECT * FROM recipe_files WHERE id = $1
         `, [id])
         } catch (error) {
             console.log(error)
