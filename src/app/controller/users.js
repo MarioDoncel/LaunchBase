@@ -76,6 +76,7 @@ module.exports = {
     },
     async put(req, res) {
         const user = req.body
+        console.log(user)
         user.is_admin ? user.is_admin = true : user.is_admin = false
         await User.update(user.id, {
             name: user.name,

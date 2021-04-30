@@ -96,12 +96,13 @@ module.exports = {
     async post(req, res) {
         const keys = Object.keys(req.body)
         //validação de todos os campos preenchidos
-        keys.forEach(key => {
+        for (const key of keys) {
             if(req.body[key]==""){
                 req.flash('error', 'Todos os campos são obrigatorios!')
                 return res.redirect('/admin/chefs/create')
             }
-        });
+        } 
+
         if(!req.file) {
             req.flash('error', 'Por favor envie uma imagem de avatar.')
             req.flash('chef', req.body)
@@ -123,8 +124,13 @@ module.exports = {
         for (key of keys) {
             if (req.body[key] == "" && key != "removed_files" ) {
                 req.flash('error', 'Por favor preencha todos os campos!')
-                return res.redirect(`admin/chefs/${chefId}/edit`)
+                return res.redirect(`/admin/chefs/${chefId}/edit`)
             }
+        }
+        
+        if(req.body.removed_files && !req.file){
+            req.flash('error', 'Por favor envie um avatar!')
+            return res.redirect(`/admin/chefs/${chefId}/edit`)
         }
 
         if(req.body.removed_files){
@@ -133,6 +139,7 @@ module.exports = {
             const fileId = removedFiles[0]
             await File.avatarFileDelete(fileId)
         }
+        
 
         if (req.file) {
             const file = req.file

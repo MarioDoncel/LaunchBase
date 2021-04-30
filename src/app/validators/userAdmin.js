@@ -44,7 +44,6 @@ async function update(req, res, next) {
         return res.redirect(`/admin/userAdmin/${req.params.id}/edit`)
     }
         
-    req.user = user
     next()
 }
 async function ownAccount(req, res, next) {

@@ -117,14 +117,16 @@ module.exports = {
     async post(req, res) {
         const userId = req.session.userId
         const keys = Object.keys(req.body)
-        //validação de todos os campos preenchidos
-        keys.forEach(key => {
+        // validação de todos os campos preenchidos - Utilizado FOR OF ao inves do FOREACH para
+        // que o processo de verificação seja sincrono 
+        for (const key of keys) {
             if(req.body[key]==""){
                 req.flash('error', 'Todos os campos são obrigatorios!')
                 req.flash('recipe', req.body)
                 return res.redirect('/admin/recipes/create')
             }
-        });
+        }
+
         // Validação de imagens enviadas
         if(req.files.length == 0) {
             req.flash('error', 'Por favor envie uma imagem de avatar.')
@@ -169,7 +171,7 @@ module.exports = {
         await Recipe.update(req.body)
 
         req.flash('success', 'Receita atualizada com sucesso.')
-        return res.redirect(`admin/recipes/${recipeId}`)
+        return res.redirect(`/admin/recipes/${recipeId}`)
     },
     async delete(req, res) {
         const recipeId = req.body.recipeId
