@@ -136,10 +136,7 @@ module.exports = {
         }
 
         if(req.body.removed_files){
-            const removedFiles = req.body.removed_files.split(",")
-            removedFiles.pop()
-            const fileId = removedFiles[0]
-            await File.avatarFileDelete(fileId)
+            await File.avatarFileDelete(chefId)
         }
         
 
@@ -162,13 +159,10 @@ module.exports = {
             return res.redirect(`admin/chefs/${chefId}/edit`)        
         }
 
-        let results = await Chef.find(chefId)
-        const fileId = results.rows[0].file_id
-
+        await File.avatarFileDelete(chefId)
+        
         await Chef.delete(chefId)
         
-        await File.avatarFileDelete(fileId)
-
         req.flash('success', 'Chef deletado com sucesso!')
         return res.redirect('/admin/chefs')
         

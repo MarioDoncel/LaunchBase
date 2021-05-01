@@ -177,8 +177,8 @@ module.exports = {
 
         let results = await Recipe.recipeFiles(recipeId)
         const recipeFiles = results.rows
-
-        const filesPromise = recipeFiles.map(file =>  File.delete(file.file_id)) // criando um array de promises
+        
+        const filesPromise = recipeFiles.map(file =>  File.delete(file.id)) // criando um array de promises
         await Promise.all(filesPromise) //executa cada promisse em sequencia
         
         await Recipe.delete(recipeId)

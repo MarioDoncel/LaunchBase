@@ -66,19 +66,19 @@ module.exports = {
     },
     async avatarFileDelete(id) {
         try {
-            const result = await db.query(`SELECT * FROM chef_files WHERE id = $1`, [id])
+            const result = await db.query(`SELECT * FROM chef_files WHERE chef_id = $1`, [id])
             const file = result.rows[0]
             fs.unlinkSync(file.path)
         } catch (err) {
             console.error(err)
         }
-        try {
-            return db.query(`
-            DELETE FROM chef_files where id = $1
-            `, [id])
-        } catch (error) {
-            console.log(error)
-        }
+        // try {
+        //     return db.query(`
+        //     DELETE FROM chef_files where id = $1
+        //     `, [id])
+        // } catch (error) {
+        //     console.log(error)
+        // }
 
     },
 }
