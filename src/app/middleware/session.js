@@ -2,11 +2,11 @@ const Recipe = require("../models/Recipe")
 const User = require("../models/User")
 
 function onlyUsers(req, res, next) {
-    if(!req.session.userId)
-        return res.render('admin/session/login', {
-            user:req.body,
-            error:"Permitido apenas para usuários, faça o login."
-        })
+    if(!req.session.userId) {
+        req.flash('error', "Permitido apenas para usuários, faça o login.")
+        return res.redirect('/admin/user/login')
+    }
+       
     next()
 }
 
@@ -19,12 +19,13 @@ async function onlyAdmin(req, res, next) {
     const id = req.session.userId
     const results = await User.findOne({where:{id}})
     const user = results.rows[0]
-    if(!user.is_admin)
-    return res.render('admin/users/profile', {
-        user,
-        error: `Acesso negado! \n
-        Permitido apenas a usuários administradores.`
-    })
+    if(!user.is_admin) {
+        req.flash('error', `Acesso negado! \n
+        Permitido apenas a usuários administradores.`)
+        return res.redirect('/admin/user')
+    }
+    
+    
     next()
 }
 async function ownRecipeOrAdmin(req, res, next) {
@@ -39,11 +40,8 @@ async function ownRecipeOrAdmin(req, res, next) {
 
     if(!user.is_admin){
         if (id != recipe.user_id) 
-        return res.render('admin/users/profile', {
-            user,
-            error: `Acesso negado! \n
-            Permitido apenas a usuários administradores ou titulares da receita.`
-        })
+        req.flash('error', "Usuário não pode editar receitas de outro usuário.")
+        return res.redirect('/admin/user')
     }
     
     next()
