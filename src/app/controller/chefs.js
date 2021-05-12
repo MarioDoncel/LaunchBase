@@ -1,7 +1,6 @@
-const data = require("../../../data.json")
 const Recipe = require('../models/Recipe')
 const Chef = require("../models/Chef")
-const File = require('../models/File')
+const FileChef = require('../models/FileChef')
 
 module.exports = {
     async index(req, res) {
@@ -110,61 +109,71 @@ module.exports = {
             req.flash('chef', req.body)
             return res.redirect('/admin/chefs/create')
         }
-    
-        let results = await Chef.create(req.body)
-        const chefId = results.rows[0].id
+        const { name } = req.body
+        const created_at = date(Date.now()).iso
+        const chef_id = await Chef.create({name, created_at})
+        
 
         const file = req.file
-        await File.avatarFileCreate({...file}, chefId)
+        const { filename, path } = file
+        await FileChef.create({filename, path, chef_id})
 
         req.flash('success', 'Chef cadastrado com sucesso!')
         return res.redirect('/admin/chefs')
     },
     async put(req, res) {
-        const chefId = req.body.chefId
+        const chef_id = req.body.chefId
         const keys = Object.keys(req.body)
         for (key of keys) {
             if (req.body[key] == "" && key != "removed_files" ) {
                 req.flash('error', 'Por favor preencha todos os campos!')
-                return res.redirect(`/admin/chefs/${chefId}/edit`)
+                return res.redirect(`/admin/chefs/${chef_id}/edit`)
             }
         }
         
         if(req.body.removed_files && !req.file){
             req.flash('error', 'Por favor envie um avatar!')
-            return res.redirect(`/admin/chefs/${chefId}/edit`)
+            return res.redirect(`/admin/chefs/${chef_id}/edit`)
         }
 
         if(req.body.removed_files){
-            await File.avatarFileDelete(chefId)
+            try {
+                const file = await FileChef.find({where:{chef_id}})
+                fs.unlinkSync(file.path)
+            } catch (err) {
+                console.error(err)
+            }
+            await FileChef.delete(chef_id)
         }
         
-
         if (req.file) {
             const file = req.file
-            await File.avatarFileCreate({...file}, chefId)
+            const { filename, path } = file
+            await FileChef.create({filename, path, chef_id})
         }
         
-        await Chef.update(req.body)
+        const { name } = req.body
+        await Chef.update( chef_id, {name})
 
         req.flash('success', 'Chef atualizado com sucesso!')
         return res.redirect('/admin/chefs')
     },
     async delete(req, res) {
-        const chefId = req.body.chefId
+        const chef_id = req.body.chefId
         const total_recipes = req.body.total_recipes
     
         if (total_recipes>0) {
             req.flash('error', 'Chefs que possuem receitas cadastradas não podem ser excluidos!')
-            return res.redirect(`admin/chefs/${chefId}/edit`)        
+            return res.redirect(`admin/chefs/${chef_id}/edit`)        
         }
 
-        await File.avatarFileDelete(chefId)
+        const file = await FileChef.find({where:{chef_id}})
+        fs.unlinkSync(file.path)
+        await FileChef.delete(chef_id)
         
-        await Chef.delete(chefId)
+        await Chef.delete(chef_id)
         
         req.flash('success', 'Chef deletado com sucesso!')
         return res.redirect('/admin/chefs')
-        
     }
 }

@@ -1,6 +1,17 @@
 const db = require('../../config/db')
 const fs = require('fs')
 const { date, formatList } = require('../../lib/utils')
+const Base = require('./Base')
+
+Base.init({table: 'recipe_files'})
+
+const File = {
+    ...Base
+}
+
+
+module.exports = File
+
 
 module.exports = {
     async create({ filename, path }, recipeId) {
