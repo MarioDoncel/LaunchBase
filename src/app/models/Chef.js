@@ -1,7 +1,6 @@
 const db = require('../../config/db')
 const Base = require('./Base')
 
-
 Base.init({table: 'chefs'})
 
 const Chef =  { 
@@ -18,7 +17,6 @@ const Chef =  {
         } catch (error) {
             console.log(error)
         }
-            
     },
     find(id){
         try {
@@ -46,7 +44,6 @@ const Chef =  {
         } catch (error) {
             console.log(error)
         }
-        
     },
     file(id){
         try {
@@ -56,14 +53,13 @@ const Chef =  {
         } catch (error) {
             console.log(error)
         }
-       
     }
 }
 
-
-
 module.exports = Chef
-const {date}= require('../../lib/utils')
+
+
+// const {date}= require('../../lib/utils')
 
 
 // module.exports = {

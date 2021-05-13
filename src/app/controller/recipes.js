@@ -1,5 +1,5 @@
 const Recipe = require('../models/Recipe')
-const File = require('../models/File')
+const FileRecipe = require('../models/FileRecipe')
 const {date, formatList, addSRC} = require('../../lib/utils')
 
 
@@ -114,7 +114,7 @@ module.exports = {
             }})
     },
     async post(req, res) {
-        const userId = req.session.userId
+        const user_id = req.session.userId
         const keys = Object.keys(req.body)
         // validação de todos os campos preenchidos - Utilizado FOR OF ao inves do FOREACH para
         // que o processo de verificação seja sincrono 
@@ -132,11 +132,30 @@ module.exports = {
             req.flash('recipe', req.body)
             return res.redirect('/admin/recipes/create')
         }
+        const {
+            chef_id,
+            title,
+            ingredients,
+            preparation,
+            information
+        } = req.body
 
-        let results = await Recipe.create(req.body, userId)
-        const recipeId = results.rows[0].id
+        const recipe_id = await Recipe.create({
+            chef_id,
+            title,
+            ingredients,
+            preparation,
+            information, 
+            created_at:date(Date.now()).iso,
+            updated_at:date(Date.now()).iso,
+            user_id
+        })
 
-        const filesPromise = req.files.map(file =>  File.create({...file}, recipeId)) // criando um array de promises
+        const filesPromise = req.files.map(file =>  FileRecipe.create({
+            filename:file.filename,
+            path:file.path,
+            recipe_id
+        })) // criando um array de promises
         await Promise.all(filesPromise) //executa cada promisse em sequencia
         
         req.flash('success', 'Receita criada com sucesso.')
@@ -154,8 +173,11 @@ module.exports = {
         }
         
         if (req.files.length != 0) {
-            const newFilesPromisse = req.files.map(file => 
-                File.create({...file}, recipeId))
+            const newFilesPromisse = req.files.map(file => FileRecipe.create({
+                    filename:file.filename,
+                    path:file.path,
+                    recipe_id
+                }))
                 await Promise.all(newFilesPromisse)
         }
 
@@ -163,25 +185,50 @@ module.exports = {
             const removedFiles = req.body.removed_files.split(",")
             removedFiles.pop()
 
-            const removedFilesPromise = removedFiles.map(id => File.delete(id))
+            const unlinkPromise = removedFiles.map(async id => {
+                const file = await FileRecipe.findOne({where:{id}})
+                return fs.unlinkSync(file.path)
+            })
+            await Promise.all(unlinkPromise)
+                
+            const removedFilesPromise = removedFiles.map(id => FileRecipe.delete({where:{id}}))
             await Promise.all(removedFilesPromise)
         }
 
-        await Recipe.update(req.body)
+        const {
+            chef_id,
+            title,
+            ingredients,
+            preparation,
+            information
+        } = req.body
+
+        await Recipe.update(recipeId, {
+            chef_id,
+            title,
+            ingredients,
+            preparation,
+            information
+        })
 
         req.flash('success', 'Receita atualizada com sucesso.')
         return res.redirect(`/admin/recipes/${recipeId}`)
     },
     async delete(req, res) {
-        const recipeId = req.body.recipeId
+        const recipe_id = req.body.recipeId
 
-        let results = await Recipe.recipeFiles(recipeId)
-        const recipeFiles = results.rows
+        const recipeFiles = await FileRecipe.findAll({where:{recipe_id}})
+
+        const unlinkPromise = recipeFiles.map(async file => {
+            const file = await FileRecipe.findOne({where:{id:file.id}})
+            return fs.unlinkSync(file.path)
+        })
+        await Promise.all(unlinkPromise)
         
-        const filesPromise = recipeFiles.map(file =>  File.delete(file.id)) // criando um array de promises
+        const filesPromise = recipeFiles.map(file =>  FileRecipe.delete(file.id)) // criando um array de promises
         await Promise.all(filesPromise) //executa cada promisse em sequencia
         
-        await Recipe.delete(recipeId)
+        await Recipe.delete(recipe_id)
         
         req.flash('success', 'Receita excluída com sucesso.')
         return res.redirect('recipes')  
