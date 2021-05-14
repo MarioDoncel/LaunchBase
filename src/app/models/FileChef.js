@@ -5,12 +5,12 @@ const Base = require('./Base')
 
 Base.init({table: 'chef_files'})
 
-const File = {
+const FileChef = {
     ...Base
 }
 
 
-module.exports = File
+module.exports = FileChef
 
 
 // module.exports = {

@@ -2,7 +2,7 @@ const db = require('../../config/db')
 const Base = require('./Base')
 
 
-Base.init({table: 'chefs'})
+Base.init({table: 'recipes'})
 
 const Recipe =  { 
     ...Base,
@@ -30,6 +30,21 @@ const Recipe =  {
         } catch (error) {
             console.log(error)
         }
+    },
+    filterRecipes(filter) {
+        try {
+            const query = `
+        SELECT recipes.title, recipes.id, recipes.updated_at, 
+        chefs.name AS chef_name 
+        FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
+        WHERE recipes.title ILIKE '%${filter}%' or chefs.name ILIKE '%${filter}%'
+        ORDER BY updated_at DESC
+        `
+            return db.query(query)
+        } catch (error) {
+            console.log(error)
+        }
+
     },
     chefOptions() {
         try {

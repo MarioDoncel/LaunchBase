@@ -7,8 +7,7 @@ const { hash } = require('bcryptjs')
 
 module.exports = {
     async list(req, res) {
-        const results = await User.all()
-        const users = results.rows
+        const users = await User.findAll()
         
         return res.render("admin/users/users",{
             users,
@@ -19,17 +18,23 @@ module.exports = {
         
     },
     async post(req, res) {
+        let {
+            name,
+            email,
+            is_admin
+        } = req.body
         const newUser = req.body
         newUser.is_admin ? newUser.is_admin = true : newUser.is_admin = false
         const password = crypto.randomBytes(4).toString('hex')// Password aleatório na criação de usário pelo ADMIN
-        newUser.password = await hash(password,8)  
+        const passwordHash = await hash(password,8)  
         
-        let results = await User.create(newUser)
+        const id = await User.create({
+            name,
+            email,
+            password: passwordHash,
+            is_admin})
         
-        const id = results.rows[0].id
-        
-        results = await User.findOne({where:{id}})
-        const user = results.rows[0]
+        const user = await User.findOne({where:{id}})
         
         // criar token
         const token = crypto.randomBytes(20).toString('hex')
@@ -75,13 +80,12 @@ module.exports = {
         }})
     },
     async put(req, res) {
-        const user = req.body
-        console.log(user)
-        user.is_admin ? user.is_admin = true : user.is_admin = false
-        await User.update(user.id, {
-            name: user.name,
-            email: user.email,
-            is_admin: user.is_admin
+        const {name,email,is_admin, id} = req.body
+        is_admin ? is_admin = true : is_admin = false
+        await User.update(id, {
+            name,
+            email,
+            is_admin
         })
         req.flash('success', 'Usuário atualizado com sucesso.')
         return res.redirect("/admin/userAdmin")
@@ -89,8 +93,7 @@ module.exports = {
     },
     async edit(req, res) {
         const id = req.params.id
-        const results = await User.findOne({where:{id}})
-        const user = results.rows[0]
+        const user = await User.findOne({where:{id}})
         return res.render("admin/users/edit", {
             user,
             message:{
