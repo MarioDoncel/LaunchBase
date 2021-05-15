@@ -24,4 +24,16 @@ module.exports = {
         });
         return list
     },
+    async filesWithSrc(recipe) {
+            const recipeFiles = await FileRecipe.findAll({where: {id:recipe.id}})
+            const filesPromise = recipeFiles.map( recipeFile => ({
+                ...recipeFile,
+                src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`
+            }))  
+            return await Promise.all(filesPromise) 
+    },
+    randomFile(item, files){
+        const randomIndex = parseInt(Math.random() * files.length) 
+        item.src = `${req.protocol}://${req.headers.host}${files[randomIndex].path.replace('public','')}`
+    }
 }

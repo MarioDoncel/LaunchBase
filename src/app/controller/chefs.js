@@ -1,6 +1,7 @@
 const Recipe = require('../models/Recipe')
 const Chef = require("../models/Chef")
 const FileChef = require('../models/FileChef')
+const {date, filesWithSrc, randomFile} = require('../../lib/utils')
 
 module.exports = {
     async index(req, res) {
@@ -34,16 +35,16 @@ module.exports = {
 
         for (let index = 0; index < recipes.length; index++) { // inserindo src nas recipes para exibição
             const recipe = recipes[index];
-            const recipeFiles = await FileRecipe.findAll({where: {id:recipe.id}})
-            const filesPromise = recipeFiles.map( recipeFile => ({
-                ...recipeFile,
-                src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`
-            }))  
-            const files = await Promise.all(filesPromise) 
+            const files = await filesWithSrc(recipe)
+            // const recipeFiles = await FileRecipe.findAll({where: {id:recipe.id}})
+            // const filesPromise = recipeFiles.map( recipeFile => ({
+            //     ...recipeFile,
+            //     src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`
+            // }))  
+            // const files = await Promise.all(filesPromise) 
             
             if(files[0]) {
-                let randomIndex = parseInt(Math.random() * files.length) 
-                recipe.src = `${req.protocol}://${req.headers.host}${files[randomIndex].path.replace('public','')}`
+                randomFile(recipe, files)
             }            
         }
 
