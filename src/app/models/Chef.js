@@ -13,7 +13,8 @@ const Chef =  {
             GROUP BY chefs.id
             ORDER BY chefs.name ASC
             `
-            return db.query(query)
+            const results = db.query(query)
+            return results.rows
         } catch (error) {
             console.log(error)
         }
@@ -26,7 +27,8 @@ const Chef =  {
             WHERE chefs.id = $1
             GROUP BY chefs.id
             `
-            return db.query(query,[id])
+            const results = db.query(query,[id])
+            return results.rows[0]
         } catch (error) {
             console.log(error)
         }
@@ -40,20 +42,21 @@ const Chef =  {
             FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
             WHERE chefs.id = ${id}
             `
-            return db.query(query)
+            const results = db.query(query)
+            return results.rows
         } catch (error) {
             console.log(error)
         }
     },
-    file(id){
-        try {
-            return db.query(`
-            SELECT * FROM chef_files WHERE chef_id = $1
-            `, [id])
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    // file(id){
+    //     try {
+    //         return db.query(`
+    //         SELECT * FROM chef_files WHERE chef_id = $1
+    //         `, [id])
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
 }
 
 module.exports = Chef

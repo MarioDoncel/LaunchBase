@@ -1,26 +1,24 @@
 const Recipe = require('../models/Recipe')
+const Chef = require('../models/Chef')
 const FileRecipe = require('../models/FileRecipe')
 const {date, formatList, addSRC} = require('../../lib/utils')
 
 
 module.exports = {
     async index(req, res) {
-        let results = await Recipe.all()
-        const recipes = results.rows
+        const recipes = await Recipe.all()
         
         for (let index = 0; index < recipes.length; index++) { // inserindo src nas recipes para exibição
             const recipe = recipes[index];
-            results = await Recipe.recipeFiles(recipe.id)
-
-            const recipeFiles = results.rows //{ id: 1, recipe_id: 12, file_id: 2 } { id: 2, recipe_id: 12, file_id: 3 }
+            const recipeFiles = await FileRecipe.findAll({where: {id:recipe.id}})
             const filesPromise = recipeFiles.map( recipeFile => ({
                 ...recipeFile,
                 src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`
             }))  
-            let files = await Promise.all(filesPromise) 
+            const files = await Promise.all(filesPromise) 
             
             if(files[0]) {
-                let randomIndex = parseInt(Math.random() * files.length) 
+                const randomIndex = parseInt(Math.random() * files.length) 
                 recipe.src = `${req.protocol}://${req.headers.host}${files[randomIndex].path.replace('public','')}`
             }            
         }
@@ -33,8 +31,7 @@ module.exports = {
         }})
     },
     async create(req, res) {
-        let results =await Recipe.chefOptions()
-        const chefs = results.rows
+        const chefs = await Chef.findAll()
         return res.render("admin/recipes/create", {
             chefs,
             recipe:req.flash('recipe')[0],
@@ -45,10 +42,9 @@ module.exports = {
         
     },
     async show(req, res) {
-        let recipeId = req.params.id
+        const recipeId = req.params.id
     
-        let results = await Recipe.find(recipeId)
-        const recipe = results.rows[0]
+        const recipe = await Recipe.find(recipeId)
         
         if(!recipe) {
             req.flash('error', 'Receita não encontrada.')
@@ -58,14 +54,12 @@ module.exports = {
         recipe.ingredients = formatList(recipe.ingredients)
         recipe.preparation = formatList(recipe.preparation)
 
-        results = await Recipe.recipeFiles(recipeId)
-        const recipeFiles = results.rows 
-        
+        const recipeFiles = await FileRecipe.findAll({where: {id:recipe.id}})
         const filesPromise = recipeFiles.map( recipeFile => ({
             ...recipeFile,
             src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`
         })) 
-        let files = await Promise.all(filesPromise) 
+        const files = await Promise.all(filesPromise) 
                
         return res.render("admin/recipes/show", {
             recipe, 
@@ -78,8 +72,7 @@ module.exports = {
     async edit(req, res) {
         let recipeId = req.params.id
 
-        let results = await Recipe.find(recipeId)
-        const recipe = results.rows[0]
+        const recipe = await Recipe.find(recipeId)
 
         if(!recipe) {
             req.flash('error', 'Receita não encontrada.')
@@ -89,18 +82,15 @@ module.exports = {
         recipe.ingredients = formatList(recipe.ingredients)
         recipe.preparation = formatList(recipe.preparation)
     
-        results = await Recipe.chefOptions()
-        const chefs = results.rows
+        const chefs = await Chef.findAll()
 
-        results = await Recipe.recipeFiles(recipeId)
-        const recipeFiles = results.rows //{ id: 1, recipe_id: 12, file_id: 2 } { id: 2, recipe_id: 12, file_id: 3 }
-        
+        const recipeFiles = await FileRecipe.findAll({where: {id:recipe.id}})
         const filesPromise = recipeFiles.map( recipeFile => ({
             ...recipeFile,
             src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`
         })) 
         
-        let files = await Promise.all(filesPromise) 
+        const files = await Promise.all(filesPromise) 
         
         
         return res.render("admin/recipes/edit", {

@@ -13,7 +13,8 @@ const Recipe =  {
             FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id) 
             ORDER BY created_at DESC
             `
-            return db.query(query)
+            const results = db.query(query)
+            return results.rows
         } catch (error) {
             console.log(error)
         }
@@ -26,7 +27,8 @@ const Recipe =  {
         FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
         WHERE recipes.id = $1
         `
-            return db.query(query, [id])
+            const results = db.query(query, [id])
+            return results.rows[0]
         } catch (error) {
             console.log(error)
         }
@@ -40,19 +42,20 @@ const Recipe =  {
         WHERE recipes.title ILIKE '%${filter}%' or chefs.name ILIKE '%${filter}%'
         ORDER BY updated_at DESC
         `
-            return db.query(query)
+            const results = db.query(query)
+            return results.rows
         } catch (error) {
             console.log(error)
         }
 
     },
-    chefOptions() {
-        try {
-            return db.query(`SELECT name, id FROM chefs`)
-        } catch (error) {
-            console.log(error)
-        }
-    },
+    // chefOptions() {
+    //     try {
+    //         return db.query(`SELECT name, id FROM chefs`)
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // },
 }
 
 module.exports = Recipe
