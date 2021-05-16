@@ -1,3 +1,5 @@
+const FileRecipe = require('../app/models/FileRecipe')
+
 module.exports = {
     date(timestamp){
         const date = new Date(timestamp)
@@ -25,7 +27,9 @@ module.exports = {
         return list
     },
     async filesWithSrc(recipe) {
+        console.log(recipe.id)
             const recipeFiles = await FileRecipe.findAll({where: {id:recipe.id}})
+        console.log(recipeFiles)
             const filesPromise = recipeFiles.map( recipeFile => ({
                 ...recipeFile,
                 src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`
@@ -35,5 +39,16 @@ module.exports = {
     randomFile(item, files){
         const randomIndex = parseInt(Math.random() * files.length) 
         item.src = `${req.protocol}://${req.headers.host}${files[randomIndex].path.replace('public','')}`
+    },
+    checkAllFields(body) {
+        const keys = Object.keys(body)
+        for (key of keys) {
+            if (body[key] == "") {
+                return {
+                    user:body,
+                    error: 'Por favor preencha todos os campos!'
+                }
+            }
+        }
     }
 }

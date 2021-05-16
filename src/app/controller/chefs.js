@@ -89,20 +89,6 @@ module.exports = {
         }})
     },
     async post(req, res) {
-        const keys = Object.keys(req.body)
-        //validação de todos os campos preenchidos
-        for (const key of keys) {
-            if(req.body[key]==""){
-                req.flash('error', 'Todos os campos são obrigatorios!')
-                return res.redirect('/admin/chefs/create')
-            }
-        } 
-
-        if(!req.file) {
-            req.flash('error', 'Por favor envie uma imagem de avatar.')
-            req.flash('chef', req.body)
-            return res.redirect('/admin/chefs/create')
-        }
         const { name } = req.body
         const created_at = date(Date.now()).iso
         const chef_id = await Chef.create({name, created_at})
@@ -117,18 +103,18 @@ module.exports = {
     },
     async put(req, res) {
         const chef_id = req.body.chefId
-        const keys = Object.keys(req.body)
-        for (key of keys) {
-            if (req.body[key] == "" && key != "removed_files" ) {
-                req.flash('error', 'Por favor preencha todos os campos!')
-                return res.redirect(`/admin/chefs/${chef_id}/edit`)
-            }
-        }
+        // const keys = Object.keys(req.body)
+        // for (key of keys) {
+        //     if (req.body[key] == "" && key != "removed_files" ) {
+        //         req.flash('error', 'Por favor preencha todos os campos!')
+        //         return res.redirect(`/admin/chefs/${chef_id}/edit`)
+        //     }
+        // }
         
-        if(req.body.removed_files && !req.file){
-            req.flash('error', 'Por favor envie um avatar!')
-            return res.redirect(`/admin/chefs/${chef_id}/edit`)
-        }
+        // if(req.body.removed_files && !req.file){
+        //     req.flash('error', 'Por favor envie um avatar!')
+        //     return res.redirect(`/admin/chefs/${chef_id}/edit`)
+        // }
 
         if(req.body.removed_files){
             try {

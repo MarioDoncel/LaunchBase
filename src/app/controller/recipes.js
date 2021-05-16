@@ -110,23 +110,23 @@ module.exports = {
     },
     async post(req, res) {
         const user_id = req.session.userId
-        const keys = Object.keys(req.body)
+        // const keys = Object.keys(req.body)
         // validação de todos os campos preenchidos - Utilizado FOR OF ao inves do FOREACH para
         // que o processo de verificação seja sincrono 
-        for (const key of keys) {
-            if(req.body[key]==""){
-                req.flash('error', 'Todos os campos são obrigatorios!')
-                req.flash('recipe', req.body)
-                return res.redirect('/admin/recipes/create')
-            }
-        }
+        // for (const key of keys) {
+        //     if(req.body[key]==""){
+        //         req.flash('error', 'Todos os campos são obrigatorios!')
+        //         req.flash('recipe', req.body)
+        //         return res.redirect('/admin/recipes/create')
+        //     }
+        // }
 
         // Validação de imagens enviadas
-        if(req.files.length == 0) {
-            req.flash('error', 'Por favor envie uma imagem de avatar.')
-            req.flash('recipe', req.body)
-            return res.redirect('/admin/recipes/create')
-        }
+        // if(req.files.length == 0) {
+        //     req.flash('error', 'Por favor envie uma imagem de avatar.')
+        //     req.flash('recipe', req.body)
+        //     return res.redirect('/admin/recipes/create')
+        // }
         const {
             chef_id,
             title,
@@ -158,14 +158,14 @@ module.exports = {
     },
     async put(req, res) {
         const recipeId = req.body.recipeId
-        const keys = Object.keys(req.body)
+        // const keys = Object.keys(req.body)
         
-        for (key of keys) {
-            if (req.body[key] == "" && key != "removed_files" ) {
-                req.flash('error', 'Por favor preencha todos os campos.')
-                return res.redirect(`/admin/recipes/${recipeId}/edit`)
-            }
-        }
+        // for (key of keys) {
+        //     if (req.body[key] == "" && key != "removed_files" ) {
+        //         req.flash('error', 'Por favor preencha todos os campos.')
+        //         return res.redirect(`/admin/recipes/${recipeId}/edit`)
+        //     }
+        // }
         
         if (req.files.length != 0) {
             const newFilesPromisse = req.files.map(file => FileRecipe.create({
@@ -215,8 +215,8 @@ module.exports = {
         const recipeFiles = await FileRecipe.findAll({where:{recipe_id}})
 
         const unlinkPromise = recipeFiles.map(async file => {
-            const file = await FileRecipe.findOne({where:{id:file.id}})
-            return fs.unlinkSync(file.path)
+            const recipeFile = await FileRecipe.findOne({where:{id:file.id}})
+            return fs.unlinkSync(recipeFile.path)
         })
         await Promise.all(unlinkPromise)
         

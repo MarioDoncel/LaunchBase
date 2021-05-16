@@ -1,24 +1,12 @@
 const User = require('../models/User')
-// const {compare} = require('bcryptjs')
-
-function checkAllFields(body) {
-    const keys = Object.keys(body)
-    for (key of keys) {
-        if (body[key] == "") {
-            return {
-                user:body,
-                error: 'Por favor preencha todos os campos!'
-            }
-        }
-    }
-}
+const {checkAllFields} = require('../../lib/utils')
 
 async function post(req, res, next) {
     //check if has all fields
     const fillAllFields = checkAllFields(req.body)
     if(fillAllFields){
         req.flash('error', fillAllFields.error)
-        req.flash('user', req.body)
+        req.flash('user', fillAllFields.user)
         return res.redirect('/admin/userAdmin/create')
     }
     //check if user exists [email, cpf_cnpj]
