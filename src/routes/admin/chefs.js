@@ -10,8 +10,8 @@ routes.get("/create", onlyAdmin, chefs.create); // Mostrar formulário de nova c
 routes.get("/:id", onlyUsers, chefs.show); // Exibir detalhes de uma chef
 routes.get("/:id/edit", onlyAdmin, chefs.edit); // Mostrar formulário de edição de chef
 
-routes.post("/", chefValidator.post, multer.single('avatar'), chefs.post); // Cadastrar novo chef
-routes.put("/", chefValidator.update, multer.single('avatar'), chefs.put); // Editar um chef
+routes.post("/", multer.single('avatar'), chefValidator.post,  chefs.post); // Cadastrar novo chef
+routes.put("/", multer.single('avatar'), chefValidator.update,  chefs.put); // Editar um chef
 routes.delete("/", chefs.delete); // Deletar um chef
 
 module.exports = routes

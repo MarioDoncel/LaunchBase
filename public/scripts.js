@@ -10,7 +10,7 @@ for (const link of menuLinks) {
 }
 
 
-const recipesAdmin = document.querySelectorAll('.card.admin-index')
+const recipesAdmin = document.querySelectorAll('.list.recipes .card.admin-index')
 recipesAdmin.forEach(card => {
     const id = card.lastChild.previousElementSibling.value
     card.addEventListener('click', () => location.href=`/admin/recipes/${id}` )

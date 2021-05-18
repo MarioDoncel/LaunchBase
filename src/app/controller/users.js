@@ -24,7 +24,7 @@ module.exports = {
             is_admin
         } = req.body
         const newUser = req.body
-        newUser.is_admin ? newUser.is_admin = true : newUser.is_admin = false
+        is_admin ? is_admin = true : is_admin = false
         const password = crypto.randomBytes(4).toString('hex')// Password aleatório na criação de usário pelo ADMIN
         const passwordHash = await hash(password,8)  
         
@@ -50,7 +50,7 @@ module.exports = {
         await mailer.sendMail({
             to:user.email,
             from: 'no-reply@foodfy.com.br',
-            subject: 'Recuperação de senha',
+            subject: 'CONTA CRIADA',
             html: `<h2>Você foi cadastrado como usuario do FOODFY</h2>
             <p>Por favor acesse o link abaixo para definir sua senha de acesso.</p>
             <p>
@@ -80,7 +80,7 @@ module.exports = {
         }})
     },
     async put(req, res) {
-        const {name,email,is_admin, id} = req.body
+        let {name,email,is_admin, id} = req.body
         is_admin ? is_admin = true : is_admin = false
         await User.update(id, {
             name,

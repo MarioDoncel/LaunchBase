@@ -1,7 +1,9 @@
 const Recipe = require('../models/Recipe')
+const FileRecipe = require('../models/FileRecipe')
 const Chef = require("../models/Chef")
 const FileChef = require('../models/FileChef')
-const {date, filesWithSrc, randomFile} = require('../../lib/utils')
+const fs = require('fs')
+const {date} = require('../../lib/utils')
 
 module.exports = {
     async index(req, res) {
@@ -22,9 +24,9 @@ module.exports = {
         
     },
     async show(req, res) {
-        const chef_Id = req.params.id
+        const chef_id = req.params.id
     
-        const chef = await Chef.find(chef_Id)
+        const chef = await Chef.find(chef_id)
     
         if(!chef) {
             req.flash('error', 'Chef não encontrado.')
@@ -35,16 +37,16 @@ module.exports = {
 
         for (let index = 0; index < recipes.length; index++) { // inserindo src nas recipes para exibição
             const recipe = recipes[index];
-            const files = await filesWithSrc(recipe)
-            // const recipeFiles = await FileRecipe.findAll({where: {id:recipe.id}})
-            // const filesPromise = recipeFiles.map( recipeFile => ({
-            //     ...recipeFile,
-            //     src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`
-            // }))  
-            // const files = await Promise.all(filesPromise) 
+            const recipeFiles = await FileRecipe.findAll({where: {recipe_id:recipe.id}})
+            const filesPromise = recipeFiles.map( recipeFile => ({
+                ...recipeFile,
+                src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`
+            }))  
+            const files = await Promise.all(filesPromise) 
             
             if(files[0]) {
-                randomFile(recipe, files)
+                const randomIndex = parseInt(Math.random() * files.length) 
+                recipe.src = `${req.protocol}://${req.headers.host}${files[randomIndex].path.replace('public','')}`
             }            
         }
 
@@ -81,7 +83,7 @@ module.exports = {
     
         return res.render("admin/chefs/edit", {
             chef, 
-            chefId, 
+            chefId:chef_id, 
             file, 
             message:{
                 error: req.flash('error'),
@@ -96,40 +98,28 @@ module.exports = {
 
         const file = req.file
         const { filename, path } = file
-        await FileChef.create({filename, path, chef_id})
+        await FileChef.create({name:filename, path, chef_id})
 
         req.flash('success', 'Chef cadastrado com sucesso!')
         return res.redirect('/admin/chefs')
     },
     async put(req, res) {
         const chef_id = req.body.chefId
-        // const keys = Object.keys(req.body)
-        // for (key of keys) {
-        //     if (req.body[key] == "" && key != "removed_files" ) {
-        //         req.flash('error', 'Por favor preencha todos os campos!')
-        //         return res.redirect(`/admin/chefs/${chef_id}/edit`)
-        //     }
-        // }
         
-        // if(req.body.removed_files && !req.file){
-        //     req.flash('error', 'Por favor envie um avatar!')
-        //     return res.redirect(`/admin/chefs/${chef_id}/edit`)
-        // }
-
         if(req.body.removed_files){
             try {
-                const file = await FileChef.find({where:{chef_id}})
+                const file = await FileChef.findOne({where:{chef_id}})
                 fs.unlinkSync(file.path)
+                await FileChef.delete(file.id)
             } catch (err) {
                 console.error(err)
             }
-            await FileChef.delete(chef_id)
         }
         
         if (req.file) {
             const file = req.file
             const { filename, path } = file
-            await FileChef.create({filename, path, chef_id})
+            await FileChef.create({name:filename, path, chef_id})
         }
         
         const { name } = req.body
@@ -147,9 +137,9 @@ module.exports = {
             return res.redirect(`admin/chefs/${chef_id}/edit`)        
         }
 
-        const file = await FileChef.find({where:{chef_id}})
+        const file = await FileChef.findOne({where:{chef_id}})
         fs.unlinkSync(file.path)
-        await FileChef.delete(chef_id)
+        await FileChef.delete(file.id)
         
         await Chef.delete(chef_id)
         

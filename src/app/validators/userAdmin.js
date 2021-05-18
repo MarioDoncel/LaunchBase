@@ -11,10 +11,9 @@ async function post(req, res, next) {
     }
     //check if user exists [email, cpf_cnpj]
     let { email } = req.body
-    const results = await User.findOne({
+    const user = await User.findOne({
         where: { email }
     })
-    const user = results.rows[0]
 
     if (user) {
         req.flash('error', 'Usuário já cadastrado!')

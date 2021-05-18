@@ -3,10 +3,9 @@ const {compare} = require('bcryptjs')
 
 async function login(req, res, next){
     const {email, password} = req.body
-    const results = await User.findOne({
+    const user = await User.findOne({
         where: {email}
     })
-    const user = results.rows[0]
 
     if(!user){
         req.flash('error', "Usuário não encontrado")
@@ -30,10 +29,9 @@ async function login(req, res, next){
 async function forgot(req, res, next) {
     const {email} = req.body
     try {
-        const results = await User.findOne({
+        const user = await User.findOne({
             where: {email}
         })
-        const user = results.rows[0]
     
         if(!user) {
             req.flash('error', "Email não cadastrado!")
@@ -48,10 +46,9 @@ async function forgot(req, res, next) {
 }
 async function reset(req, res, next) {
     const {email, password, passwordRepeat, token} = req.body
-    const results = await User.findOne({
+    const user = await User.findOne({
         where: {email}
     })
-    const user = results.rows[0]
 
     if(!user) {
         req.flash('error', "Email não cadastrado!")
