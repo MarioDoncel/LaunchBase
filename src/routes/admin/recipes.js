@@ -10,8 +10,8 @@ routes.get("/create", onlyUsers, recipes.create); // Mostrar formulário de nova
 routes.get("/:id", onlyUsers, recipes.show); // Exibir detalhes de uma receita
 routes.get("/:id/edit", onlyUsers, ownRecipeOrAdmin, recipes.edit); // Mostrar formulário de edição de receita
 
-routes.post("/", recipeValidator.post, multer.array('images', 5), recipes.post); // Cadastrar nova receita
-routes.put("/", recipeValidator.update, multer.array('images', 5), recipes.put); // Editar uma receita
+routes.post("/",  multer.array('images', 5), recipeValidator.post, recipes.post); // Cadastrar nova receita
+routes.put("/",  multer.array('images', 5), recipeValidator.update, recipes.put); // Editar uma receita
 routes.delete("/", recipes.delete); // Deletar uma receita
 
 module.exports = routes

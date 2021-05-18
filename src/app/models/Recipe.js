@@ -6,20 +6,20 @@ Base.init({table: 'recipes'})
 
 const Recipe =  { 
     ...Base,
-    all() {
+    async all() {
         try {
             const query = `
             SELECT recipes.*, chefs.name AS chef_name
             FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id) 
             ORDER BY created_at DESC
             `
-            const results = db.query(query)
+            const results =await db.query(query)
             return results.rows
         } catch (error) {
             console.log(error)
         }
     },
-    find(id) {
+    async find(id) {
         try {
             const query = `
         SELECT recipes.*, 
@@ -27,13 +27,13 @@ const Recipe =  {
         FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
         WHERE recipes.id = $1
         `
-            const results = db.query(query, [id])
+            const results =await db.query(query, [id])
             return results.rows[0]
         } catch (error) {
             console.log(error)
         }
     },
-    filterRecipes(filter) {
+    async filterRecipes(filter) {
         try {
             const query = `
         SELECT recipes.title, recipes.id, recipes.updated_at, 
@@ -42,7 +42,7 @@ const Recipe =  {
         WHERE recipes.title ILIKE '%${filter}%' or chefs.name ILIKE '%${filter}%'
         ORDER BY updated_at DESC
         `
-            const results = db.query(query)
+            const results = await db.query(query)
             return results.rows
         } catch (error) {
             console.log(error)

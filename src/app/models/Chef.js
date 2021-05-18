@@ -5,7 +5,7 @@ Base.init({table: 'chefs'})
 
 const Chef =  { 
     ...Base,
-    all(){
+    async all(){
         try {
             const query = `
             SELECT chefs.*, count(recipes) AS total_recipes
@@ -13,13 +13,13 @@ const Chef =  {
             GROUP BY chefs.id
             ORDER BY chefs.name ASC
             `
-            const results = db.query(query)
+            const results = await db.query(query)
             return results.rows
         } catch (error) {
             console.log(error)
         }
     },
-    find(id){
+    async find(id){
         try {
             const query = `
             SELECT chefs.*, count(recipes) AS total_recipes
@@ -27,14 +27,14 @@ const Chef =  {
             WHERE chefs.id = $1
             GROUP BY chefs.id
             `
-            const results = db.query(query,[id])
+            const results = await db.query(query,[id])
             return results.rows[0]
         } catch (error) {
             console.log(error)
         }
         
     },
-    recipesByChef(id){
+    async recipesByChef(id){
         try {
             const query=`
             SELECT recipes.title, recipes.id, 
@@ -42,7 +42,7 @@ const Chef =  {
             FROM recipes LEFT JOIN chefs ON (recipes.chef_id = chefs.id)
             WHERE chefs.id = ${id}
             `
-            const results = db.query(query)
+            const results = await db.query(query)
             return results.rows
         } catch (error) {
             console.log(error)

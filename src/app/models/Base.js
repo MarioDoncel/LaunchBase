@@ -72,7 +72,6 @@ const Base = {
             ${updateItems.join(',')}
             WHERE id = ${id}
             `
-       
         return db.query(query)
         } catch (error) {
             console.error(error)

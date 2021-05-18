@@ -1,4 +1,5 @@
 const User = require('../models/User')
+const {compare} = require("bcryptjs")
 const {checkAllFields} = require('../../lib/utils')
 
 async function update(req, res, next) {
@@ -11,8 +12,7 @@ async function update(req, res, next) {
         
     const {id, password} = req.body
     
-    const results = await User.findOne({where: {id}})
-    const user = results.rows[0]
+    const user = await User.find(id)
 
     //check if password matches
     const passed = await compare(password, user.password) ||  password == user.password

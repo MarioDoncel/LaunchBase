@@ -26,10 +26,8 @@ module.exports = {
         });
         return list
     },
-    async filesWithSrc(recipe) {
-        console.log(recipe.id)
-            const recipeFiles = await FileRecipe.findAll({where: {id:recipe.id}})
-        console.log(recipeFiles)
+    async filesWithSrc(recipe, req) {
+            const recipeFiles = await FileRecipe.findAll({where: {recipe_id:recipe.id}})
             const filesPromise = recipeFiles.map( recipeFile => ({
                 ...recipeFile,
                 src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`

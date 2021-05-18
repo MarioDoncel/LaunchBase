@@ -10,7 +10,7 @@ async function post(req, res, next) {
         return res.redirect('/admin/recipes/create')
     }
     // Validação de imagens enviadas
-    if(req.files.length == 0) {
+    if(req.files.length == 0 || !req.files) {
         req.flash('error', 'Por favor envie uma imagem de avatar.')
         req.flash('recipe', req.body)
         return res.redirect('/admin/recipes/create')

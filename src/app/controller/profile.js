@@ -5,8 +5,7 @@ module.exports = {
     async index(req, res) {
         
         const id = req.session.userId
-        const results = await User.findOne({where:{id}})
-        const user = results.rows[0]
+        const user = await User.findOne({where:{id}})
         
         return res.render("admin/users/profile.njk", {
             user,
@@ -24,6 +23,6 @@ module.exports = {
         })
 
         req.flash('success', "Cadastro atualizado com sucesso!")
-        return res.redirect("admin/user")
+        return res.redirect("/admin/user")
     },
 }

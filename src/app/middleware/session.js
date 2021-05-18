@@ -17,8 +17,8 @@ function isLogged(req, res, next) {
 }
 async function onlyAdmin(req, res, next) {
     const id = req.session.userId
-    const results = await User.findOne({where:{id}})
-    const user = results.rows[0]
+    const user = await User.findOne({where:{id}})
+
     if(!user.is_admin) {
         req.flash('error', `Acesso negado! \n
         Permitido apenas a usuários administradores.`)
@@ -32,11 +32,9 @@ async function ownRecipeOrAdmin(req, res, next) {
     const id = req.session.userId
     const recipeId = req.params.id
 
-    let results = await User.findOne({where:{id}})
-    const user = results.rows[0]
+    const user = await User.findOne({where:{id}})
 
-    results = await  Recipe.find(recipeId)
-    const recipe = results.rows[0]
+    const recipe = await  Recipe.find(recipeId)
 
     if(!user.is_admin){
         if (id != recipe.user_id) 

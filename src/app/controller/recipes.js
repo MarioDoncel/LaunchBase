@@ -1,6 +1,7 @@
 const Recipe = require('../models/Recipe')
 const Chef = require('../models/Chef')
 const FileRecipe = require('../models/FileRecipe')
+const fs = require('fs')
 const {date, formatList, filesWithSrc, randomFile} = require('../../lib/utils')
 
 
@@ -10,18 +11,16 @@ module.exports = {
 
         for (let index = 0; index < recipes.length; index++) { // inserindo src nas recipes para exibição
             const recipe = recipes[index];
-            const files = await filesWithSrc(recipe)
-            // const recipeFiles = await FileRecipe.findAll({where: {id:recipe.id}})
-            // const filesPromise = recipeFiles.map( recipeFile => ({
-            //     ...recipeFile,
-            //     src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`
-            // }))  
-            // const files = await Promise.all(filesPromise) 
+            const recipeFiles = await FileRecipe.findAll({where: {recipe_id:recipe.id}})
+            const filesPromise = recipeFiles.map( recipeFile => ({
+                ...recipeFile,
+                src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`
+            }))  
+            const files = await Promise.all(filesPromise) 
             
             if(files[0]) {
-                randomFile(recipe, files)
-                // const randomIndex = parseInt(Math.random() * files.length) 
-                // recipe.src = `${req.protocol}://${req.headers.host}${files[randomIndex].path.replace('public','')}`
+                const randomIndex = parseInt(Math.random() * files.length) 
+                recipe.src = `${req.protocol}://${req.headers.host}${files[randomIndex].path.replace('public','')}`
             }            
         }
         
@@ -56,14 +55,12 @@ module.exports = {
         recipe.ingredients = formatList(recipe.ingredients)
         recipe.preparation = formatList(recipe.preparation)
 
-        const files = await filesWithSrc(recipe)
-        // const recipeFiles = await FileRecipe.findAll({where: {id:recipe.id}})
-        
-        // const filesPromise = recipeFiles.map( recipeFile => ({
-        //     ...recipeFile,
-        //     src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`
-        // })) 
-        // const files = await Promise.all(filesPromise) 
+        const recipeFiles = await FileRecipe.findAll({where: {recipe_id:recipe.id}})
+        const filesPromise = recipeFiles.map( recipeFile => ({
+            ...recipeFile,
+            src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`
+        }))  
+        const files = await Promise.all(filesPromise) 
                
         return res.render("admin/recipes/show", {
             recipe, 
@@ -88,15 +85,12 @@ module.exports = {
     
         const chefs = await Chef.findAll()
 
-        const files = await filesWithSrc(recipe)
-        // const recipeFiles = await FileRecipe.findAll({where: {id:recipe.id}})
-        // const filesPromise = recipeFiles.map( recipeFile => ({
-        //     ...recipeFile,
-        //     src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`
-        // })) 
-        
-        // const files = await Promise.all(filesPromise) 
-        
+        const recipeFiles = await FileRecipe.findAll({where: {recipe_id:recipe.id}})
+        const filesPromise = recipeFiles.map( recipeFile => ({
+            ...recipeFile,
+            src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`
+        }))  
+        const files = await Promise.all(filesPromise)
         
         return res.render("admin/recipes/edit", {
             recipe,
@@ -110,23 +104,6 @@ module.exports = {
     },
     async post(req, res) {
         const user_id = req.session.userId
-        // const keys = Object.keys(req.body)
-        // validação de todos os campos preenchidos - Utilizado FOR OF ao inves do FOREACH para
-        // que o processo de verificação seja sincrono 
-        // for (const key of keys) {
-        //     if(req.body[key]==""){
-        //         req.flash('error', 'Todos os campos são obrigatorios!')
-        //         req.flash('recipe', req.body)
-        //         return res.redirect('/admin/recipes/create')
-        //     }
-        // }
-
-        // Validação de imagens enviadas
-        // if(req.files.length == 0) {
-        //     req.flash('error', 'Por favor envie uma imagem de avatar.')
-        //     req.flash('recipe', req.body)
-        //     return res.redirect('/admin/recipes/create')
-        // }
         const {
             chef_id,
             title,
@@ -147,7 +124,7 @@ module.exports = {
         })
 
         const filesPromise = req.files.map(file =>  FileRecipe.create({
-            filename:file.filename,
+            name:file.filename,
             path:file.path,
             recipe_id
         })) // criando um array de promises
@@ -157,19 +134,11 @@ module.exports = {
         return res.redirect('/admin/recipes')
     },
     async put(req, res) {
-        const recipeId = req.body.recipeId
-        // const keys = Object.keys(req.body)
-        
-        // for (key of keys) {
-        //     if (req.body[key] == "" && key != "removed_files" ) {
-        //         req.flash('error', 'Por favor preencha todos os campos.')
-        //         return res.redirect(`/admin/recipes/${recipeId}/edit`)
-        //     }
-        // }
+        const recipe_id = req.body.recipeId
         
         if (req.files.length != 0) {
             const newFilesPromisse = req.files.map(file => FileRecipe.create({
-                    filename:file.filename,
+                    name:file.filename,
                     path:file.path,
                     recipe_id
                 }))
@@ -186,7 +155,7 @@ module.exports = {
             })
             await Promise.all(unlinkPromise)
                 
-            const removedFilesPromise = removedFiles.map(id => FileRecipe.delete({where:{id}}))
+            const removedFilesPromise = removedFiles.map(id => FileRecipe.delete(id))
             await Promise.all(removedFilesPromise)
         }
 
@@ -198,7 +167,7 @@ module.exports = {
             information
         } = req.body
 
-        await Recipe.update(recipeId, {
+        await Recipe.update(recipe_id, {
             chef_id,
             title,
             ingredients,
@@ -207,7 +176,7 @@ module.exports = {
         })
 
         req.flash('success', 'Receita atualizada com sucesso.')
-        return res.redirect(`/admin/recipes/${recipeId}`)
+        return res.redirect(`/admin/recipes/${recipe_id}`)
     },
     async delete(req, res) {
         const recipe_id = req.body.recipeId
