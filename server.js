@@ -1,6 +1,6 @@
 const express = require('express')
 const nunjucks = require('nunjucks')
-const routes = require('./routes')
+const routes = require('./src/routes/routes')
 const methodOverride = require("method-override")
 const session = require('./src/config/session')
 const flash = require('connect-flash');

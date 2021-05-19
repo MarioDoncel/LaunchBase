@@ -25,7 +25,6 @@ async function onlyAdmin(req, res, next) {
         return res.redirect('/admin/user')
     }
     
-    
     next()
 }
 async function ownRecipeOrAdmin(req, res, next) {
@@ -35,13 +34,12 @@ async function ownRecipeOrAdmin(req, res, next) {
     const user = await User.findOne({where:{id}})
 
     const recipe = await  Recipe.find(recipeId)
-
     if(!user.is_admin){
-        if (id != recipe.user_id) 
+        if (id != recipe.user_id) {
         req.flash('error', "Usuário não pode editar receitas de outro usuário.")
         return res.redirect('/admin/user')
+        }
     }
-    
     next()
 }
 module.exports = {

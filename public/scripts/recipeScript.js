@@ -1,7 +1,5 @@
 const hideShow = document.querySelectorAll("span")
 
-
-console.log(hideShow[0])
 hideShow.forEach(item => {
     item.addEventListener('click', () => {
         item.classList.toggle('active')

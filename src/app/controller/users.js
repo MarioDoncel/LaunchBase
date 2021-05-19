@@ -23,7 +23,6 @@ module.exports = {
             email,
             is_admin
         } = req.body
-        const newUser = req.body
         is_admin ? is_admin = true : is_admin = false
         const password = crypto.randomBytes(4).toString('hex')// Password aleatório na criação de usário pelo ADMIN
         const passwordHash = await hash(password,8)  

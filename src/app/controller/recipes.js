@@ -2,7 +2,7 @@ const Recipe = require('../models/Recipe')
 const Chef = require('../models/Chef')
 const FileRecipe = require('../models/FileRecipe')
 const fs = require('fs')
-const {date, formatList, filesWithSrc, randomFile} = require('../../lib/utils')
+const {date, formatList} = require('../../lib/utils')
 
 
 module.exports = {
@@ -39,8 +39,7 @@ module.exports = {
             message:{
                 error: req.flash('error'),
                 success: req.flash('success')
-            }})
-        
+            }})   
     },
     async show(req, res) {
         const recipeId = req.params.id
@@ -111,6 +110,7 @@ module.exports = {
             preparation,
             information
         } = req.body
+        console.log(ingredients)
 
         const recipe_id = await Recipe.create({
             chef_id,

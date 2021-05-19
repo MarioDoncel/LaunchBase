@@ -58,7 +58,6 @@ const Base = {
         } catch (error) {
             console.error(error)
         }
-        
     },
     update(id, fields) {
         try {
@@ -77,11 +76,9 @@ const Base = {
             console.error(error)
         }
         
-        
     },
     delete(id){ 
-        return db.query(`DELETE FROM ${this.table} WHERE id = ${id}`)
-        
+        return db.query(`DELETE FROM ${this.table} WHERE id = ${id}`)  
     }
 }
 

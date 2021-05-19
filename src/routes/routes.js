@@ -1,11 +1,11 @@
 const express = require('express')
 const routes = express.Router()
 
-const publicRoutes = require('./src/routes/public')
-const adminRecipesRoutes = require('./src/routes/admin/recipes')
-const adminChefsRoutes = require('./src/routes/admin/chefs')
-const userAdminRoutes = require('./src/routes/admin/userAdmin')
-const userRoutes = require('./src/routes/admin/user')
+const publicRoutes = require('./public')
+const adminRecipesRoutes = require('./admin/recipes')
+const adminChefsRoutes = require('./admin/chefs')
+const userAdminRoutes = require('./admin/userAdmin')
+const userRoutes = require('./admin/user')
 
 // ========== Public Area ==========
 routes.use('/', publicRoutes)

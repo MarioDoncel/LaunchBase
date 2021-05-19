@@ -2,14 +2,14 @@ const Recipe = require('../models/Recipe')
 const FileRecipe = require('../models/FileRecipe')
 const Chef = require("../models/Chef")
 const FileChef = require("../models/FileChef")
-const {formatList, filesWithSrc, randomFile} = require('../../lib/utils')
+const {formatList} = require('../../lib/utils')
 
 module.exports = {
     async index(req, res) {
-        const recipesFeatured = await Recipe.findAll()
+        const recipes = await Recipe.findAll()
         //Inserindo src na recipe
-        for (let index = 0; index < recipesFeatured.length; index++) { 
-            const recipe = recipesFeatured[index];
+        for (let index = 0; index < recipes.length; index++) { 
+            const recipe = recipes[index];
             const recipeFiles = await FileRecipe.findAll({where: {recipe_id:recipe.id}})
             const filesPromise = recipeFiles.map( recipeFile => ({
                 ...recipeFile,
@@ -22,7 +22,10 @@ module.exports = {
                 recipe.src = `${req.protocol}://${req.headers.host}${files[randomIndex].path.replace('public','')}`
             }       
         }
-        
+        const recipesFeatured = []
+        for (let index = 0; index < 6; index++) {
+            recipesFeatured.push(recipes[index])
+        }
         return res.render("public/index", {recipesFeatured})
     },
     //======== Recipes========
