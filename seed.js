@@ -42,12 +42,12 @@ async function createChefs() {
     const chefsPromise = chefs.map(chef => Chef.create(chef))
     chefsIds = await Promise.all(chefsPromise)
 
-    for (const id of chefsIds) {
-        await FileChef.create({
-            name:faker.image.image(), 
-            path:`public/images/placeholder.png`, 
-            chef_id:id})
-    }
+    // for (const id of chefsIds) {
+    //     await FileChef.create({
+    //         name:faker.image.image(), 
+    //         path:`public/images/placeholder.png`, 
+    //         chef_id:id})
+    // }
 
     return chefsIds
 }
@@ -70,16 +70,16 @@ async function createRecipes(usersIds, chefsIds) {
     const recipesPromise = recipes.map(recipe => Recipe.create(recipe))
     recipesIds = await Promise.all(recipesPromise)
 
-    let files = []
-    while (files.length < 25) {
-        files.push({
-            name:faker.image.image(),
-            path:`public/images/placeholder.png`,
-            recipe_id: recipesIds[Math.floor(Math.random() * recipesIds.length)],
-        })
-    }
-    const filesPromise = files.map(file => FileRecipe.create(file))
-    filesIds = await Promise.all(filesPromise)
+    // let files = []
+    // while (files.length < 25) {
+    //     files.push({
+    //         name:faker.image.image(),
+    //         path:`public/images/placeholder.png`,
+    //         recipe_id: recipesIds[Math.floor(Math.random() * recipesIds.length)],
+    //     })
+    // }
+    // const filesPromise = files.map(file => FileRecipe.create(file))
+    // filesIds = await Promise.all(filesPromise)
 
 }
 

@@ -11,18 +11,23 @@
     
 }
 html,body {
-    height: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
-    position: relative;
-    top: 1rem;
+    
+    
     width: 75%;
     margin: 0 auto;
-    min-height: 100%;
     max-width: 940px;
    
     
+}
+
+.favorites{
+    margin-bottom: 1rem;
 }
 /* HEADER */
 

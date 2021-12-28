@@ -6,6 +6,7 @@ const {formatList} = require('../../lib/utils')
 
 module.exports = {
     async index(req, res) {
+        
         const recipes = await Recipe.findAll()
         //Inserindo src na recipe
         for (let index = 0; index < recipes.length; index++) { 
@@ -69,14 +70,14 @@ module.exports = {
     },
     async searchResults(req,res) {
         let {filter} = req.query
-        let results = await Public.filterRecipes(filter)
-        const recipes = results.rows
+        const recipes = await Recipe.filterRecipes(filter)
+        
         if(!recipes) return res.send ('Receita não encontrado!')
         
         for (let index = 0; index < recipes.length; index++) { // inserindo src nas recipes para exibição
             const recipe = recipes[index];
-            results = await Recipe.recipeFiles(recipe.id)
-            const recipeFiles = results.rows 
+            const recipe_id = recipe.id
+            const recipeFiles = await FileRecipe.findAll({Where: {recipe_id }})
             const filesPromise = recipeFiles.map( recipeFile => ({
                 ...recipeFile,
                 src:`${req.protocol}://${req.headers.host}${recipeFile.path.replace('public','')}`

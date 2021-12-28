@@ -1,6 +1,6 @@
 --Database
 DROP DATABASE IF EXISTS foodfy
-CREATE DATABASE foodfy
+CREATE DATABASE IF NOT EXISTS foodfy
 
 -- TABLES
 CREATE TABLE "chefs" (
@@ -77,7 +77,12 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER set_timestamp
-BEFORE UPDATE ON products
+BEFORE UPDATE ON users
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_timestamp();
+
+CREATE TRIGGER set_timestamp
+BEFORE UPDATE ON recipes
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 

@@ -7,6 +7,7 @@ const {date} = require('../../lib/utils')
 
 module.exports = {
     async index(req, res) {
+        
         const chefs = await Chef.all()
 
         for (let index = 0; index < chefs.length; index++) { // inserindo src para exibição
@@ -25,7 +26,6 @@ module.exports = {
     },
     async show(req, res) {
         const chef_id = req.params.id
-    
         const chef = await Chef.find(chef_id)
     
         if(!chef) {
@@ -46,7 +46,7 @@ module.exports = {
             
             if(files[0]) {
                 const randomIndex = parseInt(Math.random() * files.length) 
-                recipe.src = `${req.protocol}://${req.headers.host}${files[randomIndex].path.replace('public','')}`
+                recipe.src = files[randomIndex].name.includes('http') ? `${files[randomIndex].name}` : `${req.protocol}://${req.headers.host}${files[randomIndex].path.replace('public','')}`
             }            
         }
 
@@ -111,6 +111,8 @@ module.exports = {
                 const file = await FileChef.findOne({where:{chef_id}})
                 fs.unlinkSync(file.path)
                 await FileChef.delete(file.id)
+             
+               
             } catch (err) {
                 console.error(err)
             }
@@ -138,8 +140,10 @@ module.exports = {
         }
 
         const file = await FileChef.findOne({where:{chef_id}})
-        fs.unlinkSync(file.path)
-        await FileChef.delete(file.id)
+        if(file){
+            fs.unlinkSync(file.path)
+            await FileChef.delete(file.id)
+        }
         
         await Chef.delete(chef_id)
         
