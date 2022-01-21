@@ -1,11 +1,11 @@
 const faker = require('faker')
-const {hash} = require('bcryptjs')
+const { hash } = require('bcryptjs')
 const User = require('./src/app/models/User')
 const Chef = require('./src/app/models/Chef')
 const FileChef = require('./src/app/models/FileChef')
 const Recipe = require('./src/app/models/Recipe')
 const FileRecipe = require('./src/app/models/FileRecipe')
-const {date} = require('./src/lib/utils')
+const { date } = require('./src/lib/utils')
 
 
 
@@ -16,7 +16,7 @@ async function createUsers() {
 
 
     while (users.length < 3) {
-        let is_admin = Math.floor(Math.random * 2) 
+        let is_admin = Math.floor(Math.random() * 2)
         is_admin = 0 ? true : false
         users.push({
             name: faker.name.findName(),
@@ -57,12 +57,12 @@ async function createRecipes(usersIds, chefsIds) {
     let recipesIds = []
     let filesIds = []
 
-    while (recipes.length < 6){
+    while (recipes.length < 6) {
         recipes.push({
-            title:	faker.lorem.word(),
+            title: faker.lorem.word(),
             ingredients: faker.lorem.words(4),
             preparation: faker.lorem.sentence(3),
-            information: faker.lorem.paragraph(Math.ceil(Math.random()*3)),
+            information: faker.lorem.paragraph(Math.ceil(Math.random() * 3)),
             user_id: usersIds[Math.floor(Math.random() * usersIds.length)],
             chef_id: chefsIds[Math.floor(Math.random() * chefsIds.length)]
         })

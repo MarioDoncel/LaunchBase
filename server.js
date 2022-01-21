@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const nunjucks = require('nunjucks')
 const routes = require('./src/routes/routes')
@@ -7,16 +8,17 @@ const flash = require('connect-flash');
 const server = express()
 
 server.use(session)
-server.use(express.urlencoded({extended:true}))
+server.use(express.urlencoded({ extended: true }))
 server.use(express.static('public'))
 server.use(methodOverride('_method'))
 server.set('view engine', 'njk')
+console.log(process.env.PG_PASSWORD)
 
 //configurações connect-flash - para envio de mensagens no redirect
 server.use(flash());
 
 nunjucks.configure('src/app/views/', {
-    express : server,
+    express: server,
     autoescape: false,
     noCache: true
 })
@@ -24,5 +26,6 @@ nunjucks.configure('src/app/views/', {
 server.use(routes)
 
 
-server.listen(5000, function() {console.log('Server is running')
+server.listen(5000, function () {
+    console.log('Server is running')
 })
