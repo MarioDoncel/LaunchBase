@@ -34,3 +34,9 @@
     font-size: 14px;
     color: #666666;
 }
+
+@media  (max-width: 500px){
+    .cardsChefs {
+        grid-template-columns: 1fr;
+    }
+}

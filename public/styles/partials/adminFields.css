@@ -185,3 +185,31 @@ cursor: pointer;
 .chefUpload .photos-preview .photo i {
     border-radius: 100%;
 }
+
+@media  (max-width: 500px){
+    .fields input, .fields textarea, .fields select {
+        padding: 6px;
+    }
+    .fields.profile{
+        grid-template-columns: initial;
+    }
+    .photos-upload{
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .photos-upload .photo{
+        width: 50px;
+        height: 50px;
+    }
+    .photos-upload #photosAdd{
+        margin-bottom: 5px;
+    }
+    .photos-preview{
+        height: initial;
+        width: initial;
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: 0;
+        gap: 5px;
+    }
+}

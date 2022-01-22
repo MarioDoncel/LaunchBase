@@ -14,3 +14,22 @@ header nav a {
 header nav a.active{
     font-weight: bold;
 }
+
+@media  (max-width: 500px) {
+    header{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;    
+        padding: 1rem 0;
+    }
+    nav{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;   
+    }
+    header nav a{
+        padding: 1rem;
+    }
+}

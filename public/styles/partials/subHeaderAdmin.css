@@ -26,4 +26,20 @@
     background-color: #dc4747;
 }
 
+@media  (max-width: 500px) {
+    .buttonsEdit{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
+    .subHeader .buttons{
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+}
+
 

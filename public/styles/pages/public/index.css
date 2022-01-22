@@ -29,3 +29,27 @@
 .favorites h3{
     margin-top: 50px;
 }
+
+@media  (max-width: 500px){
+    body{
+        font-size: 14px;
+    }
+    main{
+        display: flex;
+        flex-direction: column;
+    }
+    .description{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 1rem;
+    }
+    .description img {
+        align-self: center;
+        max-height:60%
+    }
+};
+    

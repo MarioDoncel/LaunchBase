@@ -33,3 +33,9 @@
     font-weight: bold;
     cursor: pointer;
 }
+
+@media  (max-width: 500px){
+    #searchField input {
+        width: initial;
+    }
+}

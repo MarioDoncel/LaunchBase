@@ -34,3 +34,13 @@
     font-size: 14px;
     color: #777777;
 }
+
+@media  (max-width: 500px){
+    .recipe-name h4 {
+        font-size: 14px;
+        text-overflow: ellipsis;
+    }
+    .cards{
+        grid-template-columns: 1fr 1fr;
+    }
+}

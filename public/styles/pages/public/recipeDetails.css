@@ -118,3 +118,20 @@
     transition: 400ms;
 
 }
+
+@media  (max-width: 500px){
+    .recipe{
+        margin-top: 1rem;
+    }
+    .recipe .recipe-name{
+        margin-top: 1rem;
+    }
+    .recipeInformation{
+        margin: 1rem 0;
+        row-gap: 1rem;
+    }
+    .recipeInformation h3{
+        display: flex;
+        flex-direction: column;
+    }
+}

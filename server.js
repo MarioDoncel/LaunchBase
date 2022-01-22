@@ -12,7 +12,7 @@ server.use(express.urlencoded({ extended: true }))
 server.use(express.static('public'))
 server.use(methodOverride('_method'))
 server.set('view engine', 'njk')
-console.log(process.env.PG_PASSWORD)
+
 
 //configurações connect-flash - para envio de mensagens no redirect
 server.use(flash());

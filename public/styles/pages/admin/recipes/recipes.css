@@ -47,3 +47,20 @@
     background: none;
     cursor: pointer;
 }
+
+@media  (max-width: 500px){
+    .cards.admin{
+        gap: 10px;
+    }
+    .card.admin-index{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .card.admin-index .index-details{
+        margin: 0;
+    }
+    .index-details .author p, .index-details .author{
+        height: 3rem;
+        text-overflow: ellipsis;
+    }
+}

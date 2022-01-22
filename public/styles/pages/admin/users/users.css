@@ -84,3 +84,19 @@
 .links a:nth-child(2){
     color: #f55a5a;
 }
+
+@media  (max-width: 500px){
+    .cards.admin{
+        grid-template-columns: 1fr;
+    }
+    .list .subHeader{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
+    .buttons button{
+        margin: 0;
+    }
+}
