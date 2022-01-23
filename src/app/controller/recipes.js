@@ -3,6 +3,7 @@ const Chef = require('../models/Chef')
 const FileRecipe = require('../models/FileRecipe')
 const fs = require('fs')
 const { date, formatList } = require('../../lib/utils')
+const { saveS3, deleteS3 } = require('../../config/awsS3')
 
 
 module.exports = {
@@ -88,7 +89,7 @@ module.exports = {
         const chefs = await Chef.findAll()
 
         const recipeFiles = await FileRecipe.findAll({ where: { recipe_id: recipe.id } })
-        const filesPromise = recipeFiles.map(recipeFile => ({
+        const filesPromise = recipeFiles.map(async recipeFile => ({
             ...recipeFile,
             src: `${req.protocol}://${req.headers.host}${recipeFile.path.replace('public', '')}`
         }))
@@ -130,12 +131,16 @@ module.exports = {
             user_id
         })
 
-        const filesPromise = req.files.map(file => FileRecipe.create({
-            name: file.filename,
-            path: file.path,
-            recipe_id
-        })) // criando um array de promises
+        const filesPromise = req.files.map(async file => {
+            await FileRecipe.create({
+                name: file.filename,
+                path: file.path,
+                recipe_id
+            })
+            await saveS3(file)
+        }) // criando um array de promises
         await Promise.all(filesPromise) //executa cada promisse em sequencia
+        req.files.forEach(file => fs.unlinkSync(file.path));
 
         req.flash('success', 'Receita criada com sucesso.')
         return res.redirect('/admin/recipes')
@@ -144,11 +149,14 @@ module.exports = {
         const recipe_id = req.body.recipeId
 
         if (req.files.length != 0) {
-            const newFilesPromisse = req.files.map(file => FileRecipe.create({
-                name: file.filename,
-                path: file.path,
-                recipe_id
-            }))
+            const newFilesPromisse = req.files.map(async file => {
+                await FileRecipe.create({
+                    name: file.filename,
+                    path: file.path,
+                    recipe_id
+                })
+                await saveS3(file)
+            })
             await Promise.all(newFilesPromisse)
         }
 
@@ -158,7 +166,12 @@ module.exports = {
 
             const unlinkPromise = removedFiles.map(async id => {
                 const file = await FileRecipe.findOne({ where: { id } })
-                return fs.unlinkSync(file.path)
+                await deleteS3(file)
+                try {
+                    fs.unlinkSync(recipeFile.path)
+                } catch (error) {
+                    console.log(error)
+                }
             })
             await Promise.all(unlinkPromise)
 
@@ -196,7 +209,12 @@ module.exports = {
 
         const unlinkPromise = recipeFiles.map(async file => {
             const recipeFile = await FileRecipe.findOne({ where: { id: file.id } })
-            return fs.unlinkSync(recipeFile.path)
+            await deleteS3(recipeFile)
+            try {
+                fs.unlinkSync(recipeFile.path)
+            } catch (error) {
+                console.log(error)
+            }
         })
         await Promise.all(unlinkPromise)
 
