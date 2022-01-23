@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/MarioDoncel/LaunchBase#readme",
   "dependencies": {
+    "aws-sdk": "^2.1062.0",
     "bcryptjs": "^2.4.3",
     "connect-flash": "^0.1.1",
     "connect-pg-simple": "^6.2.1",
