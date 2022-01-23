@@ -5,9 +5,11 @@ const routes = require('./src/routes/routes')
 const methodOverride = require("method-override")
 const session = require('./src/config/session')
 const flash = require('connect-flash');
+const cors = require('cors')
 const server = express()
 
 server.use(session)
+server.use(cors())
 server.use(express.urlencoded({ extended: true }))
 server.use(express.static('public'))
 server.use(methodOverride('_method'))
