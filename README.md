@@ -75,6 +75,7 @@ sending emails, login and password recovery, SQL queries and a lot of other cool
 * [BcryptJS (hash passwords)](https://www.npmjs.com/package/bcryptjs)
 * [Method-override (HTTP verbs PUT/DELETE)](https://www.npmjs.com/package/method-override)
 * [Connect-Flash (User alerts)](https://www.npmjs.com/package/connect-flash)
+* [AWS S3](https://aws.amazon.com/pt/s3/)
 
 <!-- 
 * [Next.js](https://nextjs.org/)
